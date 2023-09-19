@@ -27,6 +27,7 @@ public class Main {
 		gamePanel.setupGane();
 		gamePanel.startGameThread();
 		//20/09/2023
+		//Nội dung
 	}
 
 }
