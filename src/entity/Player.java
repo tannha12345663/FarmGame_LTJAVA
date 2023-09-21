@@ -122,6 +122,7 @@ public class Player extends Entity {
 			int objIndex = gp.cChecker.checkObject(this, true);
 			//Kế đó sẽ làm event điều gì sẽ xảy ra khi người chơi va chạm vật này
 			pickUpObject(objIndex);
+			
 			//Check NPC collision (Kiểm tra va chạm với npc)
 			npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
@@ -233,8 +234,11 @@ public class Player extends Entity {
 //			System.out.println("Bạn đã va chạm với npc");
 			//
 			if(gp.keyH.enterPressed == true) {
+				
 				gp.gameState = gp.dialogueState;
+				System.out.println(i);
 				gp.npc[i].speak();
+				
 			}
 			
 		}

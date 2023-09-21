@@ -24,6 +24,15 @@ public class UI {
 	public boolean gameFinished = false;
 	// Khai báo đoạn thoại tin nhắn
 	public String currentDialouge = "";
+	//Khai báo biến chọn menu ở màn hình screen
+	public int commandNum = 0;
+	//Khai báo biến màn hình thứ hai sau khi new game
+	public int titleScreenState = 0;
+	// Chú thích : 
+	//với 0: là màn hình khởi đầu 
+	//với 1: là màn hình thứ 2 		
+	//Delay 
+	private int delay = 100; // Chữ chạy
 	
 //	//Khai báo hiển thị time
 //	double playTime;
@@ -54,6 +63,10 @@ public class UI {
 		g2.setFont(arial_40);
 		g2.setColor(Color.white);
 		
+		//Title State
+		if(gp.gameState == gp.titleState) {
+			drawTitleScreen();
+		}
 		//Player State
 		if(gp.gameState == gp.playState) {
 			//Cho trò chơi tiếp tục hoạt động
@@ -167,14 +180,163 @@ public class UI {
 //		}
 		
 	}
+	//Vẽ nội dung màn hình mở đầu
+	public void drawTitleScreen() {
+		
+//		System.out.println(titleScreenState);
+		//Kiểm tra màn hình trạng thái tiêu đề
+		if(titleScreenState == 0) {
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
+			//g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+			
+			String text = "Nông trại vui vẻ NNT";
+			int x = getXforCenteredText(text);
+			int y = gp.titleSize * 3;
+			
+			//Shadow đổ bóng
+			g2.setColor(Color.black);
+			g2.drawString(text, x+4, y+4);
+			
+			g2.setColor(Color.PINK);
+			g2.drawString(text, x, y);
+			
+			//Hiển thị nhân vật người chơi ra giữa màn hình
+			x = gp.screenWidth / 2 - (gp.titleSize*2)/4;
+			y += gp.titleSize*2;
+			g2.drawImage(gp.player.down2, x, y, gp.titleSize ,gp.titleSize,null);
+			
+			//MENU
+			g2.setColor(new Color(205,92,92));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,40F));
+			
+			text = "CHƠI MỚI";
+			x= getXforCenteredText(text);
+			y += gp.titleSize*2.5 ;
+			
+			g2.setColor(Color.black);
+			g2.drawString(text, x+4, y+4);
+			g2.setColor(new Color(205,92,92));
+			g2.drawString(text, x, y);
+			if(commandNum == 0) {
+				g2.setColor(Color.black);
+				g2.drawString(">", x - gp.titleSize/2, y);
+			}
+			
+			text = "CHƠI TIẾP";
+			x = getXforCenteredText(text);
+			y += gp.titleSize ;
+			g2.setColor(Color.black);
+			g2.drawString(text, x+4, y+4);
+			g2.setColor(new Color(205,92,92));
+			g2.drawString(text, x, y);
+			if(commandNum == 1) {
+				g2.setColor(Color.black);
+				g2.drawString(">", x - gp.titleSize/2, y);
+			}
+			
+			text = "THOÁT";
+			x = getXforCenteredText(text);
+			y += gp.titleSize ;
+			g2.setColor(Color.black);
+			g2.drawString(text, x+4, y+4);
+			g2.setColor(new Color(205,92,92));
+			g2.drawString(text, x, y);
+			if(commandNum == 2) {
+				g2.setColor(Color.black);
+				g2.drawString(">", x - gp.titleSize/2, y);
+			}
+		}else if(titleScreenState == 1) {
+			g2.setColor(Color.black);
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,18));
+			
+			//Cửa sổ hiển thị
+			int x = gp.titleSize*2 - 50;
+			int y = gp.titleSize/2;
+			int width = gp.screenWidth - (gp.titleSize * 3);
+			int height = gp.titleSize * 5;
+			drawSubWindow(x,y, width + 15, height);
+			
+			String text = "_ Một buổi sáng tươi đẹp, ánh nắng mặt trời len lỏi qua những tán cây \n xanh rờn rợn trên cánh đồng. Trên chiếc xe ngựa cũ kỹ, người nông \n dân đang dẫn lữ hành trên con đường đá lát sỏi. \n _ Anh ta đã nghe nhiều câu chuyện về hòn đảo xa xôi nằm giữa biển, \n nơi mà đất đai màu mỡ và cơ hội đang chờ đợi những ai dám mạo\n hiểm.";
+			for(String line : text.split("\n")) {
+				g2.drawString(line, x + 10, y+30);
+				y += 40;
+				
+			}
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			text = "Nhấn E để tiếp tục";
+			g2.drawString(text, x *10 - 30 , y + 30);
+			
+			text = "Nhấn Q để quay lại";
+			g2.drawString(text, x - 10, y *2 + 35);
+		}else if (titleScreenState == 2) {
+			g2.setColor(Color.black);
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,18));
+			
+			//Cửa sổ hiển thị
+			int x = gp.titleSize*2 - 50;
+			int y = gp.titleSize/2;
+			int width = gp.screenWidth - (gp.titleSize * 3);
+			int height = gp.titleSize * 5;
+			drawSubWindow(x,y, width + 15, height);
+			
+			String text = "_ Cuộc sống trên mảnh đất quê hương của anh ta đã trở nên khó khăn \n hơn qua từng ngày, với đất đai trở nên bằng phẳng và sản lượng nông \n nghiệp giảm sút. Nỗi hy vọng vào một tương lai tươi sáng đã dẫn dắt \n anh ta đến hòn đảo này, nơi mà lời đồn về cơ hội và cuộc sống mới đã \n lan tỏa khắp nơi.";
+			for(String line : text.split("\n")) {
+				g2.drawString(line, x + 10, y+30);
+				y += 40;
+				
+			}
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			text = "Nhấn E để tiếp tục";
+			g2.drawString(text, x *10 - 30 , y + 70);
+			
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			
+			text = "Nhấn Q để quay lại";
+			g2.drawString(text, x - 10, y *2 + 115);
+			
+		}
+		else if(titleScreenState == 3) {
+			g2.setColor(Color.black);
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,18));
+			
+			//Cửa sổ hiển thị
+			int x = gp.titleSize*2 - 50;
+			int y = gp.titleSize/2;
+			int width = gp.screenWidth - (gp.titleSize * 3);
+			int height = gp.titleSize * 5;
+			drawSubWindow(x,y, width + 15, height);
+			
+			String text = "_ Khi người nông dân đến gần bờ biển, anh ta không thể không ngạc \n nhiên bởi vẻ đẹp hoang sơ của hòn đảo. Biển xanh biếc lấp lánh, \n những dãy núi đá nguyên sơ nâng đôi tay lên trời, và bãi cát trải dài xa \n xôi. Người dân địa phương chào đón anh ta với sự nhiệt tình, và cuộc \n hành trình mới bắt đầu từ đây, khi anh ta quyết tâm xây dựng cuộc \n sống mới trên hòn đảo đầy triển vọng này.";
+			for(String line : text.split("\n")) {
+				g2.drawString(line, x + 10, y+30);
+				y += 40;
+				
+			}
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			text = "Nhấn E để chơi";
+			g2.drawString(text, x *10 - 30 , y + 30);
+			
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			
+			text = "Nhấn Q để quay lại";
+			g2.drawString(text, x - 10, y *2 + 35);
+		}
+		
+	}
 	public void drawPauseScreen() {
 		g2.setFont(g2.getFont().deriveFont(Font.PLAIN,40F));
 		String text = "TẠM NGỪNG";
 		int x = getXforCenteredText(text);
 		int y = gp.screenHeight/2 - (gp.titleSize*2);
-		
+		gp.stopMusic();
 		g2.drawString(text, x, y);
 	}
+	//Hàm hiển thị lời thoại ở màn hình
 	public void drawDialogueScreen() {
 		
 		//Cửa sổ hiển thị
@@ -197,6 +359,7 @@ public class UI {
 		
 		
 	}
+	
 	public void drawSubWindow(int x, int y, int width, int height) {
 		
 		Color c = new Color(0,0,0,100);
@@ -211,7 +374,7 @@ public class UI {
 		
 		
 	}
-	
+	//Hàm canh chữ ra giữa màn hình
 	public int getXforCenteredText(String text) {
 		//Lấy thông tin độ dài của ký tự
 		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();

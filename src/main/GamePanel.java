@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import entity.Entity;
@@ -54,13 +56,14 @@ public class GamePanel extends JPanel implements Runnable {
 	public Entity npc[] = new Entity[10];
 	
 	
-	//GAME STATE: Trạng thái của game 
+	//GAME STATE: Các trạng thái của game 
 	public int gameState;
-	public final int playState = 1;
-	public final int pauseState = 2;
+	public final int titleState = 0; // Tiêu đề nội dung Screen
+	public final int playState = 1; //Bắt đầu trò chơi
+	public final int pauseState = 2; // Dừng trò chơi
 	//Tạo hội thoại cho NPC
-	public final int dialogueState = 3;
-	
+	public final int dialogueState = 3; 
+	private BufferedImage image ;
 	
 	
 	
@@ -73,8 +76,10 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	//Hàm tạo Panel
 	public GamePanel () {
+		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-		this.setBackground(Color.blue);
+		
+
 		this.setDoubleBuffered(true);
 		//Lắng nghe sự kiện từ bàn phím
 		this.addKeyListener(keyH);
@@ -90,9 +95,9 @@ public class GamePanel extends JPanel implements Runnable {
 		//Set up NPC định sẵn tại vị trí
 		aSetter.setNPC();
 		//Phát nhạt theo số mong muốn truyền vào
-		playMusic(2);
-		stopMusic();
-		gameState = playState;
+//		playMusic(2);
+//		stopMusic();
+		gameState = titleState;
 	}
 	
 	public void startGameThread() {
@@ -182,6 +187,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	public void update() {
 		
+//		System.out.println(playState);
 		if(gameState == playState) {
 			//Player
 			player.update();
@@ -210,7 +216,15 @@ public class GamePanel extends JPanel implements Runnable {
 //		g2.setColor(Color.BLACK);
 //		//Thiết lập màn hình khi được khởi động
 //		g2.fillRect(playerX, playerY, titleSize , titleSize);
-//		//
+//		//Set hình nền cho giao diện
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/background/bg01.png"));
+			g.drawImage(image, 0, 0, screenWidth, screenHeight, null);
+		} catch (Exception e) {
+			// TODO: handle exception
+			g.setColor(Color.BLUE);
+		}
+		
 		
 		//Debug kiểm tra thời gian vẽ khung hình
 		long drawStart = 0;
@@ -218,33 +232,38 @@ public class GamePanel extends JPanel implements Runnable {
 			drawStart = System.nanoTime();
 		}
 		
-		
-		
-		//Tile
-		//Phải vẽ các ô đất trước khi vẽ nhân vật
-		tileM.draw(g2);//Vẽ các đất trong quá trình repaint vẽ lại
-		
-		//Object
-		//Vẽ các object cố định từ trước
-		for(int i = 0; i < obj.length; i++) {
-			if(obj[i] != null) {
-				obj[i].draw(g2, this);
+//		System.out.println(gameState);
+		//Tile Screen
+		if(gameState == titleState) {
+			ui.draw(g2);
+		}else {
+			//Tile
+			//Phải vẽ các ô đất trước khi vẽ nhân vật
+			tileM.draw(g2);//Vẽ các đất trong quá trình repaint vẽ lại
+			
+			//Object
+			//Vẽ các object cố định từ trước
+			for(int i = 0; i < obj.length; i++) {
+				if(obj[i] != null) {
+					obj[i].draw(g2, this);
+				}
 			}
-		}
-		//NPC
-		for(int i =0; i< npc.length;i++) {
-			if(npc[i] != null) {
-				npc[i].draw(g2);
+			//NPC
+			for(int i =0; i< npc.length;i++) {
+				if(npc[i] != null) {
+					npc[i].draw(g2);
+				}
 			}
+			
+			
+			//Player
+			//Vẽ nhân vật
+			player.draw(g2);
+			
+			//UI
+			ui.draw(g2);
 		}
 		
-		
-		//Player
-		//Vẽ nhân vật
-		player.draw(g2);
-		
-		//UI
-		ui.draw(g2);
 		
 		//Debug vẽ khung hình
 		if(keyH.checkDrawTime == true ) {
