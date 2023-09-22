@@ -34,6 +34,12 @@ public class Entity {
 	String dialogue[] = new String[20];
 	int dialogưeIndex = 0;
 	
+	//Trạng thái máu của nhân vật 
+	public int maxLife;
+	public int life;
+	
+	
+	
 	//Check NPC có đc direction hay không 
 	boolean check = false;
 	//Bảng điều khiển trò chơi

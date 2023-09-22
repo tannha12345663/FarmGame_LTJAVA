@@ -49,7 +49,11 @@ public class Player extends Entity {
 		worldY = gp.titleSize*13;
 		speed = 4;
 		direction ="down"; //Đặt hướng mặc định cho nhân vật
-				
+		
+		
+		//Trạng thái máu ban đầu của người chơi
+		maxLife = 6; //Mạng số tối đa
+		life = maxLife; // Mạng sống hiện tại của người chơi
 	}
 	
 	public void getPlayerImage() {

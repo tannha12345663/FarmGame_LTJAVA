@@ -9,7 +9,8 @@ import main.UtilityTool;
 
 public class SuperObject {
 	
-	public BufferedImage image;
+	//khai báo số lượng hình ảnh
+	public BufferedImage image,image1,image2;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;

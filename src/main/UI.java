@@ -7,13 +7,18 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 
+import object.OBJ_BoxSmall;
+import object.OBJ_Emotej;
+import object.OBJ_Heart;
 import object.OBJ_Key;
+import object.SuperObject;
 
 public class UI {
 	
 	GamePanel gp;
 	Graphics2D g2;
 	Font arial_40, arial_80B;
+	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ;
 //	BufferedImage keyImage;
 	//Khai báo nội dung tin nhắn
 	public boolean messageOn = false;
@@ -47,6 +52,19 @@ public class UI {
 		arial_80B = new Font("Airal", Font.BOLD,50);
 //		OBJ_Key key = new OBJ_Key(gp);
 //		keyImage = key.image;
+		
+		//Tạo HUD đối tượng
+		SuperObject heart = new OBJ_Heart(gp);
+		heart_full = heart.image;
+		heart_half = heart.image1;
+		heart_blank = heart.image2;
+		
+		SuperObject box = new OBJ_BoxSmall(gp);
+		boxSmall = box.image;
+		
+		SuperObject emotej = new OBJ_Emotej(gp);
+		emoteJ = emotej.image; 
+		
 	}
 	
 	//Hiển thị nội dung tin nhắn
@@ -70,15 +88,17 @@ public class UI {
 		//Player State
 		if(gp.gameState == gp.playState) {
 			//Cho trò chơi tiếp tục hoạt động
-			
+			drawPlayerLife();
 		}
 		//Pause State
 		if(gp.gameState == gp.pauseState) {
 			// Tạm ngưng trò chơi
+			drawPlayerLife();
 			drawPauseScreen();
 		}
 		//Dialouge State
 		if(gp.gameState == gp.dialogueState) {
+			drawPlayerLife();
 			drawDialogueScreen();
 		}
 		
@@ -180,6 +200,41 @@ public class UI {
 //		}
 		
 	}
+	//Vẽ thanh máu cho nhân vật
+	public void drawPlayerLife() {
+		
+		//Test số máu giảm đối với người chơi
+		gp.player.life = 3;
+		
+		int x = gp.titleSize / 2;
+		int y = gp.titleSize / 2;
+		int i = 0;
+		
+		g2.drawImage(boxSmall, x - 20,y -20,null); // Ô box thông tin người chơi
+		g2.drawImage(emoteJ, x ,y+ 10,null); // Cảm xúc của nhân viên
+		//Máu ban đầu sẽ rỗng tối đa của nhân vật
+		while(i < gp.player.maxLife / 2) {
+			g2.drawImage(heart_blank, x + 80 ,y + 33,null);
+			i++;
+			x += gp.titleSize + 4;
+		}
+		//Reset
+		x = gp.titleSize / 2;
+		y = gp.titleSize / 2;
+		i = 0;
+		
+		//Vẽ số máu hiện tại của người chơi
+		while(i < gp.player.life) {
+			g2.drawImage(heart_half, x + 80 ,y + 33,null);
+			i++;
+			if( i < gp.player.life) {
+				g2.drawImage(heart_full, x + 80 ,y + 33,null);
+			}
+			i++;
+			x += gp.titleSize + 4;
+		}
+	}
+	
 	//Vẽ nội dung màn hình mở đầu
 	public void drawTitleScreen() {
 		
