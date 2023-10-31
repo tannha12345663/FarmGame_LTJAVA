@@ -2,7 +2,6 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.concurrent.Delayed;
 
 //Lớp này để set up bàn phím cho người chơi
 public class KeyHandler implements KeyListener {
@@ -27,7 +26,7 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int code = e.getKeyCode();
-		System.out.println(gp.ui.titleScreenState);
+		//System.out.println(gp.ui.titleScreenState);
 		// Trạng thái Title (Màn hình khởi động)
 		//code cu if(gp.gameState == gp.titleState)
 		if(gp.gameState == gp.titleState) {

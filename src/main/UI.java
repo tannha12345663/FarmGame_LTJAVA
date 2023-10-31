@@ -5,13 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 
+import entity.Entity;
 import object.OBJ_BoxSmall;
 import object.OBJ_Emotej;
 import object.OBJ_Heart;
-import object.OBJ_Key;
-import object.SuperObject;
 
 public class UI {
 	
@@ -37,7 +35,6 @@ public class UI {
 	//với 0: là màn hình khởi đầu 
 	//với 1: là màn hình thứ 2 		
 	//Delay 
-	private int delay = 100; // Chữ chạy
 	
 //	//Khai báo hiển thị time
 //	double playTime;
@@ -54,15 +51,15 @@ public class UI {
 //		keyImage = key.image;
 		
 		//Tạo HUD đối tượng
-		SuperObject heart = new OBJ_Heart(gp);
+		Entity heart = new OBJ_Heart(gp);
 		heart_full = heart.image;
 		heart_half = heart.image1;
 		heart_blank = heart.image2;
 		
-		SuperObject box = new OBJ_BoxSmall(gp);
+		Entity box = new OBJ_BoxSmall(gp);
 		boxSmall = box.image;
 		
-		SuperObject emotej = new OBJ_Emotej(gp);
+		Entity emotej = new OBJ_Emotej(gp);
 		emoteJ = emotej.image; 
 		
 	}
@@ -204,14 +201,14 @@ public class UI {
 	public void drawPlayerLife() {
 		
 		//Test số máu giảm đối với người chơi
-		gp.player.life = 3;
+		//gp.player.life = 3;
 		
 		int x = gp.titleSize / 2;
 		int y = gp.titleSize / 2;
 		int i = 0;
 		
-		g2.drawImage(boxSmall, x - 20,y -20,null); // Ô box thông tin người chơi
-		g2.drawImage(emoteJ, x ,y+ 10,null); // Cảm xúc của nhân viên
+		g2.drawImage(boxSmall, x -20,y -20,null); // Ô box thông tin người chơi
+		g2.drawImage(emoteJ, x ,y+ 10,null); // Cảm xúc của nhân vật
 		//Máu ban đầu sẽ rỗng tối đa của nhân vật
 		while(i < gp.player.maxLife / 2) {
 			g2.drawImage(heart_blank, x + 80 ,y + 33,null);

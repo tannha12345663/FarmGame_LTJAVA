@@ -4,11 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
-
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
 
 public class Player extends Entity {
 	
@@ -129,8 +126,14 @@ public class Player extends Entity {
 			
 			//Check NPC collision (Kiểm tra va chạm với npc)
 			npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			System.out.println(npcIndex);
 			interactNPC(npcIndex);
-
+			
+//			System.out.println("x = "+ gp.player.worldX + ", y ="+gp.player.worldY);
+			//Check event
+			gp.eHandler.checkEvent();
+			
+			gp.keyH.enterPressed = false;
 			
 			//Nếu vật thẩ xuyên được là false , người chơi có thể di chuyển
 			if(collisionOn == false) {
@@ -156,8 +159,12 @@ public class Player extends Entity {
 			}
 		}
 		else {
-			npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-			interactNPC(npcIndex);
+			if(keyH.enterPressed == true) {
+				npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+				System.out.println(npcIndex);
+				interactNPC(npcIndex);
+				keyH.enterPressed = false;
+			}
 			
 			check = 0;
 			
@@ -235,18 +242,18 @@ public class Player extends Entity {
 }
 	public void interactNPC(int i) {
 		if(i != 999) {
-//			System.out.println("Bạn đã va chạm với npc");
+			System.out.println(gp.keyH.enterPressed);
 			//
 			if(gp.keyH.enterPressed == true) {
 				
 				gp.gameState = gp.dialogueState;
-				System.out.println(i);
+				//System.out.println(i);
 				gp.npc[i].speak();
 				
 			}
 			
 		}
-		gp.keyH.enterPressed = false;
+		//gp.keyH.enterPressed = false;
 	}
 	
 	public void draw(Graphics2D g2) {

@@ -3,7 +3,6 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -17,7 +16,7 @@ public class Entity {
 	public int speed;
 	
 	public BufferedImage up1,up2,up3,up4, down1, down2, down3, down4, left1, left2, left3, left4, right1, right2, right3, right4;
-	public String direction, direction1;
+	public String direction = "down", direction1;
 	
 	public int spriteCounter =0, spriteCounter1 =0;
 	public int spriteNum = 1, spriteNum1 = 1;
@@ -33,6 +32,12 @@ public class Entity {
 	//Phạm vi của đoạn hội thoại danh cho mỗi NPC
 	String dialogue[] = new String[20];
 	int dialogưeIndex = 0;
+	
+	//Khai báo siêu đối tượng
+	//khai báo số lượng hình ảnh
+	public BufferedImage image,image1,image2;
+	public String name;
+	public boolean collision = false;
 	
 	//Trạng thái máu của nhân vật 
 	public int maxLife;
@@ -220,11 +225,28 @@ public class Entity {
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath+".png"));
 			image = uTool.scaleImage(image, gp.titleSize, gp.titleSize);
 			
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return image;
 	}
-	
+	//Thiết lập phần vẽ cho khung giao diện dành cho đối tượng muốn tùy chỉnh kích cỡ
+	public BufferedImage setupOption (String imagePath,int width,int height) {
+			
+			UtilityTool uTool = new UtilityTool();
+			BufferedImage image = null;
+			
+			try {
+				
+				image = ImageIO.read(getClass().getResourceAsStream(imagePath+".png"));
+				image = uTool.scaleImage(image, gp.titleSize + width, gp.titleSize + height);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return image;
+		}
 }

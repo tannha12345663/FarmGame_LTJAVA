@@ -5,13 +5,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import title.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -49,11 +51,13 @@ public class GamePanel extends JPanel implements Runnable {
 	public AssetSetter aSetter = new AssetSetter(this); // Khai báo asset
 	//Khai báo UIs
 	public UI ui = new UI(this);
+	public EventHandler eHandler = new EventHandler(this);
 	Thread gameThread;
 	//Entity object
 	public Player player = new Player(this,keyH);//Khai báo thông tin nhân vật
-	public SuperObject obj[] = new SuperObject[10];
+	public Entity obj[] = new Entity[10];
 	public Entity npc[] = new Entity[10];
+	ArrayList<Entity> entityList = new ArrayList<>();
 	
 	
 	//GAME STATE: Các trạng thái của game 
@@ -202,8 +206,6 @@ public class GamePanel extends JPanel implements Runnable {
 			//Không cần cập nhật
 		}
 		
-		
-		
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -241,24 +243,45 @@ public class GamePanel extends JPanel implements Runnable {
 			//Phải vẽ các ô đất trước khi vẽ nhân vật
 			tileM.draw(g2);//Vẽ các đất trong quá trình repaint vẽ lại
 			
-			//Object
-			//Vẽ các object cố định từ trước
-			for(int i = 0; i < obj.length; i++) {
-				if(obj[i] != null) {
-					obj[i].draw(g2, this);
-				}
-			}
-			//NPC
-			for(int i =0; i< npc.length;i++) {
+			//Thêm các Entities vào trong danh sách entity
+			entityList.add(player);
+			for(int i =0; i <npc.length;i++) {
 				if(npc[i] != null) {
-					npc[i].draw(g2);
+					entityList.add(npc[i]);
 				}
 			}
 			
+			for(int i = 0;i<obj.length;i++) {
+				if(obj[i] != null) {
+					entityList.add(obj[i]);
+				}
+			}
+			
+			//Sort
+			Collections.sort(entityList, new Comparator<Entity>() {
+
+				@Override
+				public int compare(Entity e1, Entity e2) {
+					// TODO Auto-generated method stub
+					int resule = Integer.compare(e1.worldY, e2.worldY);
+					return resule;
+				}
+				
+			});
+			
+			//Draw Entities
+			for(int i =0; i < entityList.size();i++) {
+				entityList.get(i).draw(g2);
+			}
+			//Empty entity list
+//			for(int i =0; i < entityList.size();i++) {
+//				entityList.remove(i);
+//			}
+			entityList.clear();
 			
 			//Player
 			//Vẽ nhân vật
-			player.draw(g2);
+			//player.draw(g2);
 			
 			//UI
 			ui.draw(g2);
