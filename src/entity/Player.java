@@ -1,5 +1,8 @@
 package entity;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -129,6 +132,11 @@ public class Player extends Entity {
 			System.out.println(npcIndex);
 			interactNPC(npcIndex);
 			
+			//Kiểm tra va chạm với monster
+			int monsterIndex = gp.cChecker.checkEntity(this,gp.monster);
+			//Người chơi sẽ bị mất máu nếu đến gần quái vật
+			contactMonster(monsterIndex);
+			
 //			System.out.println("x = "+ gp.player.worldX + ", y ="+gp.player.worldY);
 			//Check event
 			gp.eHandler.checkEvent();
@@ -184,7 +192,14 @@ public class Player extends Entity {
 		}
 		//Check tọa độ
 		//System.out.println("Vị trí hiện tại x: "+ worldX +", y :"+ worldY);
-		
+		//Bằng cách này khi người chơi lại gần monster sẽ không phải tuột máu nhanh mà theo đó mỗi lần chạm sẽ bị mất máu
+		if(invincible == true) {
+			invincibleCounter ++;
+			if(invincibleCounter > 60) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 	
 	//Hàm này có ý nghĩa sẽ nhặt các món item trên map
@@ -254,6 +269,17 @@ public class Player extends Entity {
 			
 		}
 		//gp.keyH.enterPressed = false;
+	}
+	public void contactMonster(int i) {
+		if(i != 999) {
+			
+			if(invincible == false) {
+				life -= 1;
+				invincible = true;
+			}
+			
+			
+		}
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -363,26 +389,20 @@ public class Player extends Entity {
 		default:
 			throw new IllegalArgumentException("Unexpected value: ");
 		}
-//		int x = screenX;
-//		int y = screenY;
-//		
-//		if(screenX > worldX) {
-//			x = worldX;
-//		}
-//		if(screenY > worldY) {
-//			y = worldY;
-//		}
-//		int rightOffset = gp.screenWidth - screenX;
-//		if(rightOffset > gp.worldWidth - worldX) {
-//			x = gp.screenWidth - (gp.worldWidth - worldX);
-//		}
-//		int bottomOffset = gp.screenHeight - screenY;
-//		if(bottomOffset > gp.worldHeight - worldY) {
-//			y = gp.screenHeight - (gp.worldHeight - worldY);
-//		}
-//		System.out.println("Screen X = "+ screenX +", Screen Y = "+ screenY);
-		//Màn hình trục x và y sẽ không thay thổi trong suốt trò chơi
+		if(invincible ==true) {
+			//Làm cho nhân vật chớp hình khi va chạm với monster
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		}
+		
 		g2.drawImage(image, screenX, screenY,gp.titleSize,gp.titleSize, null);
+		
+		//Reset lại ban đầu khi đã hết 
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
+		//Debug
+//		g2.setFont(new Font("Arial",Font.PLAIN, 26));
+//		g2.setColor(Color.white);
+//		g2.drawString("Invincible: "+ invincibleCounter, 10, 400);
 		
 	}
 }

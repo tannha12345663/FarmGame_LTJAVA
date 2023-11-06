@@ -13,6 +13,7 @@ public class NPC_Person extends Entity{
 		direction ="down";
 		speed = 1;
 		
+		
 		getImage();
 		setDialogue();
 	}

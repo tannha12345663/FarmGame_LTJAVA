@@ -29,6 +29,8 @@ public class Entity {
 	public boolean collisionOn = false;
 	//Phạm vị bộ đếm khóa hành động
 	public int actionLockCounter = 0;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
 	//Phạm vi của đoạn hội thoại danh cho mỗi NPC
 	String dialogue[] = new String[20];
 	int dialogưeIndex = 0;
@@ -38,6 +40,9 @@ public class Entity {
 	public BufferedImage image,image1,image2;
 	public String name;
 	public boolean collision = false;
+	public int type; // 0 - player , 1 - npc, 2 = monster
+	
+	
 	
 	//Trạng thái máu của nhân vật 
 	public int maxLife;
@@ -67,8 +72,19 @@ public class Entity {
 		gp.cChecker.checkTile(this);
 		//Kiểm tra đối tượng thứ 2
 		gp.cChecker.checkObject(this, false);
+		gp.cChecker.checkEntity(this,gp.npc);
+		gp.cChecker.checkEntity(this,gp.monster);
 		//Kiểm tra đối tượng người chơi
-		gp.cChecker.checkPlayer(this);
+		boolean contactPlaer = gp.cChecker.checkPlayer(this);
+		
+		//Khi người chơi và cả monster lại gần thì nhân vật sẽ bị trừ máu
+		if(this.type == 2 && contactPlaer == true) {
+			if(gp.player.invincible == false) {
+				//Người chơi bị giảm máu
+				gp.player.life -=1 ;
+				gp.player.invincible = true;
+			}
+		}
 		
 		//Nếu vật thẩ xuyên được là false , người chơi có thể di chuyển
 		if(collisionOn == false) {

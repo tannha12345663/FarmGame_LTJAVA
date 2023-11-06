@@ -10,9 +10,14 @@ public class OBJ_Key extends Entity{
 		
 		name ="Key";
 		down1 = setup("/tiles_Nha/key");
+		collision = true;
 		
-		
-
+//		solidArea.x= 0;
+//		solidArea.y = 16;
+		solidArea.width = 54;
+		solidArea.height = 32;
+//		solidAreaDefaultX = solidArea.x;
+//		solidAreaDefaultY = solidArea.y;
 	}
 	
 }

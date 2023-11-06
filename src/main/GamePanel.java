@@ -57,6 +57,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public Player player = new Player(this,keyH);//Khai báo thông tin nhân vật
 	public Entity obj[] = new Entity[10];
 	public Entity npc[] = new Entity[10];
+	public Entity monster[] = new Entity[20];
+	
+	//Tất cả các thực thế hay npc đều sẽ được lưu dưới dạng danh sách
 	ArrayList<Entity> entityList = new ArrayList<>();
 	
 	
@@ -201,6 +204,8 @@ public class GamePanel extends JPanel implements Runnable {
 					npc[i].update();
 				}
 			}
+			//Khi cần thì tại chỗ này vẽ animation cho monster
+			
 		}
 		if(gameState == pauseState) {
 			//Không cần cập nhật
@@ -245,6 +250,7 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			//Thêm các Entities vào trong danh sách entity
 			entityList.add(player);
+			//Vẽ npc trước 
 			for(int i =0; i <npc.length;i++) {
 				if(npc[i] != null) {
 					entityList.add(npc[i]);
@@ -256,6 +262,7 @@ public class GamePanel extends JPanel implements Runnable {
 					entityList.add(obj[i]);
 				}
 			}
+			//Với monster cũng sẽ lấy hàm for ở trên đếm xuống và thay obj => monster
 			
 			//Sort
 			Collections.sort(entityList, new Comparator<Entity>() {
@@ -263,8 +270,8 @@ public class GamePanel extends JPanel implements Runnable {
 				@Override
 				public int compare(Entity e1, Entity e2) {
 					// TODO Auto-generated method stub
-					int resule = Integer.compare(e1.worldY, e2.worldY);
-					return resule;
+					int result = Integer.compare(e1.worldY, e2.worldY);
+					return result;
 				}
 				
 			});

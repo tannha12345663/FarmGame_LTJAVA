@@ -8,7 +8,12 @@ public class OBJ_Chest extends Entity{
 	public OBJ_Chest(GamePanel gp) {
 		super(gp);
 		name ="Chest";
-		image = setup("/tiles_Nha/Chest_05");
+		maxLife = 4;
+		life = maxLife;
+		
+		down1 = setup("/tiles_Nha/Chest_04");
 		collision = true;
+		
+		
 		}
 }
