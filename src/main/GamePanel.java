@@ -56,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	//Entity object
 	public Player player = new Player(this,keyH);//Khai báo thông tin nhân vật
 	public Entity obj[] = new Entity[10];
+	public Entity objDig[] = new Entity[100];
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
 	
@@ -101,6 +102,8 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setObject();
 		//Set up NPC định sẵn tại vị trí
 		aSetter.setNPC();
+		//Set up các vị trí ô đất có thể đào được
+		aSetter.setDig();
 		//Phát nhạt theo số mong muốn truyền vào
 //		playMusic(2);
 //		stopMusic();
@@ -262,6 +265,8 @@ public class GamePanel extends JPanel implements Runnable {
 					entityList.add(obj[i]);
 				}
 			}
+			
+			
 			//Với monster cũng sẽ lấy hàm for ở trên đếm xuống và thay obj => monster
 			
 			//Sort

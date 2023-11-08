@@ -88,9 +88,10 @@ public class TileManager {
 				
 				//Lấy một file name
 				fileName = fileNames.get(i);
-				
+				//System.out.println(collisionStatus.get(i));
 				//Lấy thông tin collision
 				if(collisionStatus.get(i).equals("true")) {
+					
 					collision = true;
 				}
 				else {

@@ -26,6 +26,10 @@ public class Sound {
 		soundURL[8] = getClass().getResource("/sound/mixkit-small-hit-in-a-game-2072.wav");
 		soundURL[9] = getClass().getResource("/sound/nhatitem.wav");
 		soundURL[10] = getClass().getResource("/sound/vachamcua.wav");
+		
+		//Từ số 20 trở đi sẽ là hiệu ứng âm thanh
+		//Đào đất
+		soundURL[20] = getClass().getResource("/soundAnimation/DaoDat2.wav");
 	}
 	
 	public void setFile(int i) {

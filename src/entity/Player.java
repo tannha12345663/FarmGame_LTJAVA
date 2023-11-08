@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -9,15 +10,19 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.KeyHandler;
+import title.TileManager;
 
 public class Player extends Entity {
 	
 	KeyHandler keyH;
 	int check = 0;
+	TileManager tm;
 	
 	//Thiết lập camera di theo nhân vật người chơi với tọa độ riêng biệt
 	public final int screenX;
 	public final int screenY;
+	
+	public boolean daoDatCanceled = false;
 //	public int hasKey = 0; // Khai báo đối tượng vật phẩm key
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
@@ -40,9 +45,12 @@ public class Player extends Entity {
 		solidArea.width = 32;
 		solidArea.height = 32;
 		
+		daodatArea.width = 36;
+		daodatArea.height = 36;
 		
 		setDefaultValues();
 		getPlayerImage();
+		getPlayerDaoDatImage();
 	}
 	public void setDefaultValues() {
 		worldX = gp.titleSize*10;
@@ -78,27 +86,29 @@ public class Player extends Entity {
 		right3 = setup("/player/Basic-Charakter-Right_03");
 		right4 = setup("/player/Basic-Charakter-Right_04");
 	}
-//	public BufferedImage setup(String imageName) {
-//		
-//		UtilityTool uTool = new UtilityTool();
-//		BufferedImage image = null;
-//		
-//		try {
-//			image = ImageIO.read(getClass().getResourceAsStream("/player/"+ imageName+".png"));
-//			image = uTool.scaleImage(image, gp.titleSize, gp.titleSize);
-//			
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}
-//		return image;
-//	}
+	
+	//HÀm thực hiên animation cho nhân vật
+	public void getPlayerDaoDatImage() {
+		daodatUp1 = setupAnimation("/playerAnimation/up1_DaoDat",gp.titleSize,gp.titleSize+ 20);
+		daodatUp2 = setupAnimation("/playerAnimation/up2_DaoDat",gp.titleSize,gp.titleSize+ 20);
+		
+		daodatDown1 = setupAnimation("/playerAnimation/down1_DaoDat",gp.titleSize,gp.titleSize+ 20);
+		daodatDown2 = setupAnimation("/playerAnimation/down2_DaoDat",gp.titleSize,gp.titleSize+ 20);
+		
+		daodatLeft1 = setupAnimation("/playerAnimation/left1_DaoDat",gp.titleSize + 25,gp.titleSize);
+		daodatLeft2 = setupAnimation("/playerAnimation/left2_DaoDat",gp.titleSize + 25,gp.titleSize);
+		
+		daodatRight1 = setupAnimation("/playerAnimation/right1_DaoDat",gp.titleSize+ 25,gp.titleSize);
+		daodatRight2 = setupAnimation("/playerAnimation/right2_DaoDat",gp.titleSize+ 25,gp.titleSize);
+	}
 	
 	public void update () {
-		
 		int npcIndex;
+		if(daodatAnimation == true) {
+			daodatAnimation();
+		}
 		//Ở bước nãy sẽ chỉ nhận sự kiện khi người dùng nhấn phím
-		if( keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true|| keyH.rightPressed == true) {
+		else if( keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true|| keyH.rightPressed == true || keyH.enterPressed == true) {
 			//System.out.println("Người chơi đã nhấn nút");
 			check = 1;
 			if(keyH.upPressed == true) {
@@ -111,7 +121,7 @@ public class Player extends Entity {
 			}
 			else if(keyH.leftPressed == true) {
 				direction ="left";
-				//worldX -= speed;	
+				//worldX -= speed;	eeee
 			}
 			else if(keyH.rightPressed==true) {
 				direction ="right";
@@ -141,10 +151,10 @@ public class Player extends Entity {
 			//Check event
 			gp.eHandler.checkEvent();
 			
-			gp.keyH.enterPressed = false;
+			
 			
 			//Nếu vật thẩ xuyên được là false , người chơi có thể di chuyển
-			if(collisionOn == false) {
+			if(collisionOn == false && keyH.enterPressed == false ) {
 				switch (direction) {
 				case "up": worldY -= speed; break;
 				case "down": worldY += speed;break;
@@ -152,6 +162,15 @@ public class Player extends Entity {
 				case "right":worldX += speed;break;
 				}
 			}
+			
+			if(keyH.enterPressed == true && daoDatCanceled == false) {
+				gp.playSE(20);
+				daodatAnimation = true;
+				spriteCounter = 0;
+			}
+			
+			daoDatCanceled = false;
+			gp.keyH.enterPressed = false;
 			
 			//Sprite sẽ được tăng lên khi người dùng nhấn vào các nút di chuyển
 			spriteCounter++;
@@ -200,6 +219,58 @@ public class Player extends Entity {
 				invincibleCounter = 0;
 			}
 		}
+	}
+	
+	public void daodatAnimation() {
+		
+		spriteCounter ++;
+		if(spriteCounter <= 5 ) {
+			spriteNum = 1;
+		}
+		if(spriteCounter > 5 && spriteCounter <= 25) {
+			spriteNum = 2;
+			
+			//Lưu trữ vị trí hiện tại của người chơi khi thực hiện animation
+			int currentWorldX = worldX;
+			int currentWorldY = worldY;
+			//Lưu trữ nơi vị trí đang đứng
+			int solidAreaWidth = solidArea.width;
+			int solidAreaHeight = solidArea.height;
+			
+			//Thay đổi vị trí WorldX/Y của người chơi cho việc đào đất
+			switch (direction){
+			case "up": worldY -= daodatArea.height; break;
+			case "down": worldY += daodatArea.height; break;
+			case "left": worldX -= daodatArea.width; break;
+			case "right": worldX += daodatArea.width; break;
+			}
+			
+			// Đào đất sẽ trở thành vùng bị tác động
+			solidArea.width = daodatArea.width;
+			solidArea.height = daodatArea.height;
+			
+			//Kiểm tra va chạm với monster cùng với cập nhật worldX, worldY và solidArea
+			//Dòng code này chỉ được mở khi có Monster
+			// int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+			
+			//Đổi sang đất đã được đào
+			
+			
+//			gp.cChecker.checkDig(this,111);
+			//Kế đó sẽ làm event điều gì sẽ xảy ra khi người chơi va chạm vật này
+			//digDaoDat(objIndex);
+			
+			worldX = currentWorldX;
+			worldY = currentWorldY;
+			solidArea.width = solidAreaWidth;
+			solidArea.height = solidAreaHeight;
+		}
+		if(spriteCounter > 25) {
+			spriteNum =1;
+			spriteCounter = 0;
+			daodatAnimation = false;
+		}
+		
 	}
 	
 	//Hàm này có ý nghĩa sẽ nhặt các món item trên map
@@ -256,16 +327,19 @@ public class Player extends Entity {
 	}
 }
 	public void interactNPC(int i) {
-		if(i != 999) {
-			System.out.println(gp.keyH.enterPressed);
-			//
-			if(gp.keyH.enterPressed == true) {
-				
+		if(gp.keyH.enterPressed == true) {
+			if(i != 999) {
+				daoDatCanceled = true;
 				gp.gameState = gp.dialogueState;
 				//System.out.println(i);
 				gp.npc[i].speak();
 				
 			}
+//			else {
+//				//Khi người chơi không gặp npc thì sẽ thực hiện đào đất
+//				gp.playSE(20);
+//				daodatAnimation = true;
+//			}
 			
 		}
 		//gp.keyH.enterPressed = false;
@@ -281,6 +355,15 @@ public class Player extends Entity {
 			
 		}
 	}
+	public void digDaoDat(int i) {
+		if(i!= 999) {
+			System.out.println("Bạn đã đào đất ở vị trí này");
+		}
+		else {
+			System.out.println("Bạn chưa đào đất được");
+		}
+	}
+	
 	
 	public void draw(Graphics2D g2) {
 		
@@ -289,100 +372,105 @@ public class Player extends Entity {
 ////		//Thiết lập màn hình khi được khởi động
 //		g2.fillRect(x, y, gp.titleSize , gp.titleSize);
 		BufferedImage image = null;
+		int tempScreenX = screenX;
+		int tempScreenY = screenY;
+		
 		//System.out.println("Check : "+ check);
 		switch (direction) {
 		case "up": {
 			
-			//Kiểm tra check 
-			if (check == 0) {
-				//Hành động đang đứng thở
-				if(spriteNum1 == 1) {
-					image = up1;
+			if(daodatAnimation == false) {
+				//Kiểm tra check 
+				if (check == 0) {
+					//Hành động đang đứng thở
+					if(spriteNum1 == 1) {image = up1;}
+					if (spriteNum1 == 2) {image = up2;}
 				}
-				else if (spriteNum1 == 2) {
-					image = up2;
+				else {
+					//Hành động bước đi
+					if(spriteNum == 1) {image = up3;}
+					if (spriteNum == 2) {image = up4;}
 				}
 			}
-			else {
-				//Hành động bước đi
-				if(spriteNum == 1) {
-					image = up3;
-				}
-				else if (spriteNum == 2) {
-					image = up4;
-				}
+			if(daodatAnimation == true) {
+				tempScreenY = screenY - gp.titleSize/2;
+				if(spriteNum == 1) {image = daodatUp1;}
+				if (spriteNum == 2) {image = daodatUp2;}
 			}
 			break;
 		}
 		case "down": {
+			if(daodatAnimation == false) {
+				if (check == 0) {
+					//Hành động đang đứng thở
+					if(spriteNum1 == 1) {image = down1;}
+					if(spriteNum1 == 2) {image = down2;}
+				}
+				else {
+					//Hành động bước đi
+					if(spriteNum == 1) {image = down3;}
+					if(spriteNum == 2) {image = down4;}
+				}
+			}
+			if(daodatAnimation == true) {
+				if(spriteNum == 1) {image = daodatDown1;}
+				if (spriteNum == 2) {image = daodatDown2;}
+			}
 			
-			if (check == 0) {
-				//Hành động đang đứng thở
-				if(spriteNum1 == 1) {
-					image = down1;
-				}
-				else if(spriteNum1 == 2) {
-					image = down2;
-				}
-			}
-			else {
-				//Hành động bước đi
-				if(spriteNum == 1) {
-					image = down3;
-				}
-				else if(spriteNum == 2) {
-					image = down4;
-				}
-				
-				
-			}
-
 			break;
 		}
 		case "left": {
-			
-			if(check == 0) {
-				//Hành động thở
-				if(spriteNum1 == 1) {
-					image = left1;
+			if(daodatAnimation == false) {
+				if(check == 0) {
+					//Hành động thở
+					if(spriteNum1 == 1) {
+						image = left1;
+					}
+					else if(spriteNum1 == 2) {
+						image = left2;
+					}
 				}
-				else if(spriteNum1 == 2) {
-					image = left2;
+				else {
+					//Hành động bước đi
+					if(spriteNum == 1) {
+						image = left3;
+					}
+					else if(spriteNum == 2) {
+						image = left4;
+					}
 				}
 			}
-			else {
-				//Hành động bước đi
-				if(spriteNum == 1) {
-					image = left3;
-				}
-				else if(spriteNum == 2) {
-					image = left4;
-				}
+			if(daodatAnimation == true) {
+				tempScreenX = screenX - gp.titleSize/2;
+				if(spriteNum == 1) {image = daodatLeft1;}
+				if (spriteNum == 2) {image = daodatLeft2;}
 			}
-			
-			
-
 			break;
 		}
 		case "right": {
-			
-			if(check == 0) {
-				//Hành động thở
-				if(spriteNum1 == 1) {
-					image = right1;
+			if(daodatAnimation == false) {
+				if(check == 0) {
+					//Hành động thở
+					if(spriteNum1 == 1) {
+						image = right1;
+					}
+					else if(spriteNum1 == 2) {
+						image = right2;
+					}
 				}
-				else if(spriteNum1 == 2) {
-					image = right2;
+				else {
+					//Hành động bước đi
+					if(spriteNum == 1) {
+						image = right3;
+					}
+					else if(spriteNum == 2) {
+						image = right4;
+					}
 				}
 			}
-			else {
-				//Hành động bước đi
-				if(spriteNum == 1) {
-					image = right3;
-				}
-				else if(spriteNum == 2) {
-					image = right4;
-				}
+			if(daodatAnimation == true) {
+				if(spriteNum == 1) {image = daodatRight1;}
+				if (spriteNum == 2) {image = daodatRight2;}
 			}
 			break;
 		}
@@ -394,7 +482,7 @@ public class Player extends Entity {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
 		
-		g2.drawImage(image, screenX, screenY,gp.titleSize,gp.titleSize, null);
+		g2.drawImage(image, tempScreenX, tempScreenY, null);
 		
 		//Reset lại ban đầu khi đã hết 
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -403,6 +491,17 @@ public class Player extends Entity {
 //		g2.setFont(new Font("Arial",Font.PLAIN, 26));
 //		g2.setColor(Color.white);
 //		g2.drawString("Invincible: "+ invincibleCounter, 10, 400);
-		
+		// DEBUG
+		// AttackArea -- hiển thị ô vuông khi đào đất
+		tempScreenX = screenX + solidArea.x;
+		tempScreenY = screenY + solidArea.y;		
+		switch(direction) {
+			case "up": tempScreenY = screenY - daodatArea.height; break;
+			case "down": tempScreenY = screenY + gp.titleSize; break; 
+			case "left": tempScreenX = screenX - daodatArea.width; break;
+			case "right": tempScreenX = screenX + gp.titleSize; break;
+		}				
+		g2.setColor(Color.red);g2.setStroke(new BasicStroke(1));
+		g2.drawRect(tempScreenX, tempScreenY, daodatArea.width, daodatArea.height);
 	}
 }

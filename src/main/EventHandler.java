@@ -114,6 +114,7 @@ public class EventHandler {
 		
 		if(gp.keyH.enterPressed == true ) {
 			gp.gameState = gameState;
+			gp.player.daoDatCanceled = true;
 			gp.ui.currentDialouge = "Bạn đã uống nước thần ! \n Máu của bạn đã được phục hồi.";
 			//Tăng máu cho nhân vật mỗi lần uống
 			if(gp.player.life < gp.player.maxLife) {

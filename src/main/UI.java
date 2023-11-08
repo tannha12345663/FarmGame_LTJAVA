@@ -10,13 +10,14 @@ import entity.Entity;
 import object.OBJ_BoxSmall;
 import object.OBJ_Emotej;
 import object.OBJ_Heart;
+import object.OBJ_BoxCoin;
 
 public class UI {
 	
 	GamePanel gp;
 	Graphics2D g2;
 	Font arial_40, arial_80B;
-	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ;
+	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ, boxCoins;
 //	BufferedImage keyImage;
 	//Khai báo nội dung tin nhắn
 	public boolean messageOn = false;
@@ -61,6 +62,9 @@ public class UI {
 		
 		Entity emotej = new OBJ_Emotej(gp);
 		emoteJ = emotej.image; 
+		
+		Entity boxCoin = new OBJ_BoxCoin(gp);
+		boxCoins = boxCoin.image;
 		
 	}
 	
@@ -209,6 +213,7 @@ public class UI {
 		
 		g2.drawImage(boxSmall, x -20,y -20,null); // Ô box thông tin người chơi
 		g2.drawImage(emoteJ, x ,y+ 10,null); // Cảm xúc của nhân vật
+		g2.drawImage(boxCoins, x ,y + 200, null);
 		//Máu ban đầu sẽ rỗng tối đa của nhân vật
 		while(i < gp.player.maxLife / 2) {
 			g2.drawImage(heart_blank, x + 80 ,y + 33,null);
@@ -265,6 +270,7 @@ public class UI {
 			x= getXforCenteredText(text);
 			y += gp.titleSize*2.5 ;
 			
+            
 			g2.setColor(Color.black);
 			g2.drawString(text, x+4, y+4);
 			g2.setColor(new Color(205,92,92));

@@ -212,5 +212,12 @@ public class CollisionChecker {
 		
 		return contactPlayer;
 	}
+	//Kiểm tra khu vực này có cho đào đất hay không 
+//	public void checkDig(Entity entity, int landPosition) {
+//		
+//		System.out.println("Vị trí hiện tại x: "+ worldX +", y :"+ worldY);
+//		
+//		System.out.println("Vị trí hiện tại: "+ );
+//	}
 }
 	

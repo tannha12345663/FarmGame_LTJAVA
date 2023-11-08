@@ -20,18 +20,18 @@ public class AssetSetter {
 		gp.obj[0].worldX = 11*gp.titleSize;
 		gp.obj[0].worldY = 15*gp.titleSize;
 		
-		gp.obj[1] = new OBJ_Key(gp);
-		gp.obj[1].worldX = 21*gp.titleSize;
-		gp.obj[1].worldY = 11*gp.titleSize;
+//		gp.obj[1] = new OBJ_Key(gp);
+//		gp.obj[1].worldX = 21*gp.titleSize;
+//		gp.obj[1].worldY = 11*gp.titleSize;
 //		
 		gp.obj[2] = new OBJ_Door(gp);
 		gp.obj[2].worldX = 8*gp.titleSize;
 		gp.obj[2].worldY = 8*gp.titleSize;
 //		
-		gp.obj[3] = new OBJ_Key(gp);
-		gp.obj[3].worldX = 25*gp.titleSize;
-		gp.obj[3].worldY = 11*gp.titleSize;
-		
+//		gp.obj[3] = new OBJ_Key(gp);
+//		gp.obj[3].worldX = 25*gp.titleSize;
+//		gp.obj[3].worldY = 11*gp.titleSize;
+//		
 		gp.obj[4] = new OBJ_Chest(gp);
 		gp.obj[4].worldX = 7*gp.titleSize;
 		gp.obj[4].worldY = 11*gp.titleSize;
@@ -42,6 +42,9 @@ public class AssetSetter {
 		gp.npc[0].worldX = gp.titleSize * 10;
 		gp.npc[0].worldY = gp.titleSize * 10;
 		
+	}
+	//Set up cho những khu đất đào được
+	public void setDig() {
 	}
 	//
 	public void setMonster() {
