@@ -5,25 +5,32 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import entity.Entity;
 import object.OBJ_BoxSmall;
 import object.OBJ_Emotej;
 import object.OBJ_Heart;
 import object.OBJ_BoxCoin;
+import object.OBJ_Coin;
 
 public class UI {
 	
 	GamePanel gp;
 	Graphics2D g2;
 	Font arial_40, arial_80B;
-	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ, boxCoins;
+	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ, boxCoins, coins;
 //	BufferedImage keyImage;
 	//Khai báo nội dung tin nhắn
 	public boolean messageOn = false;
-	public String message ="";
+	//public String message ="";
 	//Khai báo thời gian hiển thị message
-	int messageCounter = 0;
+	//int messageCounter = 0;
+	ArrayList<String> message = new ArrayList<String>();
+	ArrayList<Integer> messageCounter = new ArrayList<Integer>();
+	
 	//Khai báo trò chơi đã kết thúc hay chưa
 	public boolean gameFinished = false;
 	// Khai báo đoạn thoại tin nhắn
@@ -32,6 +39,9 @@ public class UI {
 	public int commandNum = 0;
 	//Khai báo biến màn hình thứ hai sau khi new game
 	public int titleScreenState = 0;
+	public int slotCol = 0;
+	public int slotRow = 0;
+	
 	// Chú thích : 
 	//với 0: là màn hình khởi đầu 
 	//với 1: là màn hình thứ 2 		
@@ -66,13 +76,16 @@ public class UI {
 		Entity boxCoin = new OBJ_BoxCoin(gp);
 		boxCoins = boxCoin.image;
 		
+		Entity coin = new OBJ_Coin(gp);
+		coins = coin.image;
 	}
 	
 	//Hiển thị nội dung tin nhắn
-	public void showMessage(String text) {
+	public void addMessage(String text) {
 		
-		message = text;
-		messageOn = true;
+		message.add(text);
+		messageCounter.add(0);
+		
 	}
 	
 	//Vẽ màn hình hiển thị số lượng key đã nhặt
@@ -90,6 +103,7 @@ public class UI {
 		if(gp.gameState == gp.playState) {
 			//Cho trò chơi tiếp tục hoạt động
 			drawPlayerLife();
+			drawMessage();
 		}
 		//Pause State
 		if(gp.gameState == gp.pauseState) {
@@ -101,6 +115,12 @@ public class UI {
 		if(gp.gameState == gp.dialogueState) {
 			drawPlayerLife();
 			drawDialogueScreen();
+		}
+		//Character state
+		System.out.println(gp.gameState);
+		if(gp.gameState == gp.characterState) {
+			drawCharacterScreen();
+			drawInventory();
 		}
 		
 		//Trò chơi kết thúc
@@ -201,6 +221,33 @@ public class UI {
 //		}
 		
 	}
+	//Vẽ nội dung tin nhắn
+	public void drawMessage() {
+		
+		int messageX = gp.titleSize;
+		int messageY = gp.titleSize*4;
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+		for(int i = 0;i < message.size();i++) {
+			
+			if(message.get(i)!= null) {
+				
+				g2.setColor(Color.black);
+				g2.drawString(message.get(i), messageX+2, messageY+2);
+				g2.setColor(Color.white);
+				g2.drawString(message.get(i), messageX, messageY);
+				
+				int counter = messageCounter.get(i) +1; //MessageCounter ++
+				messageCounter.set(i, counter); // set the counter to the array
+				messageY += 50;
+				
+				if(messageCounter.get(i)>180) {
+					message.remove(i);
+					messageCounter.remove(i);
+				}
+			}
+		}
+	}
+	
 	//Vẽ thanh máu cho nhân vật
 	public void drawPlayerLife() {
 		
@@ -213,7 +260,14 @@ public class UI {
 		
 		g2.drawImage(boxSmall, x -20,y -20,null); // Ô box thông tin người chơi
 		g2.drawImage(emoteJ, x ,y+ 10,null); // Cảm xúc của nhân vật
-		g2.drawImage(boxCoins, x ,y + 200, null);
+		g2.drawImage(boxCoins, x - 15 ,y + 105, null); //Ô chứa coin
+		
+		g2.drawImage(coins, x - 5 ,y + 115, null); //Số tiền hiện tại
+		String soCoin = "0";
+		g2.setColor(Color.RED);
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
+		g2.drawString(soCoin, x + 30 ,y + 143);
+		
 		//Máu ban đầu sẽ rỗng tối đa của nhân vật
 		while(i < gp.player.maxLife / 2) {
 			g2.drawImage(heart_blank, x + 80 ,y + 33,null);
@@ -417,6 +471,143 @@ public class UI {
 		
 		
 	}
+	public void drawCharacterScreen() {
+		final int frameX = 10;
+		final int frameY = gp.titleSize;
+		final int frameWidth = gp.titleSize *6;
+		final int frameHeight = 320;
+		
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		
+		//Text
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(30F));
+		
+		int textX = frameX + 20;
+		int textY = frameY + gp.titleSize;
+		final int lineHeight = 35;
+		
+		//Names
+		g2.drawString("Thông tin nhân vật", textX, textY);
+		textY += lineHeight;
+		textY += lineHeight;
+		g2.drawString("Day", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Level", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Life", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Exp", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Next Level", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Coin", textX, textY);
+		textY += lineHeight;
+		
+		//Set Value
+		int tailX = (frameX + frameWidth) - 60;
+		//Reset TextY
+		textY = frameY + gp.titleSize;
+		String value;
+		
+		textY += lineHeight;
+		textY += lineHeight;
+		value = String.valueOf(gp.player.days);
+		textX = getXforAllignToRightText(value, tailX);
+		g2.drawString(value, tailX, textY);
+		textY += lineHeight;
+		
+		value = String.valueOf(gp.player.level);
+		textX = getXforAllignToRightText(value, tailX);
+		g2.drawString(value, tailX, textY);
+		textY += lineHeight;
+		
+		value = String.valueOf(gp.player.life + "/"+ gp.player.maxLife);
+		textX = getXforAllignToRightText(value, tailX);
+		g2.drawString(value, tailX, textY);
+		textY += lineHeight;
+		
+		value = String.valueOf(gp.player.exps);
+		textX = getXforAllignToRightText(value, tailX);
+		g2.drawString(value, tailX, textY);
+		textY += lineHeight;
+		
+		value = String.valueOf(gp.player.nextLevel);
+		textX = getXforAllignToRightText(value, tailX);
+		g2.drawString(value, tailX, textY);
+		textY += lineHeight;
+		
+		value = String.valueOf(gp.player.coins);
+		textX = getXforAllignToRightText(value, tailX);
+		g2.drawString(value, tailX, textY);
+		textY += lineHeight;
+		
+		
+		//Nếu muốn hiển thị hình ảnh cùng Character State
+		//g2.drawImage(gp.player..., tailX - gp.titleSize, textY);
+		//Thay ... bằng tên hình ảnh rồi .down1 vd : gp.plater.currentWeapon.down1
+	}
+	public void drawInventory() {
+		
+		int frameX = gp.titleSize*9;
+		int frameY = gp.titleSize;
+		int frameWidth = gp.titleSize*6;
+		int frameHeght = gp.titleSize*5;	
+		drawSubWindow(frameX, frameY, frameWidth, frameHeght - 10);
+		
+		//Tạo từng khe slot cho kho
+		final int slotXstart = frameX + 20;
+		final int slotYstart = frameY + 20;
+		int slotX = slotXstart;
+		int slotY = slotYstart;
+		int slotSize = gp.titleSize+3;
+		
+		//DRAW PLAYER'S ITEMS -- Vẽ ra túi đồ 
+		for(int i =0; i<gp.player.inventory.size();i++) {
+			g2.drawImage(gp.player.inventory.get(i).down1, slotX,slotY, null);
+			
+			slotX += slotSize;
+			
+			if(i == 4 || i == 9 || i == 14) {
+				slotX = slotXstart;
+				slotY += slotSize;
+			}
+		}
+		
+		
+		// Cursor -- con trỏ đến từng vị trí trong ô
+		int cursorX = slotXstart + (slotSize * slotCol);
+		int cursorY = slotYstart + (slotSize * slotRow);
+		int cursorWidth = gp.titleSize;
+		int cursorHeight = gp.titleSize;
+		//Draw cursor -- vẽ con trỏ khi di chuyển
+		g2.setColor(Color.white);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10,10);
+		
+		// Description frame
+		int dFrameX = frameX;
+		int dFrameY = frameY + frameHeght - 5;
+		int dFrameWidth = frameWidth;
+		int dFrameHeight = gp.titleSize *6;
+		drawSubWindow(dFrameX,dFrameY,dFrameWidth,dFrameHeight);
+		//Draw Description Text
+		int textX = dFrameX + 20;
+		int textY = dFrameY + gp.titleSize;
+		g2.setFont(g2.getFont().deriveFont(28F));
+		
+		int itemIndex = getItemIndexOnSlot();
+		if(itemIndex < gp.player.inventory.size()) {
+			for(String line: gp.player.inventory.get(itemIndex).description.split("\n")) {
+				g2.drawString(line, textX, textY);
+				textY += 32;
+			}
+		}		
+	}
+	public int getItemIndexOnSlot() {
+		int itemIndex = slotCol + (slotRow*5);
+		return itemIndex;
+	}
 	
 	public void drawSubWindow(int x, int y, int width, int height) {
 		
@@ -437,6 +628,14 @@ public class UI {
 		//Lấy thông tin độ dài của ký tự
 		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 		int x = gp.screenWidth/2 - length/2;
+		return x;
+	}
+	//Hàm canh chữ sang phải màn hình
+	public int getXforAllignToRightText(String text, int tailX) {
+		
+		//Lấy thông tin độ dài của ký tự
+		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+		int x = tailX - length;
 		return x;
 	}
 }

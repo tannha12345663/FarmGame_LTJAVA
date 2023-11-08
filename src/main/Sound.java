@@ -30,6 +30,10 @@ public class Sound {
 		//Từ số 20 trở đi sẽ là hiệu ứng âm thanh
 		//Đào đất
 		soundURL[20] = getClass().getResource("/soundAnimation/DaoDat2.wav");
+		//Lên level
+		soundURL[21] = getClass().getResource("/soundAnimation/levelUp.wav");
+		//cursor 
+		soundURL[22] = getClass().getResource("/soundAnimation/cursor.wav");
 	}
 	
 	public void setFile(int i) {

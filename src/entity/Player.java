@@ -7,9 +7,15 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Axe;
+import object.OBJ_HatGiong1;
+import object.OBJ_HatGiong2;
+import object.OBJ_Pickaxe;
+import object.OBJ_Watering;
 import title.TileManager;
 
 public class Player extends Entity {
@@ -23,6 +29,10 @@ public class Player extends Entity {
 	public final int screenY;
 	
 	public boolean daoDatCanceled = false;
+	//Khai báo danh túi đồ
+	public ArrayList<Entity> inventory = new ArrayList<Entity>();
+	public final int maxInventorySize = 20;
+	
 //	public int hasKey = 0; // Khai báo đối tượng vật phẩm key
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
@@ -51,8 +61,10 @@ public class Player extends Entity {
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerDaoDatImage();
+		setItems();
 	}
 	public void setDefaultValues() {
+		//Tọa độ cho nhân vật
 		worldX = gp.titleSize*10;
 		worldY = gp.titleSize*13;
 		speed = 4;
@@ -60,9 +72,25 @@ public class Player extends Entity {
 		
 		
 		//Trạng thái máu ban đầu của người chơi
+		level = 1;
 		maxLife = 6; //Mạng số tối đa
 		life = maxLife; // Mạng sống hiện tại của người chơi
+		exps = 0;
+		nextLevel = 10;
+		coins = 0;
+		days = 1;
+		currentCongCu = new OBJ_Axe(gp);
+		
 	}
+	public void setItems() {
+		
+		inventory.add(new OBJ_Axe(gp));
+		inventory.add(new OBJ_Pickaxe(gp));
+		inventory.add(new OBJ_Watering(gp));
+		inventory.add(new OBJ_HatGiong1(gp));
+		inventory.add(new OBJ_HatGiong2(gp));
+	}
+	
 	
 	public void getPlayerImage() {
 		
@@ -105,6 +133,7 @@ public class Player extends Entity {
 	public void update () {
 		int npcIndex;
 		if(daodatAnimation == true) {
+			gp.ui.addMessage("Bạn vừa đào đất!");
 			daodatAnimation();
 		}
 		//Ở bước nãy sẽ chỉ nhận sự kiện khi người dùng nhấn phím
@@ -364,6 +393,18 @@ public class Player extends Entity {
 		}
 	}
 	
+	public void checkLevelUp() {
+		if(exps >= nextLevel) {
+			level++;
+			nextLevel = nextLevel+10;
+			coins += 100;
+			
+			gp.playSE(21);
+			gp.gameState = gp.dialogueState;
+			gp.ui.currentDialouge = "Bạn đang ở level " + level +" now!\n"
+								+ "Bạn thật tuyệt vời.";
+		}
+	}
 	
 	public void draw(Graphics2D g2) {
 		

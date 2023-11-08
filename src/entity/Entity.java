@@ -63,11 +63,14 @@ public class Entity {
 	public int coins; // Số tiền 
 	public int exps; // Kinh nghiệm
 	public int nextLevel;
+	public int days;
 	public Entity currentCongCu;
 	public Entity currentShield; // Khiên lá chắn
 	
 	
-	
+	//Mô tả item 
+	public int attackValue;
+	public String description ="";
 	
 		
 	//Check NPC có đc direction hay không 

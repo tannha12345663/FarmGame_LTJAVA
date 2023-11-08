@@ -8,6 +8,6 @@ public class OBJ_Coin extends Entity {
 	public OBJ_Coin(GamePanel gp) {
 		super(gp);
 		name ="Coin";
-		image = setup("/giaoDien/Coin");
+		image = setupOption("/giaoDien/Coin",-24,-12);
 		}
 }

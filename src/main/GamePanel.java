@@ -69,8 +69,11 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int titleState = 0; // Tiêu đề nội dung Screen
 	public final int playState = 1; //Bắt đầu trò chơi
 	public final int pauseState = 2; // Dừng trò chơi
-	//Tạo hội thoại cho NPC
-	public final int dialogueState = 3; 
+	public final int dialogueState = 3; // hội thoại cho NPC
+	public final int characterState = 4; // Tình trạng cho nhân vật 
+	
+	
+	
 	private BufferedImage image ;
 	
 	
