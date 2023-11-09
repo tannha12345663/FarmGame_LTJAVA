@@ -24,16 +24,22 @@ public class Sound {
 		soundURL[6] = getClass().getResource("/sound/mixkit-explainer-video-game-alert-sweep-236.wav");
 		soundURL[7] = getClass().getResource("/sound/mixkit-game-flute-bonus-2313.wav");
 		soundURL[8] = getClass().getResource("/sound/mixkit-small-hit-in-a-game-2072.wav");
-		soundURL[9] = getClass().getResource("/sound/nhatitem.wav");
+		
 		soundURL[10] = getClass().getResource("/sound/vachamcua.wav");
 		
 		//Từ số 20 trở đi sẽ là hiệu ứng âm thanh
+		//Nhặt item
+		soundURL[9] = getClass().getResource("/sound/nhatitem.wav");
 		//Đào đất
 		soundURL[20] = getClass().getResource("/soundAnimation/DaoDat2.wav");
 		//Lên level
 		soundURL[21] = getClass().getResource("/soundAnimation/levelUp.wav");
 		//cursor 
 		soundURL[22] = getClass().getResource("/soundAnimation/cursor.wav");
+		//Trang bị item
+		soundURL[23] = getClass().getResource("/soundAnimation/equipItem.wav");
+		//Gieo hạt
+		soundURL[24] = getClass().getResource("/soundAnimation/gieoHat.wav");
 	}
 	
 	public void setFile(int i) {

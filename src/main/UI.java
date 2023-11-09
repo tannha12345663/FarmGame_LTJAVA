@@ -562,8 +562,18 @@ public class UI {
 		int slotY = slotYstart;
 		int slotSize = gp.titleSize+3;
 		
+		
 		//DRAW PLAYER'S ITEMS -- Vẽ ra túi đồ 
 		for(int i =0; i<gp.player.inventory.size();i++) {
+//			System.out.println("Vũ khí đang có trong kho "+ gp.player.inventory.get(i));
+//			System.out.println("Vũ khí đang dùng "+ gp.player.currentCongCu);
+			//Equip Cursor -- trang bị công cụ khác để sử dụng
+			if(gp.player.inventory.get(i)== gp.player.currentCongCu) {
+				g2.setColor(new Color(253,245,230));g2.setStroke(new BasicStroke(1));
+				g2.fillRoundRect(slotX, slotY, gp.titleSize,gp.titleSize,10,10);
+				
+			}
+			
 			g2.drawImage(gp.player.inventory.get(i).down1, slotX,slotY, null);
 			
 			slotX += slotSize;
@@ -590,7 +600,8 @@ public class UI {
 		int dFrameY = frameY + frameHeght - 5;
 		int dFrameWidth = frameWidth;
 		int dFrameHeight = gp.titleSize *6;
-		drawSubWindow(dFrameX,dFrameY,dFrameWidth,dFrameHeight);
+		
+		
 		//Draw Description Text
 		int textX = dFrameX + 20;
 		int textY = dFrameY + gp.titleSize;
@@ -598,6 +609,7 @@ public class UI {
 		
 		int itemIndex = getItemIndexOnSlot();
 		if(itemIndex < gp.player.inventory.size()) {
+			drawSubWindow(dFrameX,dFrameY,dFrameWidth,dFrameHeight);
 			for(String line: gp.player.inventory.get(itemIndex).description.split("\n")) {
 				g2.drawString(line, textX, textY);
 				textY += 32;

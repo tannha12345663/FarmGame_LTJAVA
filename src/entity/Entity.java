@@ -15,7 +15,7 @@ public class Entity {
 	
 	public BufferedImage up1,up2,up3,up4, down1, down2, down3, down4, left1, left2, left3, left4, right1, right2, right3, right4;
 	//Thiết lập hoạt ảnh animation cho nhân vật
-	public BufferedImage daodatUp1, daodatUp2, daodatDown1, daodatDown2, daodatLeft1,daodatLeft2, daodatRight1,daodatRight2;
+	public BufferedImage animaTionUp1, animaTionUp2, animaTionDown1, animaTionDown2, animaTionLeft1,animaTionLeft2, animaTionRight1,animaTionRight2;
 	
 	//State
 	public int worldX,worldY;
@@ -24,13 +24,13 @@ public class Entity {
 	public int spriteCounter =0, spriteCounter1 =0;
 	public int spriteNum = 1, spriteNum1 = 1;
 	//Lệnh gọi đến animation cho nhân vật
-	boolean daodatAnimation = false;
+	boolean playerAnimation = false;
 	
 	//Thiết lập định hình cho nhân vật không thể đi qua các vật cản
 	//B1: Thiết lập khối hình khối bên trong nhân vật
 	public Rectangle solidArea = new Rectangle(0,0,48,48) ; // Thiết lập giá trị mặc định cho tất cả NPC
 	//Tạo một vùng tác động bởi hành động đào đất của nhân vật
-	public Rectangle daodatArea = new Rectangle(0,0,0,0); // Các con số bên trong sẽ tùy thuộc vào dụng cụ của nhân vật
+	public Rectangle targetArea = new Rectangle(0,0,0,0); // Các con số bên trong sẽ tùy thuộc vào dụng cụ của nhân vật
 	//Khi xác định dụng cụ sẽ ghi đè lên
 	
 	//Thiết lập các khối set up để phát hiện va chạm 
@@ -54,8 +54,6 @@ public class Entity {
 	
 	
 	//Thông tin về nhân vật
-	//Trạng thái máu của nhân vật 
-	public int type; // 0 - player , 1 - npc, 2 = monster
 	public int speed; //Tốc độ di chuyển
 	public int maxLife; // Mạng tối đa
 	public int life; //Mạng hiện tại
@@ -67,10 +65,24 @@ public class Entity {
 	public Entity currentCongCu;
 	public Entity currentShield; // Khiên lá chắn
 	
+	//Type
+	public int type; // 0 - player , 1 - npc, 2 = monster
+	public final int type_player = 0;
+	public final int type_npc = 1;
+	public final int type_monster = 2;
+	public final int type_axe = 3;
+	public final int type_pickaxe = 4;
+	public final int type_watering = 5;
+	public final int type_plant1 = 6;
+	public final int type_plant2 = 7;
+	public final int type_consumable = 8;
+	
 	
 	//Mô tả item 
 	public int attackValue;
 	public String description ="";
+	public int daysToGrow;
+	public int daysGrown;
 	
 		
 	//Check NPC có đc direction hay không 

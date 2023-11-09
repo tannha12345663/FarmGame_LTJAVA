@@ -183,6 +183,10 @@ public class KeyHandler implements KeyListener {
 				gp.playSE(22);
 			}
 		}
+		if(code == KeyEvent.VK_E) {
+			gp.playSE(23);
+			gp.player.selectItem();
+		}
 	}
 	
 	@Override
