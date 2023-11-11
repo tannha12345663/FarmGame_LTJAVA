@@ -94,6 +94,7 @@ public class UI {
 		this.g2 = g2;
 		g2.setFont(arial_40);
 		g2.setColor(Color.white);
+		System.out.println(gp.gameState);
 		
 		//Title State
 		if(gp.gameState == gp.titleState) {
@@ -117,7 +118,7 @@ public class UI {
 			drawDialogueScreen();
 		}
 		//Character state
-		System.out.println(gp.gameState);
+		
 		if(gp.gameState == gp.characterState) {
 			drawCharacterScreen();
 			drawInventory();
@@ -296,6 +297,7 @@ public class UI {
 		
 //		System.out.println(titleScreenState);
 		//Kiểm tra màn hình trạng thái tiêu đề
+		System.out.println("Man hinh hien tai " + titleScreenState);
 		if(titleScreenState == 0) {
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
 			//g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
@@ -312,9 +314,9 @@ public class UI {
 			g2.drawString(text, x, y);
 			
 			//Hiển thị nhân vật người chơi ra giữa màn hình
-			x = gp.screenWidth / 2 - (gp.titleSize*2)/4;
-			y += gp.titleSize*2;
-			g2.drawImage(gp.player.down2, x, y, gp.titleSize ,gp.titleSize,null);
+//			x = gp.screenWidth / 2 - (gp.titleSize*2)/4;
+//			y += gp.titleSize*2;
+//			g2.drawImage(gp.player.down2, x, y, gp.titleSize ,gp.titleSize,null);
 			
 			//MENU
 			g2.setColor(new Color(205,92,92));
@@ -429,7 +431,7 @@ public class UI {
 			}
 			g2.setColor(new Color(33, 92, 138));
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
-			text = "Nhấn E để chơi";
+			text = "Nhấn E để tiếp tục";
 			g2.drawString(text, x *10 - 30 , y + 30);
 			
 			g2.setColor(new Color(33, 92, 138));
@@ -438,7 +440,57 @@ public class UI {
 			text = "Nhấn Q để quay lại";
 			g2.drawString(text, x - 10, y *2 + 35);
 		}
-		
+		else if(titleScreenState == 4) {
+			String text = "Chọn nhân vật";
+			int x = getXforCenteredText(text);
+			int y = gp.titleSize * 3;
+			
+			//Shadow đổ bóng
+			g2.setColor(Color.black);
+			g2.drawString(text, x+4, y+4);
+			
+			g2.setColor(Color.PINK);
+			g2.drawString(text, x, y);
+			
+			//Hiển thị nhân vật 0
+			x = gp.screenWidth / 2 - (gp.titleSize*2)/4 - 100;
+			y += gp.titleSize*2;
+			g2.drawImage(gp.player.setup("/player/Basic-Charakter-down_01"), x, y, gp.titleSize ,gp.titleSize,null);
+			if(commandNum == 0) {
+				g2.setColor(Color.black);
+				g2.drawString(">", x - gp.titleSize/2 - 20, y + 40);
+			}
+			g2.setColor(Color.PINK);
+			g2.setFont(g2.getFont().deriveFont(Font.PLAIN,30F));
+			g2.drawString("Trẻ trung", x - gp.titleSize/2 - 5, y + 80);
+			
+			//Hiển thị nhân vật 2
+			x += 200;
+			//gp.player.selectPlayer = 1;
+			g2.drawImage(gp.player.setup("/player_01/Player01_down1"), x, y, gp.titleSize ,gp.titleSize,null);
+			if(commandNum == 1) {
+				g2.setFont(g2.getFont().deriveFont(Font.PLAIN,40F));
+				g2.setColor(Color.black);
+				g2.drawString(">", x - gp.titleSize/2 - 20, y + 40);
+			}
+			g2.setColor(Color.PINK);
+			g2.setFont(g2.getFont().deriveFont(Font.PLAIN,30F));
+			g2.drawString("Trung niên", x - 40 , y + 80);
+			
+			 x = gp.titleSize*2 - 50;
+			 y = (gp.titleSize/2)*20;
+			
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			text = "Nhấn E để chơi";
+			g2.drawString(text, x *10 + 60 , y + 83);
+			
+			g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+			
+			text = "Nhấn Q để quay lại";
+			g2.drawString(text, x - 10, y + 83);
+		}
 	}
 	public void drawPauseScreen() {
 		g2.setFont(g2.getFont().deriveFont(Font.PLAIN,40F));
@@ -466,7 +518,6 @@ public class UI {
 		for(String line : currentDialouge.split("\n")) {
 			g2.drawString(line, x, y);
 			y += 40;
-			
 		}
 		
 		

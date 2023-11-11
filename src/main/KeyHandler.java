@@ -80,7 +80,7 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 		}
-		else if(gp.ui.titleScreenState == 1) {
+		else if(gp.ui.titleScreenState == 1) {// Màn hình 1
 			if(code == KeyEvent.VK_Q) {
 				//Quay lại màn hình đầu
 				gp.ui.titleScreenState = 0;
@@ -90,7 +90,7 @@ public class KeyHandler implements KeyListener {
 				//chuyển sang giao diện 02
 				gp.ui.titleScreenState = 2;
 			}
-		}else if(gp.ui.titleScreenState == 2) {
+		}else if(gp.ui.titleScreenState == 2) {// Màn hình 2
 			if(code == KeyEvent.VK_Q) {
 				//Quay lại màn hình đầu
 				gp.ui.titleScreenState = 1;
@@ -99,16 +99,50 @@ public class KeyHandler implements KeyListener {
 				//chuyển sang giao diện 02
 				gp.ui.titleScreenState = 3;
 			}
-		}else if(gp.ui.titleScreenState == 3) {
+		}
+		else if(gp.ui.titleScreenState == 3) { // Màn hình 3
 			if(code == KeyEvent.VK_Q) {
 				//Quay lại màn hình đầu
 				gp.ui.titleScreenState = 2;
 			}
 			if (code == KeyEvent.VK_E) {
 				//chuyển sang giao diện 02
+				gp.ui.titleScreenState = 4;
+			}
+		}
+		else if(gp.ui.titleScreenState == 4) {// Màn hình 4
+			if(code == KeyEvent.VK_A) {
+				gp.ui.commandNum--;
+				if(gp.ui.commandNum < 0) {
+					gp.ui.commandNum = 1;
+				}
+			}
+			if(code == KeyEvent.VK_D) {
+				gp.ui.commandNum++;
+				if(gp.ui.commandNum > 1) {
+					gp.ui.commandNum = 0;
+				}
+			}
+			//Set up các nút chọn
+			if(code == KeyEvent.VK_Q) {
+				//Quay lại màn hình đầu
+				gp.ui.titleScreenState = 3;
+			}
+			if (code == KeyEvent.VK_E) {
+				//chuyển sang giao diện 04
+				//Kiểm tra xem người dùng chọn nhân vật nào
+				if(gp.ui.commandNum == 0) {
+					gp.player.selectPlayer = 1;
+					
+				}
+				if(gp.ui.commandNum == 1) {
+					gp.player.selectPlayer = 2;
+				}
+				gp.player.getPlayerImage();
 				gp.gameState = gp.playState;
 				gp.stopMusic();
-				gp.playMusic(2);
+//				gp.playMusic(2);
+//				gp.ui.titleScreenState = ;
 			}
 		}
 	}

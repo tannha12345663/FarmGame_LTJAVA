@@ -310,6 +310,12 @@ public class GamePanel extends JPanel implements Runnable {
 			g2.setColor(Color.white);
 			g2.drawString("Draw Time" + passed, 10, 400);
 			System.out.println("Draw Time: " + passed);
+			
+			g2.setColor(Color.white);
+			g2.drawString("x: " + this.player.worldX , 10, 420);
+			
+			g2.setColor(Color.white);
+			g2.drawString("y: " + this.player.worldY, 10, 440);
 		}
 		
 		g2.dispose();

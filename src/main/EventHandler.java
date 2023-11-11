@@ -31,6 +31,7 @@ public class EventHandler {
 				row ++;
 			}
 		}
+		
 	}
 	
 	public void checkEvent() {
@@ -42,7 +43,7 @@ public class EventHandler {
 			canTouchEvent = true;
 		}
 		
-		//Với dòng code này khi mình có va chạm sẽ tránh trường hợp chỉ cần di chuyển gần khu vực sẽ không bị trừ máu liên tục
+		//Với dòng code này khi va chạm sẽ tránh trường hợp chỉ cần di chuyển gần khu vực sẽ không bị trừ máu liên tục
 		if(canTouchEvent == true) {
 			//Tạo địa điểm xảy ra biến cố
 			if(hit(12,16,"right") == true || hit(12,16,"left") == true) {
@@ -79,8 +80,6 @@ public class EventHandler {
 				//Lưu lại dấu vết người chơi khi gặp event
 				previousEventX = gp.player.worldX;
 				previousEventY = gp.player.worldY;
-				
-				
 			}
 		}
 		

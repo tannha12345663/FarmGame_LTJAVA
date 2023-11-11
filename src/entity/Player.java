@@ -32,6 +32,7 @@ public class Player extends Entity {
 	//Khai báo danh túi đồ
 	public ArrayList<Entity> inventory = new ArrayList<Entity>();
 	public final int maxInventorySize = 20;
+	public int selectPlayer;
 	
 //	public int hasKey = 0; // Khai báo đối tượng vật phẩm key
 	
@@ -96,25 +97,49 @@ public class Player extends Entity {
 	
 	public void getPlayerImage() {
 		
-		up1 = setup("/player/Basic-Charakter-up_01");
-		up2 = setup("/player/Basic-Charakter-up_02");
-		up3 = setup("/player/Basic-Charakter-up_03");
-		up4 = setup("/player/Basic-Charakter-up_04");
+		if(selectPlayer == 1) {
+			up1 = setup("/player/Basic-Charakter-up_01");
+			up2 = setup("/player/Basic-Charakter-up_02");
+			up3 = setup("/player/Basic-Charakter-up_03");
+			up4 = setup("/player/Basic-Charakter-up_04");
+			
+			down1 = setup("/player/Basic-Charakter-down_01");
+			down2 = setup("/player/Basic-Charakter-down_02");
+			down3 = setup("/player/Basic-Charakter-down_03");
+			down4 = setup("/player/Basic-Charakter-down_04");
+			
+			left1 = setup("/player/Basic-Charakter-Left_01");
+			left2 = setup("/player/Basic-Charakter-Left_02");
+			left3 = setup("/player/Basic-Charakter-Left_03");
+			left4 = setup("/player/Basic-Charakter-Left_04");
+			
+			right1 = setup("/player/Basic-Charakter-Right_01");
+			right2 = setup("/player/Basic-Charakter-Right_02");
+			right3 = setup("/player/Basic-Charakter-Right_03");
+			right4 = setup("/player/Basic-Charakter-Right_04");
+		}
+		else if(selectPlayer == 2) {
+			up1 = setup("/player_01/Player01_up1");
+			up2 = setup("/player_01/Player01_up2");
+			up3 = setup("/player_01/Player01_up3");
+			up4 = setup("/player_01/Player01_up4");
+			
+			down1 = setup("/player_01/Player01_down1");
+			down2 = setup("/player_01/Player01_down2");
+			down3 = setup("/player_01/Player01_down3");
+			down4 = setup("/player_01/Player01_down4");
+			
+			left1 = setup("/player_01/Player01_left1");
+			left2 = setup("/player_01/Player01_left2");
+			left3 = setup("/player_01/Player01_left3");
+			left4 = setup("/player_01/Player01_left4");
+			
+			right1 = setup("/player_01/Player01_right1");
+			right2 = setup("/player_01/Player01_right2");
+			right3 = setup("/player_01/Player01_right3");
+			right4 = setup("/player_01/Player01_right4");
+		}
 		
-		down1 = setup("/player/Basic-Charakter-down_01");
-		down2 = setup("/player/Basic-Charakter-down_02");
-		down3 = setup("/player/Basic-Charakter-down_03");
-		down4 = setup("/player/Basic-Charakter-down_04");
-		
-		left1 = setup("/player/Basic-Charakter-Left_01");
-		left2 = setup("/player/Basic-Charakter-Left_02");
-		left3 = setup("/player/Basic-Charakter-Left_03");
-		left4 = setup("/player/Basic-Charakter-Left_04");
-		
-		right1 = setup("/player/Basic-Charakter-Right_01");
-		right2 = setup("/player/Basic-Charakter-Right_02");
-		right3 = setup("/player/Basic-Charakter-Right_03");
-		right4 = setup("/player/Basic-Charakter-Right_04");
 	}
 	
 	//HÀm thực hiên animation cho nhân vật
@@ -452,7 +477,8 @@ public class Player extends Entity {
 				getPlayerAnimationImage();
 			}
 			if(selectItem.type == type_consumable) {
-				
+				selectItem.use(selectItem);
+				inventory.remove(itemIndex);
 			}
 			
 		}

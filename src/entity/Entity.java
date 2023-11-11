@@ -92,13 +92,13 @@ public class Entity {
 		this.gp = gp;
 	}
 	
+	//Tự động ghi đè trong mỗi đối tượng
 	//Thiết lập animation cho NPC
 	public void setAction() {
 		//AI tự động điều khiển NPC di chuyển
 	}
-	public void speak() {
-		
-	}
+	public void speak() {}
+	public void use(Entity entity) {}
 	public void update() {
 		
 		setAction();
@@ -145,6 +145,7 @@ public class Entity {
 		}
 		
 	}
+	
 	//Vẽ nhân vật
 	public void draw (Graphics2D g2) {
 		BufferedImage image = null;
