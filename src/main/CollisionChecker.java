@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import tile_interactive.Land;
 
 public class CollisionChecker {
 	
@@ -213,11 +214,25 @@ public class CollisionChecker {
 		return contactPlayer;
 	}
 	//Kiểm tra khu vực này có cho đào đất hay không 
-//	public void checkDig(Entity entity, int landPosition) {
-//		
-//		System.out.println("Vị trí hiện tại x: "+ worldX +", y :"+ worldY);
-//		
-//		System.out.println("Vị trí hiện tại: "+ );
-//	}
+	public int checkDig(Entity entity, Entity[] target) {
+		int index = 999;
+		
+		//Tạo vòng lặp for
+		for(int i = 0; i < target.length; i++) {
+			if(target[i] !=null) {
+				
+				System.out.println(entity.worldX + ", "+ entity.worldY);
+				//Kiểm tra xem hai khối hình chữ nhật này có va chạm nhau hay không
+				if(entity.solidArea.intersects(target[i].solidArea)) {
+					if(target[i] != entity) {
+						entity.collisionOn = true;
+						index = i;
+					}					
+				}
+				
+			}
+		}
+		return index;
+	}
 }
 	

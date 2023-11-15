@@ -6,6 +6,8 @@ import object.OBJ_Door;
 import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
 import object.OBJ_Key;
+import tile_interactive.IT_DryTree;
+import tile_interactive.Land;
 
 public class AssetSetter {
 	
@@ -61,10 +63,28 @@ public class AssetSetter {
 	}
 	//Set up cho những khu đất đào được
 	public void setDig() {
+		int i = 0;
+		gp.objDig[i] = new Land(gp, 17, 7);
+		i++;
+		gp.objDig[i] = new Land(gp, 18, 7);
+		i++;
+		gp.objDig[i] = new Land(gp, 19, 7);
+		i++;
+		gp.objDig[i] = new Land(gp, 20, 7);
+		i++;
+		gp.objDig[i] = new Land(gp, 21, 7);
+		i++;
 	}
 	//
 	public void setMonster() {
 		
 	}
-	
+	public void setInteractiveTile() {
+		int i = 0;
+		gp.iTile[i] = new IT_DryTree(gp,14,15);
+		i++;
+		
+		gp.iTile[i] = new IT_DryTree(gp,10,12);
+		i++;
+	}
 }

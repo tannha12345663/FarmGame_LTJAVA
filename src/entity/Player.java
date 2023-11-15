@@ -172,6 +172,19 @@ public class Player extends Entity {
 			animaTionRight1 = setupAnimation("/playerAnimation/right2_ChatCay",gp.titleSize+ 40,gp.titleSize );
 			animaTionRight2 = setupAnimation("/playerAnimation/right1_ChatCay",gp.titleSize+ 40,gp.titleSize);
 		}
+		if(currentCongCu.type == type_watering) {
+			animaTionUp1 = setupAnimation("/playerAnimation/up1_Water",gp.titleSize,gp.titleSize+ 10);
+			animaTionUp2 = setupAnimation("/playerAnimation/up2_Water",gp.titleSize,gp.titleSize+ 10);
+			
+			animaTionDown1 = setupAnimation("/playerAnimation/down1_Water",gp.titleSize,gp.titleSize+ 10);
+			animaTionDown2 = setupAnimation("/playerAnimation/down2_Water",gp.titleSize,gp.titleSize+ 10);
+			
+			animaTionLeft1 = setupAnimation("/playerAnimation/left1_Water",gp.titleSize + 40,gp.titleSize );
+			animaTionLeft2 = setupAnimation("/playerAnimation/left2_Water",gp.titleSize + 40,gp.titleSize );
+			
+			animaTionRight1 = setupAnimation("/playerAnimation/right1_Water",gp.titleSize+ 40,gp.titleSize );
+			animaTionRight2 = setupAnimation("/playerAnimation/right2_Water",gp.titleSize+ 40,gp.titleSize);
+		}
 		
 		
 	}
@@ -179,7 +192,7 @@ public class Player extends Entity {
 	public void update () {
 		int npcIndex;
 		if(playerAnimation == true) {
-			gp.ui.addMessage("Bạn vừa đào đất!");
+			//gp.ui.addMessage("Bạn vừa đào đất!");
 			playerAnimation();
 		}
 		//Ở bước nãy sẽ chỉ nhận sự kiện khi người dùng nhấn phím
@@ -222,6 +235,9 @@ public class Player extends Entity {
 			//Người chơi sẽ bị mất máu nếu đến gần quái vật
 			contactMonster(monsterIndex);
 			
+			//Kiểm tra va chạm với cây có thể chặt -- Check Interactive Tile collision
+			int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
+			int iDigIndex = gp.cChecker.checkEntity(this,gp.objDig);
 //			System.out.println("x = "+ gp.player.worldX + ", y ="+gp.player.worldY);
 			//Check event
 			gp.eHandler.checkEvent();
@@ -239,7 +255,13 @@ public class Player extends Entity {
 			}
 			
 			if(keyH.enterPressed == true && daoDatCanceled == false) {
-				gp.playSE(20);
+				//gp.playSE(20);
+				if(currentCongCu.type == type_axe) {
+					gp.playSE(25);
+				}
+				if(currentCongCu.type == type_pickaxe) {
+					gp.playSE(20);
+				}
 				playerAnimation = true;
 				spriteCounter = 0;
 			}
@@ -298,6 +320,8 @@ public class Player extends Entity {
 	
 	public void playerAnimation() {
 		
+		
+		
 		targetArea = currentCongCu.targetArea;
 		spriteCounter ++;
 		if(spriteCounter <= 5 ) {
@@ -335,6 +359,12 @@ public class Player extends Entity {
 //			gp.cChecker.checkDig(this,111);
 			//Kế đó sẽ làm event điều gì sẽ xảy ra khi người chơi va chạm vật này
 			//digDaoDat(objIndex);
+			
+			int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
+			damageInteractiveTile(iTileIndex);
+			
+			int iDigIndex = gp.cChecker.checkDig(this,gp.objDig);
+			//digDaoDat(iDigIndex);
 			
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -440,16 +470,47 @@ public class Player extends Entity {
 				life -= 1;
 				invincible = true;
 			}
-			
-			
 		}
 	}
-	public void digDaoDat(int i) {
+	public void damageMonster(int i) {
 		if(i!= 999) {
-			System.out.println("Bạn đã đào đất ở vị trí này");
+			if(gp.monster[i].invincible == false) {
+				gp.monster[i].life-=1;
+				gp.monster[i].invincible=true;
+				
+				if(gp.monster[i].life <=0) {
+					gp.monster[i] = null;
+				}
+			}
 		}
-		else {
-			System.out.println("Bạn chưa đào đất được");
+	}
+	
+	public void digDaoDat(int i) {
+		if(i != 999 && gp.objDig[i].destructible == true 
+				&& gp.objDig[i].isCorrectItem(this) == true) {
+			gp.objDig[i] = gp.objDig[i].getDestroyedForm();
+			gp.ui.addMessage("Bạn vừa đào đất!");
+			exps += 10;
+			checkLevelUp();
+		}
+	}
+	public void damageInteractiveTile(int i ) {
+		
+		if(i != 999 && gp.iTile[i].destructible == true 
+				&& gp.iTile[i].isCorrectItem(this) == true 
+				&& gp.iTile[i].invincible == false) {
+			gp.iTile[i].playSE();
+			gp.iTile[i].life--;
+			gp.iTile[i].invincible = true;
+			//Tính sức chịu đựng của cây
+			if(gp.iTile[i].life == 0) {
+				gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+			}
+			
+			
+			gp.ui.addMessage("Bạn vừa chặt cây!");
+			exps += 10;
+			checkLevelUp();
 		}
 	}
 	
@@ -470,16 +531,19 @@ public class Player extends Entity {
 		int itemIndex = gp.ui.getItemIndexOnSlot();
 		if(itemIndex < inventory.size()) {
 			Entity selectItem = inventory.get(itemIndex);
+			System.out.println(selectItem.type);
 			if(selectItem.type == type_axe || selectItem.type == type_pickaxe || selectItem.type == type_watering 
 					|| selectItem.type == type_plant1
 					|| selectItem.type == type_plant2) {
 				currentCongCu = selectItem;
 				getPlayerAnimationImage();
 			}
+			
 			if(selectItem.type == type_consumable) {
 				selectItem.use(selectItem);
 				inventory.remove(itemIndex);
 			}
+			
 			
 		}
 	}
@@ -598,7 +662,7 @@ public class Player extends Entity {
 		}
 		if(invincible ==true) {
 			//Làm cho nhân vật chớp hình khi va chạm với monster
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
 		}
 		
 		g2.drawImage(image, tempScreenX, tempScreenY, null);

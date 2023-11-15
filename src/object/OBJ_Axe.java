@@ -16,5 +16,5 @@ public class OBJ_Axe extends Entity {
 		targetArea.width = 36;
 		targetArea.height = 36;
 	}
-
+	
 }

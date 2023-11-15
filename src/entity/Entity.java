@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -77,6 +78,7 @@ public class Entity {
 	public final int type_plant2 = 7;
 	public final int type_consumable = 8;
 	
+	public final int type_nothing = 99;
 	
 	//Mô tả item 
 	public int attackValue;
@@ -109,6 +111,8 @@ public class Entity {
 		gp.cChecker.checkObject(this, false);
 		gp.cChecker.checkEntity(this,gp.npc);
 		gp.cChecker.checkEntity(this,gp.monster);
+		gp.cChecker.checkEntity(this, gp.iTile);
+		gp.cChecker.checkDig(this, gp.objDig);
 		//Kiểm tra đối tượng người chơi
 		boolean contactPlaer = gp.cChecker.checkPlayer(this);
 		
@@ -144,6 +148,13 @@ public class Entity {
 			spriteCounter = 0;
 		}
 		
+		if(invincible == true) {
+			invincibleCounter ++;
+			if(invincibleCounter >40) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 	
 	//Vẽ nhân vật
@@ -155,10 +166,7 @@ public class Entity {
 		if(worldX + gp.titleSize > gp.player.worldX - gp.player.screenX && 
 		   worldX - gp.titleSize < gp.player.worldX + gp.player.screenX &&
 		   worldY + gp.titleSize > gp.player.worldY - gp.player.screenY &&
-		   worldY - gp.titleSize < gp.player.worldY + gp.player.screenY) 
-		{
-			try {
-				
+		   worldY - gp.titleSize < gp.player.worldY + gp.player.screenY) {				
 			//System.out.println("Bạn đang : "+ spriteNum);
 			switch (direction) {
 			case "up": {
@@ -249,15 +257,13 @@ public class Entity {
 					}
 				}
 				break;
+			}}
+			if(invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
 			}
-			default:
-				throw new IllegalArgumentException("Unexpected value: ");
-			}
-					g2.drawImage(image, screenX, screenY, gp.titleSize, gp.titleSize,null);
-				} catch (Exception e) {
-					// TODO: handle exception
-					System.out.println("Xảy ra lỗi trong quá trình set up Object");
-			}
+			
+			g2.drawImage(image,screenX,screenY, gp.titleSize,gp.titleSize,null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
 		
 	}

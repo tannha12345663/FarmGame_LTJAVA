@@ -40,6 +40,8 @@ public class Sound {
 		soundURL[23] = getClass().getResource("/soundAnimation/equipItem.wav");
 		//Gieo hạt
 		soundURL[24] = getClass().getResource("/soundAnimation/gieoHat.wav");
+		//Chặt cây
+		soundURL[25] = getClass().getResource("/soundAnimation/cuttree.wav");
 	}
 	
 	public void setFile(int i) {

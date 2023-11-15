@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import entity.Entity;
 import entity.Player;
+import tile_interactive.InteractiveTile;
 import title.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -56,10 +57,10 @@ public class GamePanel extends JPanel implements Runnable {
 	//Entity object
 	public Player player = new Player(this,keyH);//Khai báo thông tin nhân vật
 	public Entity obj[] = new Entity[10];
-	public Entity objDig[] = new Entity[100];
+	public InteractiveTile objDig[] = new InteractiveTile[100];
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
-	
+	public InteractiveTile iTile[] = new InteractiveTile[100]; // Khai báo các đối tượng có thể tương tác bằng dụng cụ
 	//Tất cả các thực thế hay npc đều sẽ được lưu dưới dạng danh sách
 	ArrayList<Entity> entityList = new ArrayList<>();
 	
@@ -105,6 +106,8 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setObject();
 		//Set up NPC định sẵn tại vị trí
 		aSetter.setNPC();
+		//set up các cây có thể khai thác được
+		aSetter.setInteractiveTile();
 		//Set up các vị trí ô đất có thể đào được
 		aSetter.setDig();
 		//Phát nhạt theo số mong muốn truyền vào
@@ -212,7 +215,21 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 			//Khi cần thì tại chỗ này vẽ animation cho monster
 			
+			//Tiến hành vẽ các obj có tương tác bằng dụng cụ
+			for(int i =0;i<iTile.length;i++) {
+				if(iTile[i] != null) {
+					iTile[i].update();
+				}
+			}
+			//Vẽ các khu đất
+			for(int i =0;i<objDig.length;i++) {
+				if(objDig[i] != null) {
+					objDig[i].update();
+				}
+			}
 		}
+		
+		
 		if(gameState == pauseState) {
 			//Không cần cập nhật
 		}
@@ -256,13 +273,26 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			//Thêm các Entities vào trong danh sách entity
 			entityList.add(player);
+			
+			//Vẽ các obj có thể tương tác bằng dụng cụ -- Interactive Tile
+			for(int i = 0;i< iTile.length;i++) {
+				if(iTile[i] != null) {
+					iTile[i].draw(g2);
+				}
+			}
+			//Vẽ các khu đất có thể tương tác bằng dụng cụ -- Interactive Tile
+			for(int i = 0;i< iTile.length;i++) {
+				if(objDig[i] != null) {
+					objDig[i].draw(g2);
+				}
+			}
 			//Vẽ npc trước 
 			for(int i =0; i <npc.length;i++) {
 				if(npc[i] != null) {
 					entityList.add(npc[i]);
 				}
 			}
-			
+			//Vẽ các object hiện diện trên map
 			for(int i = 0;i<obj.length;i++) {
 				if(obj[i] != null) {
 					entityList.add(obj[i]);
@@ -271,6 +301,9 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			
 			//Với monster cũng sẽ lấy hàm for ở trên đếm xuống và thay obj => monster
+			
+			
+			
 			
 			//Sort
 			Collections.sort(entityList, new Comparator<Entity>() {
@@ -312,10 +345,10 @@ public class GamePanel extends JPanel implements Runnable {
 			System.out.println("Draw Time: " + passed);
 			
 			g2.setColor(Color.white);
-			g2.drawString("x: " + this.player.worldX , 10, 420);
+			g2.drawString("Col: " + this.player.worldX/titleSize , 10, 420);
 			
 			g2.setColor(Color.white);
-			g2.drawString("y: " + this.player.worldY, 10, 440);
+			g2.drawString("Row: " + this.player.worldY/titleSize, 10, 440);
 		}
 		
 		g2.dispose();
