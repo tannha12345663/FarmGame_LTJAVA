@@ -81,7 +81,7 @@ public class Player extends Entity {
 		exps = 0;
 		nextLevel = 10;
 		coins = 0;
-		days = 1;
+//		days = 1;
 		currentCongCu = new OBJ_Pickaxe(gp); // Trang bị sử dụng hiện tại là cây cuốc
 		
 	}
@@ -192,8 +192,9 @@ public class Player extends Entity {
 	public void update () {
 		int npcIndex;
 		if(playerAnimation == true) {
-			//gp.ui.addMessage("Bạn vừa đào đất!");
 			playerAnimation();
+			//gp.ui.addMessage("Bạn vừa đào đất!");
+			
 		}
 		//Ở bước nãy sẽ chỉ nhận sự kiện khi người dùng nhấn phím
 		else if( keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true|| keyH.rightPressed == true || keyH.enterPressed == true) {
@@ -227,7 +228,7 @@ public class Player extends Entity {
 			
 			//Check NPC collision (Kiểm tra va chạm với npc)
 			npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-			System.out.println(npcIndex);
+			//System.out.println(npcIndex);
 			interactNPC(npcIndex);
 			
 			//Kiểm tra va chạm với monster
@@ -237,7 +238,9 @@ public class Player extends Entity {
 			
 			//Kiểm tra va chạm với cây có thể chặt -- Check Interactive Tile collision
 			int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
-			int iDigIndex = gp.cChecker.checkEntity(this,gp.objDig);
+			//int iDigIndex = gp.cChecker.checkObject(this,false);
+			
+
 //			System.out.println("x = "+ gp.player.worldX + ", y ="+gp.player.worldY);
 			//Check event
 			gp.eHandler.checkEvent();
@@ -254,7 +257,7 @@ public class Player extends Entity {
 				}
 			}
 			
-			if(keyH.enterPressed == true && daoDatCanceled == false) {
+			if(keyH.enterPressed == true && daoDatCanceled == false && currentCongCu.type != 99) {
 				//gp.playSE(20);
 				if(currentCongCu.type == type_axe) {
 					gp.playSE(25);
@@ -318,9 +321,8 @@ public class Player extends Entity {
 		}
 	}
 	
+	
 	public void playerAnimation() {
-		
-		
 		
 		targetArea = currentCongCu.targetArea;
 		spriteCounter ++;
@@ -363,8 +365,14 @@ public class Player extends Entity {
 			int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
 			damageInteractiveTile(iTileIndex);
 			
-			int iDigIndex = gp.cChecker.checkDig(this,gp.objDig);
-			//digDaoDat(iDigIndex);
+			int iDigIndex = gp.cChecker.checkEntity(this,gp.objDig);
+			digDaoDat(iDigIndex);
+			
+			int iPlantIndex = gp.cChecker.checkEntity(this,gp.objDig);
+			trongCay(iPlantIndex);
+			
+			int iPickPlant = gp.cChecker.checkEntity(this,gp.objDig);
+			pickPlant(iPickPlant);
 			
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -373,10 +381,36 @@ public class Player extends Entity {
 		}
 		if(spriteCounter > 25) {
 			spriteNum =1;
+			
+			int iWaterToPlant = gp.cChecker.checkEntity(this,gp.objDig);
+			tuoiCay(iWaterToPlant);
+			
 			spriteCounter = 0;
 			playerAnimation = false;
 		}
+	}
+	
+	public void pickPlant(int i) {
 		
+		if(i != 999 && gp.objDig[i].daytoGrow == 5) {
+			
+			String text;
+			//Kiểm tra túi người chơi có đầy không
+			if(inventory.size() != maxInventorySize) {
+				inventory.add(gp.objDig[i]);
+				gp.playSE(9);
+				text = "Bạn đã nhặt "+ gp.objDig[i].name + "!";
+			}
+			//Nếu túi đã đầy
+			else {
+				text = "Bạn không thể nhặt thêm!";
+			}
+			gp.ui.addMessage(text);
+			gp.objDig[i] = null;
+			exps += 1;
+			checkLevelUp();
+			
+		}
 	}
 	
 	//Hàm này có ý nghĩa sẽ nhặt các món item trên map
@@ -398,6 +432,8 @@ public class Player extends Entity {
 			}
 			gp.ui.addMessage(text);
 			gp.obj[i] = null;
+			exps += 1;
+			checkLevelUp();
 			
 			//Tutorial
 //			String objectName = gp.obj[i].name;
@@ -490,10 +526,52 @@ public class Player extends Entity {
 				&& gp.objDig[i].isCorrectItem(this) == true) {
 			gp.objDig[i] = gp.objDig[i].getDestroyedForm();
 			gp.ui.addMessage("Bạn vừa đào đất!");
-			exps += 10;
+			exps += 2;
 			checkLevelUp();
 		}
 	}
+	public void trongCay(int i) {
+		if(i != 999 && gp.objDig[i].gieoTrongCay == true 
+				&& gp.objDig[i].isCorrectItem(this) == true) {
+			gp.objDig[i] = gp.objDig[i].getDestroyedForm();
+			gp.ui.addMessage("Bạn vừa trồng cây!");
+			
+			int itemIndex = gp.ui.getItemIndexOnSlot();
+			if(itemIndex < inventory.size()) {
+				Entity selectItem = inventory.get(itemIndex);
+				if(selectItem.type == type_plant1) {
+					inventory.remove(itemIndex);
+					currentCongCu.type = type_nothing;
+					gp.player.getPlayerAnimationImage();
+					
+//					gp.cChecker.checkDig(this,gp.objDig);
+				}
+			}
+			//gp.cChecker.checkEntity(this, gp.objDig);
+			exps += 2;
+			checkLevelUp();
+		}
+	}
+	
+	public void tuoiCay(int i) {
+		if(i != 999 && gp.objDig[i].phatTrien == true 
+				&& gp.objDig[i].isCorrectItem(this) == true && currentCongCu.type == type_watering) {
+			if(currentCongCu.valueConsumable >= 1 ) {
+				gp.objDig[i].water++;
+				currentCongCu.valueConsumable --;
+				
+				gp.ui.addMessage("Bạn vừa tưới cây!");
+				gp.ui.addMessage("Cây hiện tại cần "+ gp.objDig[i].water +"/" + gp.objDig[i].waterToGrow);
+				System.out.println("Bạn tưới lần thứ : "+ i);
+				exps += 2;
+				checkLevelUp();
+				System.out.println(gp.objDig[i].daytoGrow);
+			}else if(currentCongCu.valueConsumable == 0 ) {
+				gp.ui.addMessage("Bạn cần thêm nước");
+			}
+		}
+	}
+	
 	public void damageInteractiveTile(int i ) {
 		
 		if(i != 999 && gp.iTile[i].destructible == true 
@@ -509,7 +587,7 @@ public class Player extends Entity {
 			
 			
 			gp.ui.addMessage("Bạn vừa chặt cây!");
-			exps += 10;
+			exps += 2;
 			checkLevelUp();
 		}
 	}
@@ -518,11 +596,11 @@ public class Player extends Entity {
 		if(exps >= nextLevel) {
 			level++;
 			nextLevel = nextLevel+10;
-			coins += 100;
+			coins += 2;
 			
 			gp.playSE(21);
 			gp.gameState = gp.dialogueState;
-			gp.ui.currentDialouge = "Bạn đang ở level " + level +" now!\n"
+			gp.ui.currentDialouge = "Bạn vừa lên level " + level +" now!\n"
 								+ "Bạn thật tuyệt vời.";
 		}
 	}

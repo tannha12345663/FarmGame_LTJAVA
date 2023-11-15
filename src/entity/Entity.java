@@ -62,7 +62,7 @@ public class Entity {
 	public int coins; // Số tiền 
 	public int exps; // Kinh nghiệm
 	public int nextLevel;
-	public int days;
+	//public int days;
 	public Entity currentCongCu;
 	public Entity currentShield; // Khiên lá chắn
 	
@@ -85,7 +85,8 @@ public class Entity {
 	public String description ="";
 	public int daysToGrow;
 	public int daysGrown;
-	
+	public int valueConsumable;
+	public int maxValueConsum;
 		
 	//Check NPC có đc direction hay không 
 	boolean check = false;
@@ -112,7 +113,7 @@ public class Entity {
 		gp.cChecker.checkEntity(this,gp.npc);
 		gp.cChecker.checkEntity(this,gp.monster);
 		gp.cChecker.checkEntity(this, gp.iTile);
-		gp.cChecker.checkDig(this, gp.objDig);
+		gp.cChecker.checkEntity(this, gp.objDig);
 		//Kiểm tra đối tượng người chơi
 		boolean contactPlaer = gp.cChecker.checkPlayer(this);
 		

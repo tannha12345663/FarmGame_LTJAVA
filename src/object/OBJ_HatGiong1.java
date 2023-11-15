@@ -23,6 +23,9 @@ public class OBJ_HatGiong1 extends Entity{
 				+ "\n ở trong tình trạng "
 				+ "\n tốt nhất để thu hoạch. "
 				+ "\n Số ngày cần: "+ daysToGrow;
+		//Set up phạm vi của công cụ
+		targetArea.width = 36;
+		targetArea.height = 36;
 	}
 	public void use(Entity entity) {
 		gp.gameState = gp.dialogueState;

@@ -50,14 +50,18 @@ public class EventHandler {
 				//Xử lý sự kiện diễn ra tại vị trí này
 				damgePit(12,16,gp.dialogueState);
 			}
-			if(hit(2,16,"down") == true) {
+			if(hit(16,16,"down") == true) {
 				//Xử lý hổi máu cho người chơi
-				healingPool(2,16,gp.dialogueState);
+				//healingPool(2,16,gp.dialogueState);
+				getWater();
 			}
 			//Khai báo vị trí tele
 			if(hit(9,16,"right") == true ) {
 				telePort(gp.dialogueState);
 			}
+//			if(hit(15,16,"down") == true) {
+//				
+//			}
 		}
 		
 		
@@ -132,5 +136,20 @@ public class EventHandler {
 		gp.player.worldX = gp.titleSize*20;
 		gp.player.worldY = gp.titleSize*10;
 //		eventRect[col][row].evenDone = true;
+	}
+	
+	//Vị trí hứng nước cho người chơi
+	public void getWater() {
+		if(gp.keyH.enterPressed == true && gp.player.currentCongCu.type == gp.player.type_watering ) {
+			if(gp.player.currentCongCu.valueConsumable < gp.player.currentCongCu.maxValueConsum) {
+				gp.player.currentCongCu.valueConsumable ++;
+				gp.ui.addMessage("Sức chứa: "+ gp.player.currentCongCu.valueConsumable + "/"+gp.player.currentCongCu.maxValueConsum);
+			}
+			else if(gp.player.currentCongCu.valueConsumable >= gp.player.currentCongCu.maxValueConsum)
+			{
+				gp.player.currentCongCu.valueConsumable = gp.player.currentCongCu.maxValueConsum;
+				gp.ui.addMessage("Bình đã đầy!");
+			}
+		}
 	}
 }

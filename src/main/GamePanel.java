@@ -36,8 +36,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int worldWidth = titleSize * maxWorldCol;
 	public final int worldHeight = titleSize * maxWorldRow;
 
-	
-	
+	//Bộ đếm thời gian
+	long days = 1, hours = 23,minutes = 0;
+
 	//FPS 
 	int FPS = 60;
 	
@@ -194,6 +195,7 @@ public class GamePanel extends JPanel implements Runnable {
 			if(timer >= 1000000000) {
 				//Kiểm tra FPS
 				//System.out.println("FPS: "+ drawCount);
+				updateTime();
 				drawCount =0;
 				timer = 0;
 			}
@@ -201,6 +203,30 @@ public class GamePanel extends JPanel implements Runnable {
 		
 
 	}
+	public void updateTime() {
+		minutes++; // Tăng số phút lên sau mỗi phút
+        if (minutes >= 60) { // Nếu đạt 60 phút
+            minutes = 0; // Đặt lại số phút về 0
+            hours++; // Tăng số giờ lên sau mỗi giờ
+            plantTime();
+            if (hours >= 24) { // Nếu đạt 24 giờ (1 ngày)
+                hours = 0; // Đặt lại số giờ về 0
+                days++; // Tăng số ngày lên sau mỗi ngày
+            }
+        }
+	}
+	public void plantTime() {
+		for(int i = 0; i < this.objDig.length;i++) {
+			if(this.objDig[i] != null) {
+				System.out.println(this.objDig[i].name);
+				if(this.objDig[i].phatTrien == true) {
+					objDig[i] = objDig[i].getDestroyedForm();
+				}
+			}
+		}
+	}
+	
+	
 	public void update() {
 		
 //		System.out.println(playState);
@@ -281,7 +307,7 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 			}
 			//Vẽ các khu đất có thể tương tác bằng dụng cụ -- Interactive Tile
-			for(int i = 0;i< iTile.length;i++) {
+			for(int i = 0;i< objDig.length;i++) {
 				if(objDig[i] != null) {
 					objDig[i].draw(g2);
 				}

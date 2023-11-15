@@ -16,13 +16,15 @@ public class IT_TrunkTree extends InteractiveTile {
 		
 		name = "Cây xanh";
 		down1 = setup("/tile_interactive/Basic-Grass-Biom-things-1_22");
+		//destructible = true;
+		collision = true;
 		//Set up có thể cho người chơi đi xuyên qua được
-		solidArea.x = 0;
-		solidArea.y = 0;
-		solidArea.width = 0;
-		solidArea.height = 0;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
+//		solidArea.x = 0;
+//		solidArea.y = 0;
+//		solidArea.width = 0;
+//		solidArea.height = 0;
+//		solidAreaDefaultX = solidArea.x;
+//		solidAreaDefaultY = solidArea.y;
 	}
 	//Kiểm tra xem khi chặt cây có phải là cây rìu không
 	public boolean isCorrectItem(Entity entity) {

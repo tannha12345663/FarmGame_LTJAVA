@@ -7,6 +7,13 @@ public class InteractiveTile extends Entity {
 
 	GamePanel gp;
 	public boolean destructible = false;
+	public boolean gieoTrongCay = false;
+	public boolean phatTrien = false;
+	public int daytoGrow;
+	//Tưới nước cho cây
+	public int water;
+	public int waterToGrow;
+	
 	
 	public InteractiveTile(GamePanel gp, int col, int row) {
 		super(gp);

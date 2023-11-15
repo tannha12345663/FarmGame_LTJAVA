@@ -94,7 +94,7 @@ public class UI {
 		this.g2 = g2;
 		g2.setFont(arial_40);
 		g2.setColor(Color.white);
-		System.out.println(gp.gameState);
+		//System.out.println(gp.gameState);
 		
 		//Title State
 		if(gp.gameState == gp.titleState) {
@@ -264,7 +264,7 @@ public class UI {
 		g2.drawImage(boxCoins, x - 15 ,y + 105, null); //Ô chứa coin
 		
 		g2.drawImage(coins, x - 5 ,y + 115, null); //Số tiền hiện tại
-		String soCoin = "0";
+		String soCoin = String.valueOf(gp.player.coins);
 		g2.setColor(Color.RED);
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
 		g2.drawString(soCoin, x + 30 ,y + 143);
@@ -290,6 +290,11 @@ public class UI {
 			i++;
 			x += gp.titleSize + 4;
 		}
+		//Vẽ hiển thị bộ đếm thời gian
+		String time = " "+ gp.days+" ngày "+gp.hours + " giờ "+ gp.minutes +" Phút";
+		g2.setColor(Color.BLUE);
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+		g2.drawString(time, x + 350 ,y + 10);
 	}
 	
 	//Vẽ nội dung màn hình mở đầu
@@ -563,7 +568,7 @@ public class UI {
 		
 		textY += lineHeight;
 		textY += lineHeight;
-		value = String.valueOf(gp.player.days);
+		value = String.valueOf(gp.days);
 		textX = getXforAllignToRightText(value, tailX);
 		g2.drawString(value, tailX, textY);
 		textY += lineHeight;
@@ -665,6 +670,18 @@ public class UI {
 				g2.drawString(line, textX, textY);
 				textY += 32;
 			}
+			if(gp.player.inventory.get(itemIndex).type == gp.player.type_watering) {
+				if(gp.player.inventory.get(itemIndex).valueConsumable == 0) {
+					g2.setColor(Color.YELLOW);
+					g2.drawString("Sức chứa: "+ gp.player.inventory.get(itemIndex).valueConsumable +"/"+gp.player.inventory.get(itemIndex).maxValueConsum, textX, textY);
+					textY += 32;
+				}else {
+					g2.setColor(Color.white);
+					g2.drawString("Sức chứa: "+ gp.player.inventory.get(itemIndex).valueConsumable +"/"+gp.player.inventory.get(itemIndex).maxValueConsum, textX, textY);
+					textY += 32;
+				}
+			}
+			
 		}		
 	}
 	public int getItemIndexOnSlot() {

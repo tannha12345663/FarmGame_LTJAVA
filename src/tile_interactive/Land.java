@@ -19,7 +19,7 @@ public class Land extends InteractiveTile{
 		down1 = setup("/tile_interactive/Tilled-Dirt_08");
 		
 		destructible = true;
-		collision = false;
+		collisionOn = false;
 		//Set up có thể cho người chơi đi xuyên qua được
 	}
 	//Kiểm tra xem khi đào đất có phải là cây cuốc không

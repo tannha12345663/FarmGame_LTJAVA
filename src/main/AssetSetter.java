@@ -7,6 +7,7 @@ import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
 import object.OBJ_Key;
 import tile_interactive.IT_DryTree;
+import tile_interactive.InteractiveTile;
 import tile_interactive.Land;
 
 public class AssetSetter {
@@ -64,16 +65,22 @@ public class AssetSetter {
 	//Set up cho những khu đất đào được
 	public void setDig() {
 		int i = 0;
-		gp.objDig[i] = new Land(gp, 17, 7);
-		i++;
-		gp.objDig[i] = new Land(gp, 18, 7);
-		i++;
-		gp.objDig[i] = new Land(gp, 19, 7);
-		i++;
-		gp.objDig[i] = new Land(gp, 20, 7);
-		i++;
-		gp.objDig[i] = new Land(gp, 21, 7);
-		i++;
+		
+		//Hàng 1
+		
+//		gp.objDig[i] = new Land(gp, 18, 11);i++;
+//		gp.objDig[i] = new Land(gp, 19, 11);i++;
+//		gp.objDig[i] = new Land(gp, 20, 11);i++;
+//		gp.objDig[i] = new Land(gp, 21, 11);i++;
+//		gp.objDig[i] = new Land(gp, 26, 11);i++;
+//		gp.objDig[i] = new Land(gp, 26, 11);i++;
+		
+		for(int j = 11;j< 15;j++) {
+			for(int k = 18;k <28;k++) {
+				gp.objDig[i] = new Land(gp, k, j);i++;
+			}
+		}
+		//Hàng 2
 	}
 	//
 	public void setMonster() {
@@ -86,5 +93,7 @@ public class AssetSetter {
 		
 		gp.iTile[i] = new IT_DryTree(gp,10,12);
 		i++;
+//		gp.iTile[i] = new Land(gp,13,13);
+//		i++;
 	}
 }
