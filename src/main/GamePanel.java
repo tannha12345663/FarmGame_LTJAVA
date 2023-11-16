@@ -26,8 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int titleSize = originalTileSize  * scale ; // Kích thước chuẩn để nhìn được là 160px x 160px
 	public int maxScreenCol = 16; //Số cột tối đa 
 	public int maxScreenRow = 12; //Số dòng tối đa
-	public final int screenWidth = titleSize * maxScreenCol; // ~ 1280 pixels
-	public final int screenHeight = titleSize * maxScreenRow; // ~ 960 pixels
+	public final int screenWidth = titleSize * maxScreenCol; // ~ 960 pixels
+	public final int screenHeight = titleSize * maxScreenRow; // ~ 576 pixels
 	
 	//Thông số bản đồ thế giới
 	public int maxWorldCol = 50; // Số cột tối đa
@@ -35,10 +35,13 @@ public class GamePanel extends JPanel implements Runnable {
 	//Tạo ranh giới trong world map 
 	public final int worldWidth = titleSize * maxWorldCol;
 	public final int worldHeight = titleSize * maxWorldRow;
-
+	
 	//Bộ đếm thời gian
 	long days = 1, hours = 23,minutes = 0;
-
+	//For full screen
+	
+	
+	public boolean fullScreenOn = false;
 	//FPS 
 	int FPS = 60;
 	
@@ -54,10 +57,12 @@ public class GamePanel extends JPanel implements Runnable {
 	//Khai báo UIs
 	public UI ui = new UI(this);
 	public EventHandler eHandler = new EventHandler(this);
+	
+	Config config = new Config(this);
 	Thread gameThread;
 	//Entity object
 	public Player player = new Player(this,keyH);//Khai báo thông tin nhân vật
-	public Entity obj[] = new Entity[10];
+	public Entity obj[] = new Entity[100];
 	public InteractiveTile objDig[] = new InteractiveTile[100];
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
@@ -73,8 +78,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int pauseState = 2; // Dừng trò chơi
 	public final int dialogueState = 3; // hội thoại cho NPC
 	public final int characterState = 4; // Tình trạng cho nhân vật 
-	
-	
+	public final int optionsState = 5; // Màn hình setting
+	public final int tradeState = 8; //Thực hiện giao dịch
 	
 	private BufferedImage image ;
 	
@@ -115,6 +120,11 @@ public class GamePanel extends JPanel implements Runnable {
 //		playMusic(2);
 //		stopMusic();
 		gameState = titleState;
+		
+		if(fullScreenOn == true) {
+			//setFullScreen();
+		}
+		
 	}
 	
 	public void startGameThread() {

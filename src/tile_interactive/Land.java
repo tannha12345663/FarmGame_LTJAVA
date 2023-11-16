@@ -17,9 +17,16 @@ public class Land extends InteractiveTile{
 		
 		name = "Đất";
 		down1 = setup("/tile_interactive/Tilled-Dirt_08");
-		
+		stackable = false; //Không thể chồng lên
 		destructible = true;
 		collisionOn = false;
+//		solidArea.x = 1;
+//		solidArea.y = 1;
+//		solidArea.height = 1;
+//		solidArea.width = 1;
+//		solidAreaDefaultX = solidArea.x;
+//		solidAreaDefaultY = solidArea.y;
+		
 		//Set up có thể cho người chơi đi xuyên qua được
 	}
 	//Kiểm tra xem khi đào đất có phải là cây cuốc không

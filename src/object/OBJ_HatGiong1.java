@@ -15,6 +15,9 @@ public class OBJ_HatGiong1 extends Entity{
 		name = "Bắp";
 		down1 = setup("/HatGiong/HatGiong1");
 		collision = true;
+		price = 10;
+		stackable = true; // cho phép lưu trữ nhiều
+		
 		daysToGrow = 5; //số ngày tối thiểu để thu hoạch
 		daysGrown = 0; // Số ngày phát triển
 		description = "[" + name +"] \n Khi bắp đã hoàn "

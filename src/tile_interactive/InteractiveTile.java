@@ -14,7 +14,6 @@ public class InteractiveTile extends Entity {
 	public int water;
 	public int waterToGrow;
 	
-	
 	public InteractiveTile(GamePanel gp, int col, int row) {
 		super(gp);
 		// TODO Auto-generated constructor stub
@@ -33,6 +32,11 @@ public class InteractiveTile extends Entity {
 		InteractiveTile tile = null;
 		return tile;
 	}
+	public InteractiveTile pickPlantForm() {
+		InteractiveTile tile = null;
+		return tile;
+	}
+	
 	public void update() {
 		
 		if(invincible == true) {

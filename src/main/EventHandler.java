@@ -50,7 +50,7 @@ public class EventHandler {
 				//Xử lý sự kiện diễn ra tại vị trí này
 				damgePit(12,16,gp.dialogueState);
 			}
-			if(hit(16,16,"down") == true) {
+			if(hit(14,13,"left") == true || hit(12,13,"right") == true ||  hit(13,14,"up") == true ||  hit(13,12,"down") == true) {
 				//Xử lý hổi máu cho người chơi
 				//healingPool(2,16,gp.dialogueState);
 				getWater();

@@ -10,6 +10,7 @@ public class OBJ_Pickaxe extends Entity {
 		// TODO Auto-generated constructor stub
 		type = type_pickaxe;
 		name = "Cây cuốc";
+		price = 100;
 		down1 = setupOption("/DungCu/Pickaxe",- 5, - 5);
 		description = "[" + name +"] \n Cuốc được dùng \n để đào đất.";
 		//Set up phạm vi của công cụ

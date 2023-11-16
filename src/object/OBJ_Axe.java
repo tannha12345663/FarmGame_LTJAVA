@@ -15,6 +15,7 @@ public class OBJ_Axe extends Entity {
 		//Set up phạm vi của công cụ
 		targetArea.width = 36;
 		targetArea.height = 36;
+		price = 35;
 	}
 	
 }

@@ -15,9 +15,13 @@ public class Main {
 		
 		//Phần khởi động hiển thị trò chơi
 		GamePanel gamePanel = new GamePanel();
-		
-		
 		window.add(gamePanel);
+		
+		//Load các cấu hình trước đó của người chơi
+		gamePanel.config.loadConfig();
+		if(gamePanel.fullScreenOn == true) {
+			window.setUndecorated(true);
+		}
 		
 		window.pack();
 		

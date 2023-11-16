@@ -17,7 +17,7 @@ public class PlowedLand extends InteractiveTile {
 		
 		name = "Đất đã đào";
 		down1 = setup("/tile_interactive/Tilled-Dirt_13");
-		
+		stackable = false;
 		gieoTrongCay = true;
 		collision = false;
 		

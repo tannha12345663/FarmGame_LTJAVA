@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -81,12 +82,18 @@ public class Entity {
 	public final int type_nothing = 99;
 	
 	//Mô tả item 
+	//Khai báo danh túi đồ
+	public ArrayList<Entity> inventory = new ArrayList<Entity>();
+	public final int maxInventorySize = 20;
 	public int attackValue;
 	public String description ="";
 	public int daysToGrow;
 	public int daysGrown;
 	public int valueConsumable;
 	public int maxValueConsum;
+	public int price; //Giá tiền
+	public boolean stackable = false; //Số lượng lưu trữ của item
+	public int amount = 1;
 		
 	//Check NPC có đc direction hay không 
 	boolean check = false;

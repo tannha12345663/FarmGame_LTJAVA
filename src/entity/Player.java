@@ -29,9 +29,7 @@ public class Player extends Entity {
 	public final int screenY;
 	
 	public boolean daoDatCanceled = false;
-	//Khai báo danh túi đồ
-	public ArrayList<Entity> inventory = new ArrayList<Entity>();
-	public final int maxInventorySize = 20;
+
 	public int selectPlayer;
 	
 //	public int hasKey = 0; // Khai báo đối tượng vật phẩm key
@@ -80,7 +78,7 @@ public class Player extends Entity {
 		life = maxLife; // Mạng sống hiện tại của người chơi
 		exps = 0;
 		nextLevel = 10;
-		coins = 0;
+		coins = 500;
 //		days = 1;
 		currentCongCu = new OBJ_Pickaxe(gp); // Trang bị sử dụng hiện tại là cây cuốc
 		
@@ -90,13 +88,14 @@ public class Player extends Entity {
 		inventory.add(currentCongCu);
 		inventory.add(new OBJ_Axe(gp));
 		inventory.add(new OBJ_Watering(gp));
-		inventory.add(new OBJ_HatGiong1(gp));
-		inventory.add(new OBJ_HatGiong2(gp));
+//		inventory.add(new OBJ_HatGiong1(gp));
+//		inventory.add(new OBJ_HatGiong2(gp));
 	}
 	
 	
 	public void getPlayerImage() {
 		
+		//Chọn nhân vật
 		if(selectPlayer == 1) {
 			up1 = setup("/player/Basic-Charakter-up_01");
 			up2 = setup("/player/Basic-Charakter-up_02");
@@ -185,8 +184,19 @@ public class Player extends Entity {
 			animaTionRight1 = setupAnimation("/playerAnimation/right1_Water",gp.titleSize+ 40,gp.titleSize );
 			animaTionRight2 = setupAnimation("/playerAnimation/right2_Water",gp.titleSize+ 40,gp.titleSize);
 		}
-		
-		
+		if(currentCongCu.type == type_plant1 || currentCongCu.type == type_plant2) {
+			animaTionUp1 = setupAnimation("/playerAnimation/up1_GieoTrong",gp.titleSize,gp.titleSize+ 10);
+			animaTionUp2 = setupAnimation("/playerAnimation/up2_GieoTrong",gp.titleSize,gp.titleSize+ 10);
+			
+			animaTionDown1 = setupAnimation("/playerAnimation/down1_GieoTrong",gp.titleSize,gp.titleSize+ 10);
+			animaTionDown2 = setupAnimation("/playerAnimation/down2_GieoTrong",gp.titleSize,gp.titleSize+ 10);
+			
+			animaTionLeft1 = setupAnimation("/playerAnimation/left1_GieoTrong",gp.titleSize + 40,gp.titleSize );
+			animaTionLeft2 = setupAnimation("/playerAnimation/left2_GieoTrong",gp.titleSize + 40,gp.titleSize );
+			
+			animaTionRight1 = setupAnimation("/playerAnimation/right1_GieoTrong",gp.titleSize+ 40,gp.titleSize );
+			animaTionRight2 = setupAnimation("/playerAnimation/right2_GieoTrong",gp.titleSize+ 40,gp.titleSize);
+		}
 	}
 	
 	public void update () {
@@ -238,7 +248,7 @@ public class Player extends Entity {
 			
 			//Kiểm tra va chạm với cây có thể chặt -- Check Interactive Tile collision
 			int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
-			//int iDigIndex = gp.cChecker.checkObject(this,false);
+			//int iDigIndex = gp.cChecker.checkEntity(this,gp.objDig);
 			
 
 //			System.out.println("x = "+ gp.player.worldX + ", y ="+gp.player.worldY);
@@ -406,7 +416,8 @@ public class Player extends Entity {
 				text = "Bạn không thể nhặt thêm!";
 			}
 			gp.ui.addMessage(text);
-			gp.objDig[i] = null;
+			gp.objDig[i] = gp.objDig[i].pickPlantForm();
+			
 			exps += 1;
 			checkLevelUp();
 			
@@ -421,8 +432,8 @@ public class Player extends Entity {
 			
 			String text;
 			//Kiểm tra túi người chơi có đầy không
-			if(inventory.size() != maxInventorySize) {
-				inventory.add(gp.obj[i]);
+			if(canObtainItem(gp.obj[i]) == true) {
+//				inventory.add(gp.obj[i]);
 				gp.playSE(9);
 				text = "Bạn đã nhặt "+ gp.obj[i].name + "!";
 			}
@@ -536,13 +547,29 @@ public class Player extends Entity {
 			gp.objDig[i] = gp.objDig[i].getDestroyedForm();
 			gp.ui.addMessage("Bạn vừa trồng cây!");
 			
-			int itemIndex = gp.ui.getItemIndexOnSlot();
+			int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
 			if(itemIndex < inventory.size()) {
 				Entity selectItem = inventory.get(itemIndex);
 				if(selectItem.type == type_plant1) {
-					inventory.remove(itemIndex);
-					currentCongCu.type = type_nothing;
-					gp.player.getPlayerAnimationImage();
+					if(selectItem.amount > 1) {
+						selectItem.amount--;
+						gp.player.getPlayerAnimationImage();
+					}
+					else {
+						inventory.remove(itemIndex);
+						currentCongCu.type = type_nothing;
+					}
+//					gp.cChecker.checkDig(this,gp.objDig);
+				}
+				if(selectItem.type == type_plant2) {
+					if(selectItem.amount > 1) {
+						selectItem.amount--;
+						gp.player.getPlayerAnimationImage();
+					}
+					else {
+						inventory.remove(itemIndex);
+						currentCongCu.type = type_nothing;
+					}
 					
 //					gp.cChecker.checkDig(this,gp.objDig);
 				}
@@ -606,24 +633,70 @@ public class Player extends Entity {
 	}
 	public void selectItem() {
 		
-		int itemIndex = gp.ui.getItemIndexOnSlot();
+		int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
+		System.out.println(itemIndex);
 		if(itemIndex < inventory.size()) {
 			Entity selectItem = inventory.get(itemIndex);
-			System.out.println(selectItem.type);
+			
 			if(selectItem.type == type_axe || selectItem.type == type_pickaxe || selectItem.type == type_watering 
 					|| selectItem.type == type_plant1
 					|| selectItem.type == type_plant2) {
 				currentCongCu = selectItem;
 				getPlayerAnimationImage();
 			}
-			
 			if(selectItem.type == type_consumable) {
 				selectItem.use(selectItem);
-				inventory.remove(itemIndex);
+				if(selectItem.amount > 1) {
+					selectItem.amount --;
+				}
+				else {
+					inventory.remove(itemIndex);
+				}
+				
 			}
-			
-			
 		}
+	}
+	//Kiểm tra item này có đang trong kho hay không
+	public int searchItemInInventory(String itemName) {
+		
+		int itemIndex = 999;
+		
+		for(int i = 0;i< inventory.size();i++) {
+			if(inventory.get(i).name.equals(itemName)) {
+				itemIndex = i;
+				break;
+			}
+		}
+		return itemIndex;
+	}
+	public boolean canObtainItem(Entity item) {
+		
+		boolean canObtain = false;
+		
+		//Check if stackable 
+		if(item.stackable == true) {
+			int index = searchItemInInventory(item.name);
+			
+			if(index != 999) {
+				inventory.get(index).amount++;
+				canObtain = true;
+			}
+			else {
+				// Đây là mặt hàng mới
+				if(inventory.size() != maxInventorySize) {
+					inventory.add(item);
+					canObtain = true;
+				}
+			}
+		}
+		else {
+			//Not stackable so check vacancy
+			if(inventory.size() != maxInventorySize) {
+				inventory.add(item);
+				canObtain = true;
+			}
+		}
+		return canObtain;
 	}
 	
 	public void draw(Graphics2D g2) {

@@ -1,13 +1,12 @@
 package main;
 
+import entity.NPC_Merchant;
 import entity.NPC_Person;
 import object.OBJ_Chest;
-import object.OBJ_Door;
 import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
-import object.OBJ_Key;
+import object.OBJ_Well;
 import tile_interactive.IT_DryTree;
-import tile_interactive.InteractiveTile;
 import tile_interactive.Land;
 
 public class AssetSetter {
@@ -39,17 +38,17 @@ public class AssetSetter {
 //		gp.obj[3].worldX = 25*gp.titleSize;
 //		gp.obj[3].worldY = 11*gp.titleSize;
 //		
-		gp.obj[1] = new OBJ_Chest(gp);
-		gp.obj[1].worldX = 7*gp.titleSize;
-		gp.obj[1].worldY = 11*gp.titleSize;
+		gp.obj[i] = new OBJ_Chest(gp);
+		gp.obj[i].worldX = 7*gp.titleSize;
+		gp.obj[i].worldY = 11*gp.titleSize;
 		i++;
-		gp.obj[2] = new OBJ_HatGiong1(gp);
-		gp.obj[2].worldX = 15*gp.titleSize;
-		gp.obj[2].worldY = 11*gp.titleSize;
+		gp.obj[i] = new OBJ_HatGiong1(gp);
+		gp.obj[i].worldX = 15*gp.titleSize;
+		gp.obj[i].worldY = 11*gp.titleSize;
 		i++;
-		gp.obj[3] = new OBJ_HatGiong2(gp);
-		gp.obj[3].worldX = 20*gp.titleSize;
-		gp.obj[3].worldY = 11*gp.titleSize;
+		gp.obj[i] = new OBJ_HatGiong2(gp);
+		gp.obj[i].worldX = 20*gp.titleSize;
+		gp.obj[i].worldY = 11*gp.titleSize;
 		i++;
 		
 		
@@ -57,9 +56,21 @@ public class AssetSetter {
 	}
 	public void setNPC() {
 		
-		gp.npc[0] = new NPC_Person(gp);
-		gp.npc[0].worldX = gp.titleSize * 10;
-		gp.npc[0].worldY = gp.titleSize * 10;
+		int i = 0;
+		gp.npc[i] = new NPC_Person(gp);
+		gp.npc[i].worldX = gp.titleSize * 10;
+		gp.npc[i].worldY = gp.titleSize * 10;
+		i++;
+		
+		gp.npc[i] = new NPC_Merchant(gp);
+		gp.npc[i].worldX = gp.titleSize * 28;
+		gp.npc[i].worldY = gp.titleSize * 7;
+		i++;
+		
+//		gp.npc[i] = new NPC_Merchant(gp);
+//		gp.npc[i].worldX = gp.titleSize * 7;
+//		gp.npc[i].worldY = gp.titleSize * 15;
+//		i++;
 		
 	}
 	//Set up cho những khu đất đào được
@@ -80,6 +91,7 @@ public class AssetSetter {
 				gp.objDig[i] = new Land(gp, k, j);i++;
 			}
 		}
+		
 		//Hàng 2
 	}
 	//
@@ -95,5 +107,10 @@ public class AssetSetter {
 		i++;
 //		gp.iTile[i] = new Land(gp,13,13);
 //		i++;
+		gp.iTile[i] = new OBJ_Well(gp,13,13);
+		i++;
+		
+		gp.iTile[i] = new IT_DryTree(gp,28,8);
+		i++;
 	}
 }

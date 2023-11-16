@@ -12,6 +12,7 @@ public class OBJ_Watering extends Entity {
 		name = "Watering";
 		valueConsumable = 5;
 		maxValueConsum = 5;
+		price = 150;
 		down1 = setupOption("/DungCu/Watering",- 5, - 5);
 		description = "[" + name +"] \n Khi cần hãy tưới \n nước cho cây ";
 		//Set up phạm vi của công cụ

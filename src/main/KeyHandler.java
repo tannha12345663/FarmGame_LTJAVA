@@ -21,7 +21,7 @@ public class KeyHandler implements KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -47,6 +47,14 @@ public class KeyHandler implements KeyListener {
 		//Character State -- Trạng thái người chơi
 		else if(gp.gameState == gp.characterState) {
 			characterState(code);
+		}
+		//Options State -- Màn hình cài đặt
+		else if(gp.gameState == gp.optionsState) {
+			optionsState(code);
+		}
+		//Trade state
+		else if(gp.gameState == gp.tradeState) {
+			tradeState(code);
 		}
 	}
 	//Giao diện màn hình
@@ -141,7 +149,7 @@ public class KeyHandler implements KeyListener {
 				gp.player.getPlayerImage();
 				gp.gameState = gp.playState;
 				gp.stopMusic();
-//				gp.playMusic(2);
+				gp.playMusic(2);
 //				gp.ui.titleScreenState = ;
 			}
 		}
@@ -169,6 +177,10 @@ public class KeyHandler implements KeyListener {
 		if(code == KeyEvent.VK_E) {
 			enterPressed = true;
 		}
+		if(code == KeyEvent.VK_ESCAPE) {
+			gp.gameState = gp.optionsState;
+		}
+		
 		//Debug
 		if (code == KeyEvent.VK_T) {
 			if(checkDrawTime == false) {
@@ -193,33 +205,156 @@ public class KeyHandler implements KeyListener {
 		if(code == KeyEvent.VK_C) {
 			gp.gameState = gp.playState;
 		}
+		if(code == KeyEvent.VK_E) {
+			gp.playSE(23);
+			gp.player.selectItem();
+		}
+		playerInventory(code);
+	}
+	
+	public void optionsState(int code) {
+		
+		if(code == KeyEvent.VK_ESCAPE) {
+			gp.gameState = gp.playState;
+		}
+		if(code == KeyEvent.VK_E) {
+			enterPressed = true;
+		}
+		
+		int maxCommandNum = 0;
+		switch(gp.ui.subState) {
+		case 0: maxCommandNum = 5; break;
+		case 3: maxCommandNum = 1; break;
+		}
+		
 		if(code == KeyEvent.VK_W) {
-			if(gp.ui.slotRow != 0) {
-				gp.ui.slotRow--;
+			gp.ui.commandNum--;
+			gp.playSE(22);
+			if(gp.ui.commandNum < 0) {
+				gp.ui.commandNum = maxCommandNum;
+			}
+		}
+		if(code == KeyEvent.VK_S) {
+			gp.ui.commandNum++;
+			gp.playSE(22);
+			if(gp.ui.commandNum > maxCommandNum) {
+				gp.ui.commandNum = 0;
+			}
+		}
+		
+		//Thiết lập nút tăng giảm âm lượng trong game
+		if(code == KeyEvent.VK_A) {
+			if(gp.ui.subState == 0){
+				if(gp.ui.commandNum == 1 && gp.music.volumeScale > 0) {
+					gp.music.volumeScale--;
+					gp.music.checkVolume();
+					gp.playSE(22);
+				}
+				if(gp.ui.commandNum == 2 && gp.se.volumeScale > 0) {
+					gp.se.volumeScale--;
+					gp.playSE(22);
+				}
+			}
+		}
+		if(code == KeyEvent.VK_D) {
+			if(gp.ui.subState == 0){
+				if(gp.ui.commandNum == 1 && gp.music.volumeScale < 5) {
+					gp.music.volumeScale++;
+					gp.music.checkVolume();
+					gp.playSE(22);
+				}
+				if(gp.ui.commandNum == 2 && gp.se.volumeScale < 5) {
+					gp.se.volumeScale++;
+					gp.playSE(22);
+				}
+			}
+		}
+	}
+	public void tradeState(int code) {
+		
+		if(code == KeyEvent.VK_E) {
+			enterPressed = true;
+		}
+		if(gp.ui.subState == 0) {
+			if(code == KeyEvent.VK_W) {
+				gp.ui.commandNum --;
+				if(gp.ui.commandNum < 0) {
+					gp.ui.commandNum = 2;
+				}
+				gp.playSE(22);
+			}
+			if(code == KeyEvent.VK_S) {
+				gp.ui.commandNum ++;
+				if(gp.ui.commandNum > 2) {
+					gp.ui.commandNum = 0;
+				}
+				gp.playSE(22);
+			}
+		}
+		if(gp.ui.subState == 1) {
+			npcInventory(code);
+			if(code == KeyEvent.VK_ESCAPE) {
+				gp.ui.subState = 0;
+			}
+		}
+		if(gp.ui.subState == 2) {
+			playerInventory(code);
+			if(code == KeyEvent.VK_ESCAPE) {
+				gp.ui.subState = 0;
+			}
+		}
+	}
+	
+	public void playerInventory(int code) {
+		if(code == KeyEvent.VK_W) {
+			if(gp.ui.playerSlotRow != 0) {
+				gp.ui.playerSlotRow--;
 				gp.playSE(22);
 			}
 		}
 		if(code == KeyEvent.VK_A) {
-			if(gp.ui.slotCol != 0) {
-				gp.ui.slotCol--;
+			if(gp.ui.playerSlotCol != 0) {
+				gp.ui.playerSlotCol--;
 				gp.playSE(22);
 			}	
 		}
 		if(code == KeyEvent.VK_S) {
-			if(gp.ui.slotRow != 3) {
-				gp.ui.slotRow++;
+			if(gp.ui.playerSlotRow != 3) {
+				gp.ui.playerSlotRow++;
 				gp.playSE(22);
 			}
 		}
 		if(code == KeyEvent.VK_D) {
-			if(gp.ui.slotCol != 4) {
-				gp.ui.slotCol++;
+			if(gp.ui.playerSlotCol != 4) {
+				gp.ui.playerSlotCol++;
 				gp.playSE(22);
 			}
 		}
-		if(code == KeyEvent.VK_E) {
-			gp.playSE(23);
-			gp.player.selectItem();
+	}
+	public void npcInventory(int code) {
+		if(code == KeyEvent.VK_W) {
+			if(gp.ui.npcSlotRow != 0) {
+				gp.ui.npcSlotRow--;
+				gp.playSE(22);
+			}
+		}
+		if(code == KeyEvent.VK_A) {
+			if(gp.ui.npcSlotCol != 0) {
+				gp.ui.npcSlotCol--;
+				gp.playSE(22);
+			}	
+		}
+		if(code == KeyEvent.VK_S) {
+			if(gp.ui.npcSlotRow != 3) {
+				gp.ui.npcSlotRow++;
+				gp.playSE(22);
+			}
+		}
+		if(code == KeyEvent.VK_D) {
+			if(gp.ui.npcSlotCol != 4) {
+				gp.ui.npcSlotCol++;
+				gp.playSE(22);
+			}
 		}
 	}
 	

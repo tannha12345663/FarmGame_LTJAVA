@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints.Key;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -39,9 +40,12 @@ public class UI {
 	public int commandNum = 0;
 	//Khai báo biến màn hình thứ hai sau khi new game
 	public int titleScreenState = 0;
-	public int slotCol = 0;
-	public int slotRow = 0;
-	
+	public int playerSlotCol = 0;
+	public int playerSlotRow = 0;
+	public int npcSlotCol = 0;
+	public int npcSlotRow = 0;
+	int subState = 0;
+	public Entity npc;
 	// Chú thích : 
 	//với 0: là màn hình khởi đầu 
 	//với 1: là màn hình thứ 2 		
@@ -114,112 +118,25 @@ public class UI {
 		}
 		//Dialouge State
 		if(gp.gameState == gp.dialogueState) {
-			drawPlayerLife();
 			drawDialogueScreen();
 		}
 		//Character state
 		
 		if(gp.gameState == gp.characterState) {
 			drawCharacterScreen();
-			drawInventory();
+			drawInventory(gp.player, true);
 		}
 		
-		//Trò chơi kết thúc
-//		if(gameFinished == true) {
-			
-		//Tutorial khởi đầu 
-			//Set font chữ
-//			g2.setFont(arial_40);
-//			//Set màu 
-//			g2.setColor(Color.white);
-//			
-//			String text;
-//			int textLength;
-//			int x;
-//			int y;
-//			
-//			text = "Bạn đã tìm thấy kho báu";
-//			//Trả về độ dài ký tự
-//			textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			
-//			//Xuống dòng và căn giữa đoạn message
-//			x = gp.screenWidth/2 - textLength/2;
-//			y = gp.screenHeight/2 - (gp.titleSize*3);
-//			g2.drawString(text, x, y);
-//			
-//			//Dòng chúc mừng
-//			//Set font chữ
-//			g2.setFont(arial_80B);
-//			//Set màu 
-//			g2.setColor(Color.yellow);
-//			text = "Chúc mừng bạn";
-//			//Trả về độ dài ký tự
-//			textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			//Xuống dòng và căn giữa đoạn message
-//			x = gp.screenWidth/2 - textLength/2;
-//			y = gp.screenHeight/2 + (gp.titleSize*2);
-//			g2.drawString(text, x, y);
-//			
-//			//Dòng chúc mừng
-//			//Set font chữ
-//			g2.setFont(arial_80B);
-//			//Set màu 
-//			g2.setColor(Color.yellow);
-//			text = "đã hoàn thành nhiệm vụ!";
-//			//Trả về độ dài ký tự
-//			textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			//Xuống dòng và căn giữa đoạn message
-//			x = gp.screenWidth/2 - textLength/2;
-//			y = gp.screenHeight/2 + (gp.titleSize*3);
-//			g2.drawString(text, x, y);
-//			
-//			//Dòng hiển thị time
-//			//Set font chữ
-//			g2.setFont(arial_40);
-//			//Set màu 
-//			g2.setColor(Color.white);
-//			text = "Thời gian: "+ dFormat.format(playTime)+ "!";
-//			//Trả về độ dài ký tự
-//			textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			//Xuống dòng và căn giữa đoạn message
-//			x = gp.screenWidth/2 - textLength/2;
-//			y = gp.screenHeight/2 + (gp.titleSize*4);
-//			g2.drawString(text, x, y);
-//			
-//			
-//			//Thực hiện dừng trờ chơi
-//			gp.gameThread = null;
-//			
-//		}
-//		else {
-//			//Set font chữ
-//			g2.setFont(arial_40);
-//			//Set màu 
-//			g2.setColor(Color.white);
-//			//Set drawimage key trên màn hình
-//			//g2.drawImage(keyImage, gp.titleSize/2, gp.titleSize/2,gp.titleSize, gp.titleSize, null);
-//			//Set văn bàn 
-//			g2.drawString("Key = " + gp.player.hasKey, 24, 65);
-//			//Time
-//			playTime +=(double)1/60;
-//			g2.drawString("Thời gian: " + dFormat.format(playTime), gp.titleSize*10, 65);
-//			
-//			
-//			//Message
-//			if(messageOn == true) {
-//				
-//				g2.setFont(g2.getFont().deriveFont(30F));
-//				g2.drawString(message, gp.titleSize/2, gp.titleSize*5);
-//				
-//				messageCounter ++;
-//				Tuyển
-//				//Nếu trong vòng 120 khung hình = 2s sẽ tự động biến mất message
-//				if(messageCounter > 120) {
-//					messageCounter = 0;
-//					messageOn = false;
-//				}
-//			}
-//		}
+		//Option state
+		if(gp.gameState == gp.optionsState) {
+			drawOptionsScreen();
+		}
+		//Trade State -- thực hiện giao dịch với NPC merchant
+		if(gp.gameState == gp.tradeState) {
+			drawTradeScreen();
+		}
+		
+	
 		
 	}
 	//Vẽ nội dung tin nhắn
@@ -603,12 +520,34 @@ public class UI {
 		//g2.drawImage(gp.player..., tailX - gp.titleSize, textY);
 		//Thay ... bằng tên hình ảnh rồi .down1 vd : gp.plater.currentWeapon.down1
 	}
-	public void drawInventory() {
+	public void drawInventory(Entity entity, boolean cursor) {
 		
-		int frameX = gp.titleSize*9;
-		int frameY = gp.titleSize;
-		int frameWidth = gp.titleSize*6;
-		int frameHeght = gp.titleSize*5;	
+		int frameX = 0;
+		int frameY = 0;
+		int frameWidth = 0;
+		int frameHeght = 0;	
+		int slotCol = 0;
+		int slotRow = 0;
+		
+		if(entity == gp.player) {
+			frameX = gp.titleSize*9;
+			frameY = gp.titleSize;
+			frameWidth = gp.titleSize*6;
+			frameHeght = gp.titleSize*5;	
+			slotCol = playerSlotCol;
+			slotRow = playerSlotRow;
+		}
+		else {
+			frameX = gp.titleSize*2;
+			frameY = gp.titleSize;
+			frameWidth = gp.titleSize*6;
+			frameHeght = gp.titleSize*5;	
+			slotCol = npcSlotCol;
+			slotRow = npcSlotRow;
+		}
+		
+		//Frame
+		
 		drawSubWindow(frameX, frameY, frameWidth, frameHeght - 10);
 		
 		//Tạo từng khe slot cho kho
@@ -620,17 +559,38 @@ public class UI {
 		
 		
 		//DRAW PLAYER'S ITEMS -- Vẽ ra túi đồ 
-		for(int i =0; i<gp.player.inventory.size();i++) {
+		for(int i =0; i<entity.inventory.size();i++) {
 //			System.out.println("Vũ khí đang có trong kho "+ gp.player.inventory.get(i));
 //			System.out.println("Vũ khí đang dùng "+ gp.player.currentCongCu);
 			//Equip Cursor -- trang bị công cụ khác để sử dụng
-			if(gp.player.inventory.get(i)== gp.player.currentCongCu) {
+			if(entity.inventory.get(i)== entity.currentCongCu) {
 				g2.setColor(new Color(253,245,230));g2.setStroke(new BasicStroke(1));
 				g2.fillRoundRect(slotX, slotY, gp.titleSize,gp.titleSize,10,10);
 				
 			}
 			
-			g2.drawImage(gp.player.inventory.get(i).down1, slotX,slotY, null);
+			g2.drawImage(entity.inventory.get(i).down1, slotX,slotY, null);
+			
+			// Display Amount
+			if( entity == gp.player && entity.inventory.get(i).amount > 1) {
+				
+				g2.setFont(g2.getFont().deriveFont(32f));
+				int amountX;
+				int amountY;
+				
+				String s = ""+ entity.inventory.get(i).amount;
+				amountX = getXforAllignToRightText(s, slotX + 44);
+				amountY = slotY+gp.titleSize;
+				
+				//Shadow 
+				g2.setColor(new Color(60,60,60));
+				g2.drawString(s, amountX, amountY);
+				
+				//Number
+				g2.setColor(Color.white);
+				g2.drawString(s, amountX - 3, amountY - 3);
+				
+			}
 			
 			slotX += slotSize;
 			
@@ -642,49 +602,495 @@ public class UI {
 		
 		
 		// Cursor -- con trỏ đến từng vị trí trong ô
-		int cursorX = slotXstart + (slotSize * slotCol);
-		int cursorY = slotYstart + (slotSize * slotRow);
-		int cursorWidth = gp.titleSize;
-		int cursorHeight = gp.titleSize;
-		//Draw cursor -- vẽ con trỏ khi di chuyển
-		g2.setColor(Color.white);
-		g2.setStroke(new BasicStroke(3));
-		g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10,10);
-		
-		// Description frame
-		int dFrameX = frameX;
-		int dFrameY = frameY + frameHeght - 5;
-		int dFrameWidth = frameWidth;
-		int dFrameHeight = gp.titleSize *6;
-		
-		
-		//Draw Description Text
-		int textX = dFrameX + 20;
-		int textY = dFrameY + gp.titleSize;
-		g2.setFont(g2.getFont().deriveFont(28F));
-		
-		int itemIndex = getItemIndexOnSlot();
-		if(itemIndex < gp.player.inventory.size()) {
-			drawSubWindow(dFrameX,dFrameY,dFrameWidth,dFrameHeight);
-			for(String line: gp.player.inventory.get(itemIndex).description.split("\n")) {
-				g2.drawString(line, textX, textY);
-				textY += 32;
-			}
-			if(gp.player.inventory.get(itemIndex).type == gp.player.type_watering) {
-				if(gp.player.inventory.get(itemIndex).valueConsumable == 0) {
-					g2.setColor(Color.YELLOW);
-					g2.drawString("Sức chứa: "+ gp.player.inventory.get(itemIndex).valueConsumable +"/"+gp.player.inventory.get(itemIndex).maxValueConsum, textX, textY);
-					textY += 32;
-				}else {
-					g2.setColor(Color.white);
-					g2.drawString("Sức chứa: "+ gp.player.inventory.get(itemIndex).valueConsumable +"/"+gp.player.inventory.get(itemIndex).maxValueConsum, textX, textY);
+		if(cursor == true) {
+			int cursorX = slotXstart + (slotSize * slotCol); // Tuyệt đối không được đổi slotCol thành playerCol
+			int cursorY = slotYstart + (slotSize * slotRow); // Tuyệt đối không được đổi slotRow thành playerRơ
+			int cursorWidth = gp.titleSize;
+			int cursorHeight = gp.titleSize;
+			//Draw cursor -- vẽ con trỏ khi di chuyển
+			g2.setColor(Color.white);
+			g2.setStroke(new BasicStroke(3));
+			g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10,10);
+			
+			// Description frame
+			int dFrameX = frameX;
+			int dFrameY = frameY + frameHeght - 12;
+			int dFrameWidth = frameWidth;
+			int dFrameHeight = gp.titleSize *4;
+			
+			
+			//Draw Description Text
+			int textX = dFrameX + 20;
+			int textY = dFrameY + gp.titleSize;
+			g2.setFont(g2.getFont().deriveFont(28F));
+			
+			int itemIndex = getItemIndexOnSlot(slotCol, slotRow);
+			
+			if(itemIndex < entity.inventory.size()) {
+				drawSubWindow(dFrameX,dFrameY,dFrameWidth,dFrameHeight);
+				for(String line: entity.inventory.get(itemIndex).description.split("\n")) {
+					g2.drawString(line, textX, textY);
 					textY += 32;
 				}
+				if(entity.inventory.get(itemIndex).type == entity.type_watering) {
+					if(entity.inventory.get(itemIndex).valueConsumable == 0) {
+						g2.setColor(Color.YELLOW);
+						g2.drawString("Sức chứa: "+ entity.inventory.get(itemIndex).valueConsumable +"/"+entity.inventory.get(itemIndex).maxValueConsum, textX, textY);
+						textY += 32;
+					}else {
+						g2.setColor(Color.white);
+						g2.drawString("Sức chứa: "+ entity.inventory.get(itemIndex).valueConsumable +"/"+entity.inventory.get(itemIndex).maxValueConsum, textX, textY);
+						textY += 32;
+					}
+				}
+				
+			}		
+		}
+		
+		
+	}
+	public void drawOptionsScreen() {
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(32F));
+		
+		//Sub window
+		int frameX = gp.titleSize*4;
+		int frameY = gp.titleSize;
+		int frameWidth = gp.titleSize*8;
+		int frameHeight = gp.titleSize*10;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		
+		switch (subState) {
+		case 0: options_top(frameX, frameY); break;
+		case 1: options_fullScreenNotification(frameX, frameY); break;
+		case 2: options_control(frameX, frameY); break;
+		case 3: options_endGameConfirmation(frameX, frameY); break;
+		}
+		
+		gp.keyH.enterPressed = false;
+	}
+	public void options_top(int frameX, int frameY) {
+		
+		int textX;
+		int textY;
+		
+		//TILE
+		String text = "Cài đặt";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.titleSize;
+		g2.drawString(text, textX, textY);
+		
+		g2.setFont(g2.getFont().deriveFont(25F));
+		//Full Screen on/off
+		textX = frameX + gp.titleSize - 5;
+		textY += gp.titleSize*2 - 10;
+		g2.drawString("Toàn màn hình", textX, textY);
+		if(commandNum == 0) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				if(gp.fullScreenOn == false) {
+					gp.fullScreenOn = true;
+				}
+				else if(gp.fullScreenOn == true) {
+					gp.fullScreenOn = false;
+				}
+				subState = 1;
+			}
+		}
+		
+		//Music 
+		textY += gp.titleSize;
+		g2.drawString("Nhạc nền", textX, textY);
+		if(commandNum == 1) {
+			g2.drawString(">", textX - 25, textY);
+		}
+		
+		//SE
+		textY += gp.titleSize;
+		g2.drawString("Hiệu ứng", textX, textY);
+		if(commandNum == 2) {
+			g2.drawString(">", textX - 25, textY);
+		}
+		
+		//Control
+		textY += gp.titleSize;
+		g2.drawString("Điều khiển", textX, textY);
+		if(commandNum == 3) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 2;
+				commandNum = 0;
+			}
+		}
+		
+		//End game
+		textY += gp.titleSize;
+		g2.drawString("Thoát game", textX, textY);
+		if(commandNum == 4) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 3;
+				commandNum = 0;
+			}
+		}
+		
+		//Back
+		textY += gp.titleSize *2;
+		g2.drawString("Quay lại", textX, textY);
+		if(commandNum == 5) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				gp.gameState = gp.playState;
+				commandNum = 0;
+			}
+		}
+		
+		//Full screen check box
+		textX = frameX + (int)(gp.titleSize*4.8);
+		textY = frameY + gp.titleSize*2 + 16;
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRect(textX, textY, 24, 24);
+		if(gp.fullScreenOn == true) {
+			g2.fillRect(textX, textY, 24, 24);
+		}
+		
+		//Music volume
+		textY += gp.titleSize;
+		g2.drawRect(textX, textY, 120,24); // 120/5 = 24
+		int volumWidth = 24* gp.music.volumeScale;
+		g2.fillRect(textX, textY, volumWidth, 24);
+		
+		
+		
+		
+		//SE volume
+		textY += gp.titleSize;
+		g2.drawRect(textX, textY, 120,24);
+		volumWidth = 24* gp.se.volumeScale;
+		g2.fillRect(textX, textY, volumWidth, 24);
+		
+		gp.config.saveConfig();
+		
+	}
+	
+	public void options_fullScreenNotification(int frameX, int frameY) {
+		
+		int textX = frameX + gp.titleSize;
+		int textY = frameY + gp.titleSize * 3;
+		
+		String text = "Cảnh báo";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.titleSize;
+		g2.drawString(text, textX, textY);
+		
+		textX = frameX + gp.titleSize - 5;
+		textY += gp.titleSize*2 - 10;
+		currentDialouge = "Thay đổi này yêu \n cầu khởi động lại \n game.";
+		
+		for(String line: currentDialouge.split("\n")) {
+			g2.drawString(line, textX, textY);
+			textY += 40;
+		}
+		
+		g2.setFont(g2.getFont().deriveFont(25F));
+		// Back 
+		textY = frameY + gp.titleSize*9;
+		g2.drawString("Quay lại", textX, textY);
+		if(commandNum == 0) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 0;
+			}
+		}
+	}
+	
+	public void options_control(int frameX, int frameY) {
+		
+		int textX;
+		int textY;
+		
+		//Tile
+		String text = "Điều khiển";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.titleSize;
+		g2.drawString(text, textX, textY);
+		
+		textX = frameX + gp.titleSize - 30;
+		textY += gp.titleSize;
+		g2.setFont(g2.getFont().deriveFont(25F));
+		g2.drawString("Di chuyển", textX, textY); textY += gp.titleSize;
+		g2.drawString("Xác nhận/Hành động", textX, textY); textY += gp.titleSize;
+		g2.drawString("Thông tin nhân vật", textX, textY); textY += gp.titleSize;
+		g2.drawString("Dừng game", textX, textY); textY += gp.titleSize;
+		g2.drawString("Cài đặt", textX, textY); textY += gp.titleSize;
+		
+		textX = frameX + gp.titleSize*6 - 20;
+		textY = frameY + gp.titleSize*2;
+		g2.drawString("W A S D", textX, textY); textY += gp.titleSize;
+		g2.drawString("E", textX, textY); textY += gp.titleSize;
+		g2.drawString("C", textX, textY); textY += gp.titleSize;
+		g2.drawString("P", textX, textY); textY += gp.titleSize;
+		g2.drawString("ESC", textX, textY); textY += gp.titleSize;
+		
+		//Back
+		textX = frameX + gp.titleSize;
+		textY = frameY + gp.titleSize*9;
+		g2.drawString("Quay lại", textX , textY);
+		if(commandNum == 0) {
+			g2.drawString(">", textX -25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 0;
+				commandNum = 3;
+			}
+		}
+		
+	}
+	
+	public void options_endGameConfirmation(int frameX, int frameY) {
+		
+		int textX = frameX + gp.titleSize;
+		int textY = frameY + gp.titleSize *3;
+		
+		String text = "Xác nhận thoát game";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.titleSize;
+		g2.drawString(text, textX, textY);
+		
+		textX = frameX + gp.titleSize;
+		textY = frameY + gp.titleSize *3;
+		
+		currentDialouge = "Thoát game và trở \n lại màn hình chính? ";
+		for(String line: currentDialouge.split("\n")) {
+			g2.drawString(line, textX, textY);
+			textY += 40;
+		}
+		
+		//Yes
+		text = "Yes";
+		textX = getXforCenteredText(text);
+		textY += gp.titleSize*3;
+		g2.drawString(text, textX, textY);
+		if(commandNum == 0) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 0;
+				titleScreenState = 0;
+				gp.stopMusic();
+				gp.gameState = gp.titleState;
 			}
 			
-		}		
+		}
+		//No
+		text = "No";
+		textX = getXforCenteredText(text);
+		textY += gp.titleSize;
+		g2.drawString(text, textX, textY);
+		if(commandNum == 1) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 0;
+				commandNum = 4;
+			}
+			
+		}
+		
+		
 	}
-	public int getItemIndexOnSlot() {
+	public void drawTradeScreen() {
+		
+		switch (subState) {
+		case 0: trade_select(); break;
+		case 1: trade_buy(); break;
+		case 2: trade_sell(); break;
+		}
+		gp.keyH.enterPressed = false;
+		
+	}
+	public void trade_select() {
+		
+		drawDialogueScreen();
+		
+		//Draw window
+		int x = gp.titleSize * 11;
+		int y = (int)(gp.titleSize * 4.5);
+		int width = gp.titleSize * 3;
+		int height = (int)(gp.titleSize * 3.5);
+		drawSubWindow(x, y, width, height);
+		
+		//Draw text
+		x += gp.titleSize;
+		y += gp.titleSize;
+		g2.drawString("Buy", x, y);
+		if(commandNum == 0) {
+			g2.drawString(">", x - 24, y);
+			if(gp.keyH.enterPressed == true) {
+				subState = 1;
+			}
+			
+		}
+		y+= gp.titleSize;
+		g2.drawString("Sell", x, y);
+		if(commandNum == 1) {
+			g2.drawString(">", x - 24, y);
+			if(gp.keyH.enterPressed == true) {
+				subState = 2;
+			}
+		}
+		y+= gp.titleSize;
+		g2.drawString("Leave", x, y);
+		if(commandNum == 2) {
+			g2.drawString(">", x - 24, y);
+			if(gp.keyH.enterPressed == true) {
+				commandNum = 0;
+				gp.gameState = gp.dialogueState;
+				currentDialouge = "Tạm biệt bạn, hihi!";
+			}
+		}
+		y+= gp.titleSize;
+		
+		
+		
+		
+	}
+	public void trade_buy() {
+		
+		//Draw player Inventory 
+		drawInventory(gp.player, false);
+		//Draw NPC Inventory
+		drawInventory(npc,true);
+		
+		//Draw hint window
+		int x = gp.titleSize*2;
+		int y = gp.titleSize*10;
+		int width = gp.titleSize*6;
+		int height = gp.titleSize*2;
+		drawSubWindow(x, y, width, height);
+		g2.drawString("[ESC] Quay lại", x + 24, y + 60);
+		
+		//Draw player coin window
+		x = gp.titleSize*9;
+		y = gp.titleSize*10;
+		width = gp.titleSize*6;
+		height = gp.titleSize*2;
+		drawSubWindow(x, y, width, height);
+		g2.drawString("Coins: " + gp.player.coins, x + 24, y + 60);
+		
+		//Draw price window 
+		int itemIndex = getItemIndexOnSlot(npcSlotCol,npcSlotRow);
+		if(itemIndex < npc.inventory.size()) {
+			
+			x = (int)(gp.titleSize * 5.5);
+			y = (int)(gp.titleSize * 5.3);
+			width = (int)(gp.titleSize*2.5);
+			height = gp.titleSize;
+			drawSubWindow(x, y, width, height);
+			g2.drawImage(coins, x+13, y+10, 26,27, null);
+			
+			int price = npc.inventory.get(itemIndex).price;
+			String text = ""+price;
+			x = getXforAllignToRightText(text, gp.titleSize*8 - 8);
+			g2.drawString(text, x - 5, y+32);
+			
+			//Buy an item
+			if(gp.keyH.enterPressed == true) {
+				if(npc.inventory.get(itemIndex).price > gp.player.coins) {
+					subState = 0;
+					gp.gameState = gp.dialogueState;
+					currentDialouge = "Bạn không đủ tiền để mua!";
+					drawDialogueScreen();
+				}
+				else {
+					if(gp.player.canObtainItem(npc.inventory.get(itemIndex)) == true) {
+						gp.player.coins -= npc.inventory.get(itemIndex).price;
+					}else {
+						subState = 0;
+						gp.gameState = gp.dialogueState;
+						currentDialouge = "Túi của bạn không đủ!";
+					}
+				}
+//				else if(gp.player.inventory.size() == gp.player.maxInventorySize) {
+//					subState = 0;
+//					gp.gameState = gp.dialogueState;
+//					currentDialouge = "Túi của bạn không đủ!";
+//					drawDialogueScreen();
+//				}
+//				else {
+//					//Tiến hành trừ tiền nhân vật là thêm item vào kho đò
+//					gp.player.coins -= npc.inventory.get(itemIndex).price;
+//					//gp.player.inventory.add(npc.inventory.get(itemIndex));
+//					gp.player.canObtainItem(npc.inventory.get(itemIndex));
+//				}
+			}
+		}
+		
+	}
+	public void trade_sell() {
+		
+		//Draw player Inventory 
+		drawInventory(gp.player,true);
+		
+		int x;
+		int y;
+		int width;
+		int height;
+		
+		//Draw hint window
+		x = gp.titleSize*2;
+		y = gp.titleSize*10;
+		width = gp.titleSize*6;
+		height = gp.titleSize*2;
+		drawSubWindow(x, y, width, height);
+		g2.drawString("[ESC] Quay lại", x + 24, y + 60);
+		
+		//Draw player coin window
+		x = gp.titleSize*9;
+		y = gp.titleSize*10;
+		width = gp.titleSize*6;
+		height = gp.titleSize*2;
+		drawSubWindow(x, y, width, height);
+		g2.drawString("Coins: " + gp.player.coins, x + 24, y + 60);
+		
+		//Draw price window 
+		int itemIndex = getItemIndexOnSlot(playerSlotCol,playerSlotRow);
+		if(itemIndex < gp.player.inventory.size()) {
+			
+			x = (int)(gp.titleSize * 12.5);
+			y = (int)(gp.titleSize * 5.3);
+			width = (int)(gp.titleSize*2.5);
+			height = gp.titleSize;
+			drawSubWindow(x, y, width, height);
+			g2.drawImage(coins, x+13, y+10, 26,27, null);
+			
+			int price = gp.player.inventory.get(itemIndex).price/2;
+			String text = ""+price;
+			x = getXforAllignToRightText(text, gp.titleSize*15 - 8);
+			g2.drawString(text, x - 5, y+32);
+			
+			//Sell an item
+			if(gp.keyH.enterPressed == true) {
+				if(gp.player.inventory.get(itemIndex)== gp.player.currentCongCu) {
+					commandNum = 0;
+					subState = 0;
+					gp.gameState = gp.dialogueState;
+					currentDialouge = "Bạn không thể bán với trang bị đang dùng!";
+				}
+				else {
+					if(gp.player.inventory.get(itemIndex).amount > 1) {
+						gp.player.inventory.get(itemIndex).amount--;
+					}
+					else {
+						gp.player.inventory.remove(itemIndex);
+					}
+					
+					gp.player.coins += price;
+				}
+			}
+		}
+		
+	}
+	
+	
+	public int getItemIndexOnSlot(int slotCol, int slotRow) {
 		int itemIndex = slotCol + (slotRow*5);
 		return itemIndex;
 	}

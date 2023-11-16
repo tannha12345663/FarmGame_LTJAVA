@@ -17,6 +17,7 @@ public class HatGiong1_4 extends InteractiveTile{
 		waterToGrow = 4;
 		
 		name = "Bap4";
+		stackable = false; //Không thể chồng lên
 		down1 = setup("/HatGiong/HatGiong1_4");
 		phatTrien = true;
 		//destructible = true;

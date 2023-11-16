@@ -12,7 +12,7 @@ public class IT_TrunkTree extends InteractiveTile {
 		
 		this.worldX = gp.titleSize*col;
 		this.worldY = gp.titleSize*row;
-		
+		stackable = false;
 		
 		name = "Cây xanh";
 		down1 = setup("/tile_interactive/Basic-Grass-Biom-things-1_22");

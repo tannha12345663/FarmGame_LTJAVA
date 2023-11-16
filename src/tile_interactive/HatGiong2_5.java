@@ -1,12 +1,15 @@
 package tile_interactive;
 
+import entity.Entity;
 import main.GamePanel;
 
-public class HatGiong1_5 extends InteractiveTile{
+public class HatGiong2_5 extends InteractiveTile {
 
-	public HatGiong1_5(GamePanel gp, int col, int row) {
+	GamePanel gp;
+	public HatGiong2_5(GamePanel gp, int col, int row) {
 		super(gp, col, row);
 		// TODO Auto-generated constructor stub
+		
 		this.gp=gp;
 		
 		this.worldX = gp.titleSize*col;
@@ -15,11 +18,11 @@ public class HatGiong1_5 extends InteractiveTile{
 		water = 0;
 		waterToGrow = 4;
 		daytoGrow = 5;
-		type = type_consumable;
 		stackable = true; //Cho phép lưu trữ
 		price = 200; //Giá bán sẽ là 100
-		name = "Bắp chín";
-		down1 = setup("/HatGiong/HatGiong1_5");
+		type = type_consumable;
+		name = "Cà Tím chín";
+		down1 = setup("/HatGiong/HatGiong2_5");
 		phatTrien = true;
 		description = "[" + name +"] \n Khi bạn sử dụng "
 				+ "\n bạn sẽ được thêm"
@@ -44,4 +47,11 @@ public class HatGiong1_5 extends InteractiveTile{
 		}
 		return null;
 	}
+	public void use(Entity entity) {
+		gp.gameState = gp.dialogueState;
+		gp.ui.currentDialouge = "Bạn đã dùng "+ name+"!";
+		//Thêm hiệu ứng gieo hạt
+		gp.playSE(24);
+	}
+
 }
