@@ -11,7 +11,7 @@ public class OBJ_HatGiong2 extends Entity {
 		super(gp);
 		// TODO Auto-generated constructor stub
 		type = type_plant2;
-		name = "Cà Tím";
+		name = "CaTim";
 		price = 12;
 		stackable = true; // cho phép lưu trữ nhiều
 		down1 = setup("/HatGiong/HatGiong2");

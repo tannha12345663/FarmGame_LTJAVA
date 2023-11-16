@@ -66,10 +66,7 @@ public class Player extends Entity {
 	}
 	public void setDefaultValues() {
 		//Tọa độ cho nhân vật
-		worldX = gp.titleSize*10;
-		worldY = gp.titleSize*13;
-		speed = 4;
-		direction ="down"; //Đặt hướng mặc định cho nhân vật
+		setDefaultPositions();
 		
 		
 		//Trạng thái máu ban đầu của người chơi
@@ -92,6 +89,29 @@ public class Player extends Entity {
 //		inventory.add(new OBJ_HatGiong2(gp));
 	}
 	
+	public void setDefaultPositions() {
+		worldX = gp.titleSize*10;
+		worldY = gp.titleSize*13;
+		speed = 4;
+		direction ="down"; //Đặt hướng mặc định cho nhân vật
+	}
+	
+	public void restoreStatus() {
+		
+		life = maxLife;
+		invincible = false;
+		coins -= 100;
+		
+	}
+	public int getCurrentCongCuSlot() {
+		int currentCongCu = 0;
+		for(int i = 0; i< inventory.size();i++) {
+			if(inventory.get(i) == this.currentCongCu) {
+				currentCongCu = i;
+			}
+		}
+		return currentCongCu;
+	}
 	
 	public void getPlayerImage() {
 		

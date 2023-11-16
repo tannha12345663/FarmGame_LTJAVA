@@ -42,14 +42,22 @@ public class AssetSetter {
 		gp.obj[i].worldX = 7*gp.titleSize;
 		gp.obj[i].worldY = 11*gp.titleSize;
 		i++;
-		gp.obj[i] = new OBJ_HatGiong1(gp);
+		gp.obj[i] = new OBJ_Chest(gp);
 		gp.obj[i].worldX = 15*gp.titleSize;
 		gp.obj[i].worldY = 11*gp.titleSize;
 		i++;
-		gp.obj[i] = new OBJ_HatGiong2(gp);
+		gp.obj[i] = new OBJ_Chest(gp);
 		gp.obj[i].worldX = 20*gp.titleSize;
 		gp.obj[i].worldY = 11*gp.titleSize;
 		i++;
+//		gp.obj[i] = new OBJ_HatGiong1(gp);
+//		gp.obj[i].worldX = 15*gp.titleSize;
+//		gp.obj[i].worldY = 11*gp.titleSize;
+//		i++;
+//		gp.obj[i] = new OBJ_HatGiong2(gp);
+//		gp.obj[i].worldX = 20*gp.titleSize;
+//		gp.obj[i].worldY = 11*gp.titleSize;
+//		i++;
 		
 		
 		

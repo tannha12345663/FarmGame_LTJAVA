@@ -150,6 +150,7 @@ public class EventHandler {
 				gp.player.currentCongCu.valueConsumable = gp.player.currentCongCu.maxValueConsum;
 				gp.ui.addMessage("Bình đã đầy!");
 			}
+			gp.saveLoad.save();
 		}
 	}
 }

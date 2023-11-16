@@ -12,7 +12,7 @@ public class OBJ_HatGiong1 extends Entity{
 		super(gp);
 		// TODO Auto-generated constructor stub
 		type = type_plant1;
-		name = "Bắp";
+		name = "Bap";
 		down1 = setup("/HatGiong/HatGiong1");
 		collision = true;
 		price = 10;

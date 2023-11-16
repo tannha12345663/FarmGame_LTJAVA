@@ -877,6 +877,7 @@ public class UI {
 				titleScreenState = 0;
 				gp.stopMusic();
 				gp.gameState = gp.titleState;
+				gp.resetGame(true);
 			}
 			
 		}

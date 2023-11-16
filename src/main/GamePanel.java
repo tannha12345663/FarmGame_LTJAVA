@@ -12,6 +12,7 @@ import java.util.Comparator;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import data.SaveLoad;
 import entity.Entity;
 import entity.Player;
 import tile_interactive.InteractiveTile;
@@ -37,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int worldHeight = titleSize * maxWorldRow;
 	
 	//Bộ đếm thời gian
-	long days = 1, hours = 23,minutes = 0;
+	public long days = 1, hours = 23,minutes = 0;
 	//For full screen
 	
 	
@@ -59,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eHandler = new EventHandler(this);
 	
 	Config config = new Config(this);
+	SaveLoad saveLoad = new SaveLoad(this);
+	
 	Thread gameThread;
 	//Entity object
 	public Player player = new Player(this,keyH);//Khai báo thông tin nhân vật
@@ -117,13 +120,17 @@ public class GamePanel extends JPanel implements Runnable {
 		//Set up các vị trí ô đất có thể đào được
 		aSetter.setDig();
 		//Phát nhạt theo số mong muốn truyền vào
-//		playMusic(2);
-//		stopMusic();
+		
 		gameState = titleState;
 		
 		if(fullScreenOn == true) {
 			//setFullScreen();
 		}
+		
+		
+	}
+	
+	public void resetGame(boolean restart) {
 		
 	}
 	
