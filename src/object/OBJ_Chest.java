@@ -1,6 +1,8 @@
 package object;
 
 
+import java.util.Random;
+
 import entity.Entity;
 import main.GamePanel;
 
@@ -32,10 +34,37 @@ public class OBJ_Chest extends Entity{
 		gp.gameState = gp.dialogueState;
 		gp.ui.currentDialouge = "Bạn đã dùng "+ name+"!";
 		
-		gp.player.life += value;
-		if(gp.player.life > gp.player.maxLife) {
-			gp.player.life = gp.player.maxLife;
-		}
+		
+		
+		Random random = new Random();
+
+        // Tạo số nguyên ngẫu nhiên trong phạm vi 0 đến 100
+        int randomNumber = random.nextInt(50);
+
+        // In số nguyên ngẫu nhiên ra màn hình
+        System.out.println("Số nguyên ngẫu nhiên là: " + randomNumber);
+
+        // Kiểm tra xem số nguyên này là số chẵn hay số lẻ
+        if (randomNumber % 2 == 0) {
+        	gp.player.life += value;
+    		if(gp.player.life > gp.player.maxLife) {
+    			gp.player.life = gp.player.maxLife;
+    		}
+            System.out.println(randomNumber + " là số chẵn.");
+        } else {
+        	Entity loot = new OBJ_HatGiong1(gp);
+        	Entity loot1 = new OBJ_HatGiong2(gp);
+        	for(int i = 0 ; i < randomNumber ; i++) {
+        		if(i % 2 == 0) {
+        			gp.player.canObtainItem(loot);
+        		}else {
+        			gp.player.canObtainItem(loot1);
+        		}
+        	}
+        	
+            System.out.println(randomNumber + " là số lẻ.");
+        }
+		
 		//Thêm hiệu ứng
 		gp.playSE(24);
 	}
