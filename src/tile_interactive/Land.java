@@ -14,7 +14,7 @@ public class Land extends InteractiveTile{
 		this.worldX = gp.titleSize*col;
 		this.worldY = gp.titleSize*row;
 		
-		
+		water = 0;
 		name = "Đất";
 		down1 = setup("/tile_interactive/Tilled-Dirt_08");
 		stackable = false; //Không thể chồng lên

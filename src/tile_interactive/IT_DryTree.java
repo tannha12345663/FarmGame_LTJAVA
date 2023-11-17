@@ -15,7 +15,7 @@ public class IT_DryTree extends InteractiveTile {
 		this.worldX = gp.titleSize*col;
 		this.worldY = gp.titleSize*row;
 		stackable = false;
-		
+		water = 0;
 		name = "Cây xanh";
 		down1 = setup("/tile_interactive/Basic-Grass-Biom-things-1_13");
 		destructible = true;

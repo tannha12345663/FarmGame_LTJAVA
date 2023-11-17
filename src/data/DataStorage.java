@@ -21,6 +21,7 @@ public class DataStorage implements Serializable {
 	//Player Inventory
 	ArrayList<String> itemNames = new ArrayList<>();
 	ArrayList<Integer> itemAmounts = new ArrayList<>();
+	int valueConsumable[];
 	
 	int currentCongCuSlot;
 	
@@ -28,6 +29,12 @@ public class DataStorage implements Serializable {
 	String ObjectName [] ;
 	int ObjectWorldX [] ;
 	int objectWorldY [];
+	//Sức chứa bình tưới
 	
+	
+	String InteracName[];
+	int InteracWorldX [];
+	int InteracWorldY [];
+	int water [];
 	
 }

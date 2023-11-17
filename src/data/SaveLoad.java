@@ -15,6 +15,21 @@ import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
 import object.OBJ_Pickaxe;
 import object.OBJ_Watering;
+import tile_interactive.HatGiong1_1;
+import tile_interactive.HatGiong1_2;
+import tile_interactive.HatGiong1_3;
+import tile_interactive.HatGiong1_4;
+import tile_interactive.HatGiong1_5;
+import tile_interactive.HatGiong2_1;
+import tile_interactive.HatGiong2_2;
+import tile_interactive.HatGiong2_3;
+import tile_interactive.HatGiong2_4;
+import tile_interactive.HatGiong2_5;
+import tile_interactive.IT_DryTree;
+import tile_interactive.IT_TrunkTree;
+import tile_interactive.InteractiveTile;
+import tile_interactive.Land;
+import tile_interactive.PlowedLand;
 
 public class SaveLoad  {
 	
@@ -40,6 +55,35 @@ public class SaveLoad  {
 		return obj;
 	}
 	
+	public InteractiveTile getObject1(String itemName, int wX, int wY) {
+		
+		InteractiveTile obj = null;
+		
+		wX = wX / gp.titleSize;
+		wY = wY / gp.titleSize;
+		
+		switch (itemName) {
+		case "Bap1": obj = new HatGiong1_1(gp,wX,wY);break;
+		case "Bap2" : obj = new HatGiong1_2(gp,wX,wY);break;
+		case "Bap3": obj = new HatGiong1_3(gp,wX,wY);break;
+		case "Bap4": obj = new HatGiong1_4(gp,wX,wY);break;
+		case "Bắp chín": obj = new HatGiong1_5(gp,wX,wY);break;
+		case "CaTim1" : obj = new HatGiong2_1(gp, wX, wY); break;
+		case "CaTim2" : obj = new HatGiong2_2(gp, wX, wY); break;
+		case "CaTim3" : obj = new HatGiong2_3(gp, wX, wY); break;
+		case "CaTim4" : obj = new HatGiong2_4(gp, wX, wY); break;
+		case "Cà Tím chín" : obj = new HatGiong2_5(gp, wX, wY); break;
+		case "Cây xanh" : obj = new IT_DryTree(gp, wX, wY); break;
+		case "Cây đổ" : obj = new IT_TrunkTree(gp, wX, wY); break;
+		case "Đất" : obj = new Land(gp, wX, wY); break;
+		case "Đất đã đào" : obj = new PlowedLand(gp, wX, wY); break;
+		}
+		
+		return obj;
+	}
+	
+	
+	
 	public void save() {
 		
 		try {
@@ -61,31 +105,67 @@ public class SaveLoad  {
 			ds.nextLevelExp = gp.player.nextLevel;
 			ds.selectPlayer = gp.player.selectPlayer;
 			
+			ds.valueConsumable = new int[gp.player.inventory.size()];
+			
 			//Player Inventory
 			for(int i = 0;i< gp.player.inventory.size();i++) {
+				
 				ds.itemNames.add(gp.player.inventory.get(i).name);
+				if(gp.player.inventory.get(i).name == "Watering") {
+					ds.valueConsumable[i] = gp.player.inventory.get(i).valueConsumable;
+				}
 				ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 			}
+//			for(int i = 0 ; i < ds.itemNames.size();i++) {
+//				Entity check = getObject(ds.itemNames.get(i));
+//				if(check.name == "Watering") {
+//					ds.valueConsumable[i] = gp.player.
+//				}
+//					
+//				
+//			}
+			
 			
 			//Player Equipment
 			ds.currentCongCuSlot = gp.player.getCurrentCongCuSlot();
-			System.out.println("Tổng số object có trong mảng: "+ gp.obj.length);
+			//System.out.println("Tổng số object có trong mảng: "+ gp.obj.length);
 			//Object on Map
 			ds.ObjectName = new String[gp.obj.length];
 			ds.ObjectWorldX = new int[gp.obj.length];
 			ds.objectWorldY = new int[gp.obj.length];
+			//Interrac on Map
+			ds.InteracName = new String[gp.objDig.length];
+			ds.InteracWorldX = new int[gp.objDig.length];
+			ds.InteracWorldY = new int [gp.objDig.length];
+			ds.water = new int[gp.objDig.length];
+			
+			//Object
 			for(int i = 0;i < gp.obj.length;i++) {
 				if(gp.obj[i] == null) {
 					ds.ObjectName[i] = "NA";
 				}
 				else {
+					//Object
 					ds.ObjectName[i] = gp.obj[i].name;
 					ds.ObjectWorldX[i] = gp.obj[i].worldX;
 					ds.objectWorldY[i] = gp.obj[i].worldY;
 				}
 			}
 			
-			
+			//Interactive
+			for(int i = 0; i < gp.objDig.length;i++) {
+				//System.out.println("Trước khi lưu Interac có: "+ gp.objDig[i]);
+				if(gp.objDig[i] == null) {
+					ds.InteracName[i]= "NA";
+				}
+				else if(gp.objDig[i] != null) {
+					//Interac
+					ds.InteracName[i] = gp.objDig[i].name;
+					ds.InteracWorldX[i] = gp.objDig[i].worldX;
+					ds.InteracWorldY[i] = gp.objDig[i].worldY;
+					ds.water[i] = gp.objDig[i].water;
+				}
+			}
 			//Write the DataStorage object
 			cos.writeObject(ds);
 			
@@ -120,28 +200,60 @@ public class SaveLoad  {
 			
 			for(int i = 0; i <ds.itemNames.size();i++) {
 				gp.player.inventory.add(getObject(ds.itemNames.get(i)));
+				Entity check = getObject(ds.itemNames.get(i));
+				if(check.name == "Watering") {
+					gp.player.inventory.get(i).valueConsumable = ds.valueConsumable[i];
+				}
+				
 				gp.player.inventory.get(i).amount = ds.itemAmounts.get(i);
 			}
 			//Player Equipment
 			gp.player.currentCongCu = gp.player.inventory.get(ds.currentCongCuSlot);
 			
 			//Object on map (Entity)
-			System.out.println("Tổng số object có trong mảng o data: "+ ds.ObjectName.length);
+			
 			for(int i  = 0 ; i < ds.ObjectName.length;i++) {
 				if(ds.ObjectName[i].equals("NA")) {
 					gp.obj[i]= null;
 				}
 				else {
+					
 					gp.obj[i] = getObject(ds.ObjectName[i]);
 					gp.obj[i].worldX = ds.ObjectWorldX[i];
 					gp.obj[i].worldY = ds.objectWorldY[i];
 				}
 			}
 			
+			//System.out.println("Tổng số interac có trong mảng o data: "+ ds.InteracName.length);
+			for(int i = 0; i< ds.InteracName.length;i++) {
+				
+				if(ds.InteracName[i].equals("NA")) {
+					gp.objDig[i] = null;
+				}
+				else {
+					gp.objDig[i] = getObject1(ds.InteracName[i], ds.InteracWorldX[i], ds.InteracWorldY[i]);
+					gp.objDig[i].worldX = ds.InteracWorldX[i];
+					gp.objDig[i].worldY = ds.InteracWorldY[i];
+					gp.objDig[i].water = ds.water[i];
+				}
+			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Lỗi khi load data!"+ e.getMessage());
 		}
 	}
+	public void deleteSaveFile() {
+        File file = new File("save.dat");
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (deleted) {
+                System.out.println("Xóa dữ liệu lưu trữ thành công!");
+            } else {
+                System.out.println("Không thể xóa dữ liệu lưu trữ.");
+            }
+        } else {
+            System.out.println("Không tìm thấy tệp lưu trữ để xóa.");
+        }
+    }
 }

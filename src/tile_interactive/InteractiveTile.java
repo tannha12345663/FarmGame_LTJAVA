@@ -11,8 +11,8 @@ public class InteractiveTile extends Entity {
 	public boolean phatTrien = false;
 	public int daytoGrow;
 	//Tưới nước cho cây
-	public int water;
-	public int waterToGrow;
+	public int water = 0;
+	public int waterToGrow = 0;
 	
 	public InteractiveTile(GamePanel gp, int col, int row) {
 		super(gp);

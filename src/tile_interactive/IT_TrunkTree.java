@@ -13,8 +13,8 @@ public class IT_TrunkTree extends InteractiveTile {
 		this.worldX = gp.titleSize*col;
 		this.worldY = gp.titleSize*row;
 		stackable = false;
-		
-		name = "Cây xanh";
+		water = 0;
+		name = "Cây đổ";
 		down1 = setup("/tile_interactive/Basic-Grass-Biom-things-1_22");
 		//destructible = true;
 		collision = true;

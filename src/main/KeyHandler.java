@@ -153,6 +153,7 @@ public class KeyHandler implements KeyListener {
 					gp.player.selectPlayer = 2;
 				}
 				gp.player.getPlayerImage();
+				gp.saveLoad.deleteSaveFile();
 				gp.gameState = gp.playState;
 				gp.stopMusic();
 				gp.playMusic(2);
