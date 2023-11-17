@@ -135,7 +135,10 @@ public class UI {
 		if(gp.gameState == gp.tradeState) {
 			drawTradeScreen();
 		}
-		
+		//Option state
+		if(gp.gameState == gp.gameOverState) {
+			drawGameOverScreen();
+		}
 	
 		
 	}
@@ -219,7 +222,143 @@ public class UI {
 		
 //		System.out.println(titleScreenState);
 		//Kiểm tra màn hình trạng thái tiêu đề
-		System.out.println("Man hinh hien tai " + titleScreenState);
+		//System.out.println("Man hinh hien tai " + titleScreenState);
+		if(titleScreenState == -1) {
+			
+			
+			int x = 150;
+			int y = gp.titleSize * 3;
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
+			 // Vẽ ô nhập liệu cho tên đăng nhập
+	        g2.setColor(Color.black);
+	        g2.drawString("Tên đăng nhập: ", x, y);
+	        
+	        g2.setColor(Color.white);
+	        g2.fillRect(x * 3 - 70, y - 25, 150, 30);
+	        g2.setColor(Color.black);
+	        g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+	        g2.drawString(gp.usernameInput ,x * 3 - 65, y);
+	        if(commandNum == 0) {
+		        g2.setColor(Color.black);
+				g2.drawString("<", (int)(x * 4 - 60) - 5, y - 5);
+	        }
+//	        g2.drawRect(x * 3, y - 25, 150, 30);
+	        // ...
+	        y += gp.titleSize ;
+	        // Vẽ ô nhập liệu cho mật khẩu
+	        g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
+	        g2.setColor(Color.black);
+	        g2.drawString("Mật khẩu: " , x + 80, y);
+	        g2.setColor(Color.white);
+	        g2.fillRect(x * 3 - 70, y - 25, 150, 30);
+	        g2.setColor(Color.black);
+	        g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+	        String maskedPass = "*".repeat(gp.passwordInput.length());
+	        g2.drawString(maskedPass ,(int)(x * 3 - 65), y);
+	        
+	        if(commandNum == 1) {
+		        g2.setColor(Color.black);
+				g2.drawString("<", (int)(x * 4 - 60) - 5, y - 5);
+	        }
+	        // Vẽ button Đăng nhập
+	        
+	        y+= gp.titleSize;
+	        g2.setColor(Color.BLUE);
+	        g2.fillRoundRect((int)(x * 2) , y , 150, 40, 30, 30);
+	        g2.setColor(Color.white);
+	        g2.drawString("Đăng nhập" ,(int)(x * 2.2) - 5 , y + 27 );
+	        
+	        if(commandNum == 2) {
+	        	g2.setColor(Color.black);
+				g2.drawString("<", (int) (x * 3)+ 5, y+ 30 );
+	        }
+	        
+	        y+= gp.titleSize;
+	        g2.setColor(Color.BLUE);
+	        g2.fillRoundRect((int)(x * 2) , y , 150, 40, 30, 30);
+	        g2.setColor(Color.white);
+	        g2.drawString("Đăng ký" ,(int)(x * 2.2) + 5 , y + 27 );
+	        
+	        if(commandNum == 3) {
+	        	g2.setColor(Color.black);
+				g2.drawString("<", (int) (x * 3)+ 5, y+ 30 );
+	        }
+	        
+	        if(commandNum == 4) {
+	        	//Cửa sổ hiển thị
+				int width = gp.screenWidth - (gp.titleSize * 4);
+				int height = gp.titleSize * 2;
+				g2.setColor(Color.CYAN);
+				g2.fillRoundRect(90 ,gp.titleSize, width, height,30,30);
+				g2.setColor(Color.black);
+				g2.drawRoundRect(90, gp.titleSize, width , height , 30, 30);
+				
+				if(gp.checkAccountLogin == true) {
+					g2.setColor(Color.black);
+					String text = "Đăng nhập thành công!";
+					x = getXforCenteredText(text);
+					g2.drawString(text, x, y - 210);
+					text = "Vui lòng quay lại màn hình chính và chơi tiếp.";
+					x = getXforCenteredText(text);
+					for(String line : text.split("\n")) {
+						g2.drawString(line, x, y - 180);
+						y += 40;
+						
+					}
+				}else if(gp.checkAccountLogin == false) {
+					g2.setColor(Color.black);
+					String text = "Đăng nhập thất bại!";
+					x = getXforCenteredText(text);
+					g2.drawString(text, x, y - 210);
+					text = "Vui lòng kiểm tra lại thông tin Username và Password.";
+					x = getXforCenteredText(text);
+					for(String line : text.split("\n")) {
+						g2.drawString(line, x, y - 180);
+						y += 40;
+						
+					}
+				}
+				
+	        }
+	        if(commandNum == 5) {
+	        	//Cửa sổ hiển thị
+				int width = gp.screenWidth - (gp.titleSize * 4);
+				int height = gp.titleSize * 2;
+				g2.setColor(Color.CYAN);
+				g2.fillRoundRect(90 ,gp.titleSize, width, height,30,30);
+				g2.setColor(Color.black);
+				g2.drawRoundRect(90, gp.titleSize, width , height , 30, 30);
+				
+				if(gp.checkAccountRegister == true) {
+					g2.setColor(Color.black);
+					String text = "Đăng ký thành công!";
+					x = getXforCenteredText(text);
+					g2.drawString(text, x, y - 210);
+					text = "Vui lòng quay lại màn hình chính và bắt đầu chơi.";
+					x = getXforCenteredText(text);
+					for(String line : text.split("\n")) {
+						g2.drawString(line, x, y - 180);
+						y += 40;
+						
+					}
+				}else if(gp.checkAccountRegister == false) {
+					g2.setColor(Color.black);
+					String text = "Đăng ký thất bại!";
+					x = getXforCenteredText(text);
+					g2.drawString(text, x, y - 210);
+					text = "Không thể bỏ trống hoặc tên Username đã tồn tại.";
+					x = getXforCenteredText(text);
+					for(String line : text.split("\n")) {
+						g2.drawString(line, x, y - 180);
+						y += 40;
+					}
+				}
+	        }
+	        
+	        //g2.fillRect((int)(x * 2.5) , y , 150, 30);
+	        
+		}
+		
 		if(titleScreenState == 0) {
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
 			//g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
@@ -244,9 +383,37 @@ public class UI {
 			g2.setColor(new Color(205,92,92));
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,40F));
 			
+			if(gp.checkAccountLogin == true) {
+				text = "Xin chào " + gp.usernameInput;
+				x= getXforCenteredText(text);
+				y += gp.titleSize*2.5 ;
+				g2.setColor(Color.black);
+				g2.drawString(text, x+4, y+3);
+			}
+			
+			if(gp.checkAccountLogin == true) {
+				text = "Đăng xuất";
+			}else {
+				text = "Đăng nhập";
+			}
+			
+			
+			x= getXforCenteredText(text);
+			y += gp.titleSize + 20 ;
+			
+            
+			g2.setColor(Color.black);
+			g2.drawString(text, x+4, y+3);
+			g2.setColor(new Color(205,92,92));
+			g2.drawString(text, x, y);
+			if(commandNum == -1) {
+				g2.setColor(Color.black);
+				g2.drawString(">", x - gp.titleSize/2, y);
+			}
+			
 			text = "CHƠI MỚI";
 			x= getXforCenteredText(text);
-			y += gp.titleSize*2.5 ;
+			y += gp.titleSize + 10;
 			
             
 			g2.setColor(Color.black);
@@ -649,6 +816,46 @@ public class UI {
 		
 		
 	}
+	public void drawGameOverScreen() {
+		g2.setColor(new Color(0,0,0,150));
+		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+		
+		int x;
+		int y;
+		String text;
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD,80f));
+		
+		text = "Bạn đã ngất!";
+		//Shadow
+		g2.setColor(Color.black);
+		x = getXforCenteredText(text);
+		y = gp.titleSize*4;
+		g2.drawString(text, x, y);
+		
+		//Main
+		g2.setColor(Color.white);
+		g2.drawString(text, x - 4, y - 4);
+		
+		//Retry
+		g2.setFont(g2.getFont().deriveFont(50f));
+		text = "Nghỉ ngơi";
+		x = getXforCenteredText(text);
+		y += gp.titleSize * 4;
+		g2.drawString(text, x, y);
+		if(commandNum == 0) {
+			g2.drawString(">", x - 40, y);
+		}
+		
+		//Back to the tile screen
+		text = "Thoát";
+		x = getXforCenteredText(text);
+		y += 80;
+		g2.drawString(text, x, y);
+		if(commandNum == 1) {
+			g2.drawString(">", x - 40, y);
+		}
+		
+	}
 	public void drawOptionsScreen() {
 		g2.setColor(Color.white);
 		g2.setFont(g2.getFont().deriveFont(32F));
@@ -666,7 +873,6 @@ public class UI {
 		case 2: options_control(frameX, frameY); break;
 		case 3: options_endGameConfirmation(frameX, frameY); break;
 		}
-		
 		gp.keyH.enterPressed = false;
 	}
 	public void options_top(int frameX, int frameY) {
@@ -877,7 +1083,7 @@ public class UI {
 				titleScreenState = 0;
 				gp.stopMusic();
 				gp.gameState = gp.titleState;
-				gp.resetGame(true);
+				//gp.resetGame(true);
 			}
 			
 		}
@@ -1089,6 +1295,7 @@ public class UI {
 		}
 		
 	}
+	
 	
 	
 	public int getItemIndexOnSlot(int slotCol, int slotRow) {

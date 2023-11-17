@@ -30,7 +30,7 @@ public class KeyHandler implements KeyListener {
 		// Trạng thái Title (Màn hình khởi động)
 		//code cu if(gp.gameState == gp.titleState)
 		if(gp.gameState == gp.titleState) {
-			titleState(code);
+			titleState(code,e);
 		}	
 		//Trạng thái chơi
 		else if(gp.gameState == gp.playState) {
@@ -56,20 +56,23 @@ public class KeyHandler implements KeyListener {
 		else if(gp.gameState == gp.tradeState) {
 			tradeState(code);
 		}
+		else if(gp.gameState == gp.gameOverState) {
+			gameOverState(code);
+		}
 	}
 	//Giao diện màn hình
-	public void titleState(int code) {
+	public void titleState(int code, KeyEvent e) {
 		if(gp.ui.titleScreenState == 0) {
 			if(code == KeyEvent.VK_W) {
 				gp.ui.commandNum--;
-				if(gp.ui.commandNum < 0) {
+				if(gp.ui.commandNum < -1) {
 					gp.ui.commandNum = 2;
 				}
 			}
 			if(code == KeyEvent.VK_S) {
 				gp.ui.commandNum++;
 				if(gp.ui.commandNum > 2) {
-					gp.ui.commandNum = 0;
+					gp.ui.commandNum = -1;
 				}
 			}
 			//Set up núp chọn mod cho game
@@ -84,13 +87,27 @@ public class KeyHandler implements KeyListener {
 					//Add late
 					//Load game
 					gp.gameState = gp.playState;
-					gp.saveLoad.load();
+					String file = "";
+					if(gp.checkAccountLogin == true) {
+						file = gp.usernameInput + "_" + gp.passwordInput + ".dat";
+						
+					}
+					else if(gp.checkAccountLogin == false) {
+						file = "save.dat";
+					}
+					
+					gp.saveLoad.load(file);
 					gp.player.getPlayerImage();
 					
 					gp.playMusic(2);
 				}
 				if(gp.ui.commandNum == 2) {
 					System.exit(0);
+				}
+				if(gp.ui.commandNum == -1) {
+					gp.ui.commandNum = 0;
+					gp.checkAccountLogin = false;
+					gp.ui.titleScreenState = -1;
 				}
 			}
 		}
@@ -153,11 +170,109 @@ public class KeyHandler implements KeyListener {
 					gp.player.selectPlayer = 2;
 				}
 				gp.player.getPlayerImage();
-				gp.saveLoad.deleteSaveFile();
+				String file1 = "";
+				System.out.println("Tinh trạng đăng nhập" + gp.checkAccountLogin);
+				if(gp.checkAccountLogin == true) {
+					file1 = gp.usernameInput + "_" + gp.passwordInput + ".dat";
+				}
+				else {
+					file1 = "save.dat";
+				}
+				gp.resetGame();
+				gp.saveLoad.clearFileContent(file1);
 				gp.gameState = gp.playState;
 				gp.stopMusic();
 				gp.playMusic(2);
 //				gp.ui.titleScreenState = ;
+			}
+		}
+		else if(gp.ui.titleScreenState == -1) {
+			
+			if(code == KeyEvent.VK_W && gp.isTypingPassword == false && gp.isTypingUsername == false ) {
+				gp.ui.commandNum--;
+				if(gp.ui.commandNum < 0) {
+					gp.ui.commandNum = 3;
+				}
+			}
+			if(code == KeyEvent.VK_S && gp.isTypingPassword == false && gp.isTypingUsername == false) {
+				gp.ui.commandNum++;
+				if(gp.ui.commandNum > 3) {
+					gp.ui.commandNum = 0;
+				}
+			}
+			if(code == KeyEvent.VK_ENTER) {
+				if(gp.ui.commandNum == 0) {
+					gp.isTypingUsername = true;
+					gp.isTypingPassword = false;
+				}
+				if(gp.ui.commandNum == 1) {
+					gp.isTypingUsername = false;
+					gp.isTypingPassword = true;
+				}
+				
+			}
+			if(code == KeyEvent.VK_E) {
+				if(gp.ui.commandNum == 2) {
+					//Tiến hành kiểm tra và hiển thị thông báo
+					
+					//Kiểm tra đăng nhập 
+					System.out.println("Username: "+ gp.usernameInput + ", Password: "+ gp.passwordInput + ", khi đăng nhập");
+					if(gp.saveLoad.doesFileExist(gp.usernameInput,gp.passwordInput) == true) {
+						gp.checkAccountLogin = true;
+
+					}
+					else {
+						gp.checkAccountLogin = false;
+					}
+					
+					gp.ui.commandNum = 4 ;
+				}
+				if(gp.ui.commandNum == 3) {
+					
+					//Kiểm tra thông tin đăng ký
+					System.out.println("Username: "+ gp.usernameInput + ", Password: "+ gp.passwordInput + ", khi đăng ký");
+					if(gp.saveLoad.doesFileExist(gp.usernameInput,gp.passwordInput) == false) {
+						gp.checkAccountRegister = true;
+						gp.saveLoad.createFileForUser(gp.usernameInput,gp.passwordInput);
+					}
+					else {
+						gp.checkAccountRegister = false;
+					}
+					
+					gp.ui.commandNum = 5;
+				}
+				if(gp.ui.commandNum == 5) {
+					gp.checkAccountLogin = true;
+					gp.ui.titleScreenState = 0;
+				}
+			}
+			
+			if(code == KeyEvent.VK_BACK_SPACE && (gp.isTypingPassword || gp.isTypingUsername)) {
+				if(gp.isTypingUsername && !gp.usernameInput.isEmpty()) {
+					gp.usernameInput = gp.usernameInput.substring(0, gp.usernameInput.length() - 1);
+				}
+				else if(gp.isTypingPassword && !gp.passwordInput.isEmpty()) {
+					gp.passwordInput = gp.passwordInput.substring(0, gp.passwordInput.length() - 1);
+				}
+			}
+			else if(Character.isLetterOrDigit(e.getKeyChar())) {
+				//Cho phép người dùng nhập user từ bàn phím
+				if( gp.isTypingUsername == true && gp.ui.commandNum == 0) {
+					gp.usernameInput += e.getKeyChar();
+				}
+				//Cho phép người dùng nhập pass từ bàn phím
+				if( gp.isTypingPassword == true && gp.ui.commandNum == 1) {
+					gp.passwordInput += e.getKeyChar();
+				}
+			}
+			
+			//Thoát khỏi ô đang nhập 
+			if(code == KeyEvent.VK_ESCAPE) {
+				gp.isTypingUsername = false;
+				gp.isTypingPassword = false;
+			}
+			if(code == KeyEvent.VK_Q) {
+				gp.ui.titleScreenState = 0;
 			}
 		}
 	}
@@ -363,6 +478,38 @@ public class KeyHandler implements KeyListener {
 				gp.playSE(22);
 			}
 		}
+	}
+	
+	public void gameOverState(int code) {
+		if(code == KeyEvent.VK_W) {
+			gp.ui.commandNum --;
+			if(gp.ui.commandNum < 0) {
+				gp.ui.commandNum = 1;
+			}
+			gp.playSE(22);
+			
+		}
+		if(code == KeyEvent.VK_S) {
+			gp.ui.commandNum++;
+			if(gp.ui.commandNum > 1) {
+				gp.ui.commandNum = 0;
+			}
+			gp.playSE(22);
+		}
+		
+		if(code == KeyEvent.VK_E) {
+			if(gp.ui.commandNum == 0) {
+				gp.gameState = gp.playState;
+				//Nghỉ ngơi
+				gp.retry();
+			}
+			else if(gp.ui.commandNum == 1) {
+				gp.gameState = gp.titleState;
+				//Chơi lại
+				gp.resetGame();
+			}
+		}
+		
 	}
 	
 	@Override

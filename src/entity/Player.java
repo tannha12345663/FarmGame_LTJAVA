@@ -82,11 +82,21 @@ public class Player extends Entity {
 	}
 	public void setItems() {
 		
+		inventory.clear();
 		inventory.add(currentCongCu);
 		inventory.add(new OBJ_Axe(gp));
 		inventory.add(new OBJ_Watering(gp));
 //		inventory.add(new OBJ_HatGiong1(gp));
 //		inventory.add(new OBJ_HatGiong2(gp));
+	}
+	//Hàm trừ máu
+	public void giamMau() {
+		life--;
+		if(life <= 0) {
+			life = 0;
+			gp.gameState = gp.gameOverState;
+		}
+
 	}
 	
 	public void setDefaultPositions() {
@@ -103,6 +113,8 @@ public class Player extends Entity {
 		coins -= 100;
 		
 	}
+	
+	
 	public int getCurrentCongCuSlot() {
 		int currentCongCu = 0;
 		for(int i = 0; i< inventory.size();i++) {

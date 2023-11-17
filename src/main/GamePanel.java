@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	//Bộ đếm thời gian
 	public long days = 1, hours = 23,minutes = 0;
+	//Tính khoảng thời gian đói
+	public int lowheal = 0;
 	//For full screen
 	
 	
@@ -83,11 +85,17 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int characterState = 4; // Tình trạng cho nhân vật 
 	public final int optionsState = 5; // Màn hình setting
 	public final int tradeState = 8; //Thực hiện giao dịch
+	public final int gameOverState = 6; // Thực hiện màn hình game over
 	
 	private BufferedImage image ;
 	
-	
-	
+	//Login & Register
+	public String usernameInput = ""; // Biến lưu trữ tên đăng nhập
+	public String passwordInput = ""; // Biến lưu trữ mật khẩu
+	public boolean isTypingUsername = false; // Biến xác định người dùng đang nhập tên đăng nhập
+	public boolean isTypingPassword = false; // Biến xác định người dùng đang nhập mật khẩu
+	public boolean checkAccountLogin = false;
+	public boolean checkAccountRegister = false;
 	
 //	// Thiết lập vị trí mặc định của người chơi
 //	int playerX = 100;
@@ -130,16 +138,33 @@ public class GamePanel extends JPanel implements Runnable {
 		
 	}
 	
-	public void resetGame(boolean restart) {
-		
+	public void resetTime() {
+		days = 1;
+		hours = 23;
+		minutes = 0;
 	}
 	
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
+		resetTime();
+		
 		
 	}
-
+	public void resetGame() {
+		player.setDefaultValues();
+		player.setItems();
+		aSetter.setObject();
+		aSetter.setNPC();
+		aSetter.setInteractiveTile();
+		aSetter.setDig();
+	}
+	
+	public void retry() {
+		player.setDefaultPositions();
+		player.restoreStatus();
+	}
+	
 	//Phương pháp 1: Delta
 	@Override
 //	public void run() {
@@ -226,9 +251,17 @@ public class GamePanel extends JPanel implements Runnable {
             minutes = 0; // Đặt lại số phút về 0
             hours++; // Tăng số giờ lên sau mỗi giờ
             plantTime();
+            //Giảm heal
+            lowheal++;
+            if(lowheal > 6) {
+            	player.giamMau();
+            	lowheal = 0;
+            }
             if (hours >= 24) { // Nếu đạt 24 giờ (1 ngày)
                 hours = 0; // Đặt lại số giờ về 0
                 days++; // Tăng số ngày lên sau mỗi ngày
+                
+                
             }
         }
 	}

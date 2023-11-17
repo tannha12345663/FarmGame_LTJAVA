@@ -105,8 +105,8 @@ public class EventHandler {
 		gp.player.life -=1;
 	//	eventRect[col][row].evenDone = true; //Người chơi đã bị thương và mất hố bẫy vì vậy sẽ đánh dấu khu vực này không còn bị sát thuongw nữa
 		if(gp.player.life == 0) {
-			gp.gameState = gp.titleState;
-			
+			//gp.gameState = gp.titleState;
+			gp.gameState = gp.gameOverState;
 		}
 		canTouchEvent = false;
 		
@@ -150,7 +150,15 @@ public class EventHandler {
 				gp.player.currentCongCu.valueConsumable = gp.player.currentCongCu.maxValueConsum;
 				gp.ui.addMessage("Bình đã đầy!");
 			}
-			gp.saveLoad.save();
+			String file = "";
+			if(gp.checkAccountLogin == true) {
+				file = gp.usernameInput + "_" + gp.passwordInput + ".dat";
+				
+			}
+			else {
+				file = "save.dat";
+			}
+			gp.saveLoad.save(file);
 		}
 	}
 }

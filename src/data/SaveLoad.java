@@ -84,10 +84,10 @@ public class SaveLoad  {
 	
 	
 	
-	public void save() {
+	public void save(String file) {
 		
 		try {
-			ObjectOutputStream cos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
+			ObjectOutputStream cos = new ObjectOutputStream(new FileOutputStream(new File(file)));
 			
 			DataStorage ds = new DataStorage();
 			
@@ -124,8 +124,6 @@ public class SaveLoad  {
 //					
 //				
 //			}
-			
-			
 			//Player Equipment
 			ds.currentCongCuSlot = gp.player.getCurrentCongCuSlot();
 			//System.out.println("Tổng số object có trong mảng: "+ gp.obj.length);
@@ -175,9 +173,10 @@ public class SaveLoad  {
 			System.out.println("Lỗi khi save!");
 		}
 	}
-	public void load() {
+	public void load(String file) {
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
+			
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(file)));
 			
 			//Read the DataStorage object
 			DataStorage ds = (DataStorage)ois.readObject();
@@ -243,8 +242,8 @@ public class SaveLoad  {
 			System.out.println("Lỗi khi load data!"+ e.getMessage());
 		}
 	}
-	public void deleteSaveFile() {
-        File file = new File("save.dat");
+	public void deleteSaveFile(String filename) {
+        File file = new File(filename);
         if (file.exists()) {
             boolean deleted = file.delete();
             if (deleted) {
@@ -254,6 +253,36 @@ public class SaveLoad  {
             }
         } else {
             System.out.println("Không tìm thấy tệp lưu trữ để xóa.");
+        }
+    }
+	
+	//Kiểm tra vùng nhớ account này đã có chứa
+	public boolean doesFileExist(String userName, String password) {
+        File file = new File(userName + "_" + password + ".dat");
+        return file.exists();
+    }
+	//Tạo vùng nhớ cho account mới
+	public void createFileForUser(String userName, String password) {
+        File file = new File(userName + "_" + password + ".dat");
+        try {
+            if (file.createNewFile()) {
+                System.out.println("Tạo file thành công!");
+            } else {
+                System.out.println("File đã tồn tại!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	//Xóa toàn bộ nội dung trước đó nếu người chơi chơi mới
+	public void clearFileContent(String file) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(new byte[0]); // Ghi nội dung trống để xóa dữ liệu trong file
+            fileOutputStream.close();
+            System.out.println("Đã xóa nội dung của file!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
