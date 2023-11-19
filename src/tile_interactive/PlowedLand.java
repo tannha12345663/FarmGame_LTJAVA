@@ -21,6 +21,8 @@ public class PlowedLand extends InteractiveTile {
 		gieoTrongCay = true;
 		collision = false;
 		
+		
+		
 	}
 	//Kiểm tra xem khi chặt cây có phải là cây rìu không
 	public boolean isCorrectItem(Entity entity) {

@@ -22,7 +22,14 @@ public class HatGiong1_2 extends InteractiveTile {
 		down1 = setup("/HatGiong/HatGiong1_2");
 		phatTrien = true;
 		//destructible = true;
-		collisionOn = true;
+//		collisionOn = true;
+//		solidArea.x= 0;
+//		solidArea.y = 16;
+//		solidArea.width = 54;
+//		solidArea.height = 32;
+//		solidAreaDefaultX = solidArea.x;
+//		solidAreaDefaultY = solidArea.y;
+		
 	}
 	public boolean isCorrectItem(Entity entity) {
 		boolean isCorrecItem = false;

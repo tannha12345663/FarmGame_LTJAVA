@@ -14,6 +14,7 @@ import main.KeyHandler;
 import object.OBJ_Axe;
 import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
+import object.OBJ_Hook;
 import object.OBJ_Pickaxe;
 import object.OBJ_Watering;
 import title.TileManager;
@@ -81,11 +82,11 @@ public class Player extends Entity {
 		
 	}
 	public void setItems() {
-		
 		inventory.clear();
 		inventory.add(currentCongCu);
 		inventory.add(new OBJ_Axe(gp));
 		inventory.add(new OBJ_Watering(gp));
+		inventory.add(new OBJ_Hook(gp));
 //		inventory.add(new OBJ_HatGiong1(gp));
 //		inventory.add(new OBJ_HatGiong2(gp));
 	}
@@ -96,7 +97,6 @@ public class Player extends Entity {
 			life = 0;
 			gp.gameState = gp.gameOverState;
 		}
-
 	}
 	
 	public void setDefaultPositions() {
@@ -107,14 +107,10 @@ public class Player extends Entity {
 	}
 	
 	public void restoreStatus() {
-		
 		life = maxLife;
 		invincible = false;
 		coins -= 100;
-		
 	}
-	
-	
 	public int getCurrentCongCuSlot() {
 		int currentCongCu = 0;
 		for(int i = 0; i< inventory.size();i++) {
@@ -229,6 +225,20 @@ public class Player extends Entity {
 			animaTionRight1 = setupAnimation("/playerAnimation/right1_GieoTrong",gp.titleSize+ 40,gp.titleSize );
 			animaTionRight2 = setupAnimation("/playerAnimation/right2_GieoTrong",gp.titleSize+ 40,gp.titleSize);
 		}
+		if(currentCongCu.type == type_hook) {
+			animaTionUp1 = setupAnimation("/playerAnimation/up2_hook",gp.titleSize,gp.titleSize+ 30);
+			animaTionUp2 = setupAnimation("/playerAnimation/up1_hook",gp.titleSize,gp.titleSize+ 30);
+			
+			animaTionDown1 = setupAnimation("/playerAnimation/down1_hook",gp.titleSize,gp.titleSize+ 20);
+			animaTionDown2 = setupAnimation("/playerAnimation/down2_hook",gp.titleSize,gp.titleSize+ 20);
+			
+			animaTionLeft1 = setupAnimation("/playerAnimation/left1_hook",gp.titleSize + 40,gp.titleSize );
+			animaTionLeft2 = setupAnimation("/playerAnimation/left2_hook",gp.titleSize + 40,gp.titleSize );
+			
+			animaTionRight1 = setupAnimation("/playerAnimation/right1_hook",gp.titleSize+ 40,gp.titleSize );
+			animaTionRight2 = setupAnimation("/playerAnimation/right2_hook",gp.titleSize+ 40,gp.titleSize);
+		}
+		
 	}
 	
 	public void update () {
@@ -280,8 +290,10 @@ public class Player extends Entity {
 			
 			//Kiểm tra va chạm với cây có thể chặt -- Check Interactive Tile collision
 			int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
-			//int iDigIndex = gp.cChecker.checkEntity(this,gp.objDig);
 			
+			
+			//int iDigIndex = gp.cChecker.checkDig(this,gp.objDig);
+
 
 //			System.out.println("x = "+ gp.player.worldX + ", y ="+gp.player.worldY);
 			//Check event
@@ -307,6 +319,7 @@ public class Player extends Entity {
 				if(currentCongCu.type == type_pickaxe) {
 					gp.playSE(20);
 				}
+				getPlayerAnimationImage();
 				playerAnimation = true;
 				spriteCounter = 0;
 			}
@@ -434,7 +447,7 @@ public class Player extends Entity {
 	
 	public void pickPlant(int i) {
 		
-		if(i != 999 && gp.objDig[i].daytoGrow == 5) {
+		if(i != 999 && gp.objDig[i].daytoGrow == 5 && currentCongCu.type == type_hook) {
 			
 			String text;
 			//Kiểm tra túi người chơi có đầy không
@@ -672,7 +685,8 @@ public class Player extends Entity {
 			
 			if(selectItem.type == type_axe || selectItem.type == type_pickaxe || selectItem.type == type_watering 
 					|| selectItem.type == type_plant1
-					|| selectItem.type == type_plant2) {
+					|| selectItem.type == type_plant2
+					|| selectItem.type == type_hook) {
 				currentCongCu = selectItem;
 				getPlayerAnimationImage();
 			}

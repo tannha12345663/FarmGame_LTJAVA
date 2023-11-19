@@ -148,8 +148,6 @@ public class GamePanel extends JPanel implements Runnable {
 		gameThread = new Thread(this);
 		gameThread.start();
 		resetTime();
-		
-		
 	}
 	public void resetGame() {
 		player.setDefaultValues();

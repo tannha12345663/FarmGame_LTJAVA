@@ -354,7 +354,10 @@ public class UI {
 					}
 				}
 	        }
-	        
+	        g2.setColor(new Color(33, 92, 138));
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30));
+	        String text = "Nhấn Q để quay lại";
+			g2.drawString(text, x - 110, y*2 - 13);
 	        //g2.fillRect((int)(x * 2.5) , y , 150, 30);
 	        
 		}
@@ -735,7 +738,7 @@ public class UI {
 				g2.fillRoundRect(slotX, slotY, gp.titleSize,gp.titleSize,10,10);
 				
 			}
-			
+			//System.out.println("Vẽ túi đồ thứ "+ i);
 			g2.drawImage(entity.inventory.get(i).down1, slotX,slotY, null);
 			
 			// Display Amount
@@ -871,7 +874,8 @@ public class UI {
 		case 0: options_top(frameX, frameY); break;
 		case 1: options_fullScreenNotification(frameX, frameY); break;
 		case 2: options_control(frameX, frameY); break;
-		case 3: options_endGameConfirmation(frameX, frameY); break;
+		case 3: options_saveGame(frameX, frameY); break;
+		case 4: options_endGameConfirmation(frameX, frameY); break;
 		}
 		gp.keyH.enterPressed = false;
 	}
@@ -928,22 +932,41 @@ public class UI {
 				commandNum = 0;
 			}
 		}
+		//Save game
+		textY += gp.titleSize;
+		g2.drawString("Lưu game", textX, textY);
+		if(commandNum == 4) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				String file = "";
+				if(gp.checkAccountLogin == true) {
+					file = gp.usernameInput + "_" + gp.passwordInput + ".dat";
+				}
+				else {
+					file = "save.dat";
+				}
+				gp.saveLoad.save(file);
+				subState = 3;
+				commandNum = 0;
+			}
+		}		
+		
 		
 		//End game
 		textY += gp.titleSize;
 		g2.drawString("Thoát game", textX, textY);
-		if(commandNum == 4) {
+		if(commandNum == 5) {
 			g2.drawString(">", textX - 25, textY);
 			if(gp.keyH.enterPressed == true) {
-				subState = 3;
+				subState = 4;
 				commandNum = 0;
 			}
 		}
 		
 		//Back
-		textY += gp.titleSize *2;
+		textY += (int)gp.titleSize *1.8;
 		g2.drawString("Quay lại", textX, textY);
-		if(commandNum == 5) {
+		if(commandNum == 6) {
 			g2.drawString(">", textX - 25, textY);
 			if(gp.keyH.enterPressed == true) {
 				gp.gameState = gp.playState;
@@ -976,6 +999,38 @@ public class UI {
 		g2.fillRect(textX, textY, volumWidth, 24);
 		
 		gp.config.saveConfig();
+		
+	}
+	
+	public void options_saveGame(int frameX, int frameY) {
+		
+		int textX = frameX + gp.titleSize;
+		int textY = frameY + gp.titleSize * 3;
+		
+		String text = "Thông báo";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.titleSize;
+		g2.drawString(text, textX, textY);
+		
+		textX = frameX + gp.titleSize - 5;
+		textY += gp.titleSize*2 - 10;
+		currentDialouge = "Bạn đã lưu game thành \n công. Dữ liệu của \n bạn đã được lưu lại.";
+		
+		for(String line: currentDialouge.split("\n")) {
+			g2.drawString(line, textX, textY);
+			textY += 40;
+		}
+		
+		g2.setFont(g2.getFont().deriveFont(25F));
+		// Back 
+		textY = frameY + gp.titleSize*9;
+		g2.drawString("Quay lại", textX, textY);
+		if(commandNum == 0) {
+			g2.drawString(">", textX - 25, textY);
+			if(gp.keyH.enterPressed == true) {
+				subState = 0;
+			}
+		}
 		
 	}
 	

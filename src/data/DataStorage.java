@@ -15,6 +15,10 @@ public class DataStorage implements Serializable {
 	int nextLevelExp;
 	int coin;
 	
+	//Vị trí của nhân vật 
+	int playerWorldX;
+	int playerworldY;
+	
 	//type Character 
 	int selectPlayer;
 	

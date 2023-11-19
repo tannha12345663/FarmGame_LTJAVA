@@ -78,6 +78,7 @@ public class Entity {
 	public final int type_plant1 = 6;
 	public final int type_plant2 = 7;
 	public final int type_consumable = 8;
+	public final int type_hook = 9;
 	
 	public final int type_nothing = 99;
 	

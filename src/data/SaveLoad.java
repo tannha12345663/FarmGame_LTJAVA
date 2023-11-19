@@ -13,6 +13,7 @@ import object.OBJ_Axe;
 import object.OBJ_Chest;
 import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
+import object.OBJ_Hook;
 import object.OBJ_Pickaxe;
 import object.OBJ_Watering;
 import tile_interactive.HatGiong1_1;
@@ -42,7 +43,7 @@ public class SaveLoad  {
 	public Entity getObject(String itemName) {
 		
 		Entity obj = null;
-		
+		// Lưu ý khi có sự thay đổi về trang bị phải chú ý dòng này 
 		switch (itemName) {
 		case "Cây rìu": obj = new OBJ_Axe(gp);break;
 		case "Rương bí ẩn ?" : obj = new OBJ_Chest(gp); break;
@@ -50,6 +51,7 @@ public class SaveLoad  {
 		case "CaTim": obj = new OBJ_HatGiong2(gp);break;
 		case "Cây cuốc": obj = new OBJ_Pickaxe(gp);break;
 		case "Watering": obj = new OBJ_Watering(gp);break;
+		case "Hook": obj = new OBJ_Hook(gp); break;
 		}
 		
 		return obj;
@@ -104,17 +106,21 @@ public class SaveLoad  {
 			ds.exp = gp.player.exps;
 			ds.nextLevelExp = gp.player.nextLevel;
 			ds.selectPlayer = gp.player.selectPlayer;
+			ds.playerWorldX = gp.player.worldX;
+			ds.playerworldY = gp.player.worldY;
+			
 			
 			ds.valueConsumable = new int[gp.player.inventory.size()];
 			
 			//Player Inventory
 			for(int i = 0;i< gp.player.inventory.size();i++) {
-				
-				ds.itemNames.add(gp.player.inventory.get(i).name);
-				if(gp.player.inventory.get(i).name == "Watering") {
-					ds.valueConsumable[i] = gp.player.inventory.get(i).valueConsumable;
+				if(gp.player.inventory.get(i) != null) {
+					ds.itemNames.add(gp.player.inventory.get(i).name);
+					if(gp.player.inventory.get(i).name == "Watering") {
+						ds.valueConsumable[i] = gp.player.inventory.get(i).valueConsumable;
+					}
+					ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 				}
-				ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 			}
 //			for(int i = 0 ; i < ds.itemNames.size();i++) {
 //				Entity check = getObject(ds.itemNames.get(i));
@@ -194,17 +200,27 @@ public class SaveLoad  {
 			gp.player.nextLevel = ds.nextLevelExp;
 			gp.player.selectPlayer = ds.selectPlayer;
 			
+			//Location player
+			gp.player.worldX = ds.playerWorldX;
+			gp.player.worldY = ds.playerworldY;
+			
+			
 			//Player Inventory 
 			gp.player.inventory.clear();
 			
 			for(int i = 0; i <ds.itemNames.size();i++) {
-				gp.player.inventory.add(getObject(ds.itemNames.get(i)));
-				Entity check = getObject(ds.itemNames.get(i));
-				if(check.name == "Watering") {
-					gp.player.inventory.get(i).valueConsumable = ds.valueConsumable[i];
+				if(ds.itemNames.get(i) != null) {
+					gp.player.inventory.add(getObject(ds.itemNames.get(i)));
+					//System.out.println("Load data thứ "+ i +"Voi noi dung "+ ds.itemNames.get(i));
+					Entity check = getObject(ds.itemNames.get(i));
+					if(check != null) {
+						if(check.name == "Watering") {
+							gp.player.inventory.get(i).valueConsumable = ds.valueConsumable[i];
+						}
+						gp.player.inventory.get(i).amount = ds.itemAmounts.get(i);
+					}
 				}
 				
-				gp.player.inventory.get(i).amount = ds.itemAmounts.get(i);
 			}
 			//Player Equipment
 			gp.player.currentCongCu = gp.player.inventory.get(ds.currentCongCuSlot);
@@ -216,7 +232,6 @@ public class SaveLoad  {
 					gp.obj[i]= null;
 				}
 				else {
-					
 					gp.obj[i] = getObject(ds.ObjectName[i]);
 					gp.obj[i].worldX = ds.ObjectWorldX[i];
 					gp.obj[i].worldY = ds.objectWorldY[i];
@@ -225,7 +240,6 @@ public class SaveLoad  {
 			
 			//System.out.println("Tổng số interac có trong mảng o data: "+ ds.InteracName.length);
 			for(int i = 0; i< ds.InteracName.length;i++) {
-				
 				if(ds.InteracName[i].equals("NA")) {
 					gp.objDig[i] = null;
 				}
@@ -236,7 +250,6 @@ public class SaveLoad  {
 					gp.objDig[i].water = ds.water[i];
 				}
 			}
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Lỗi khi load data!"+ e.getMessage());

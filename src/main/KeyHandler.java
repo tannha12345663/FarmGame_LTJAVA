@@ -179,6 +179,7 @@ public class KeyHandler implements KeyListener {
 					file1 = "save.dat";
 				}
 				gp.resetGame();
+				gp.resetTime();
 				gp.saveLoad.clearFileContent(file1);
 				gp.gameState = gp.playState;
 				gp.stopMusic();
@@ -345,8 +346,9 @@ public class KeyHandler implements KeyListener {
 		
 		int maxCommandNum = 0;
 		switch(gp.ui.subState) {
-		case 0: maxCommandNum = 5; break;
+		case 0: maxCommandNum = 6; break;
 		case 3: maxCommandNum = 1; break;
+		case 4: maxCommandNum = 1; break;
 		}
 		
 		if(code == KeyEvent.VK_W) {

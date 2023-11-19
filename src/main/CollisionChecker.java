@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import tile_interactive.InteractiveTile;
 import tile_interactive.Land;
 
 public class CollisionChecker {
@@ -214,21 +215,47 @@ public class CollisionChecker {
 		return contactPlayer;
 	}
 	//Kiểm tra khu vực này có cho đào đất hay không 
-	public int checkDig(Entity entity, Entity[] target) {
+	public int checkDig(Entity entity, InteractiveTile[] target) {
 		int index = 999;
 		
 		//Tạo vòng lặp for
 		for(int i = 0; i < target.length; i++) {
 			if(target[i] !=null) {
 				
-				System.out.println(entity.worldX + ", "+ entity.worldY);
+				//Cần lấy vị trị solidArea của thực thể
+				entity.solidArea.x = entity.worldX + entity.solidArea.x;
+				entity.solidArea.y = entity.worldY + entity.solidArea.y;
+				//Cần lấy thông tin solidArea của đối tượng
+				target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
+				target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;	
+				
+				switch (entity.direction) {
+				case "up": 
+					entity.solidArea.y -= entity.speed;					
+					break;
+				
+				case "down":
+					entity.solidArea.y += entity.speed;
+					break;
+				
+				case "left":
+					entity.solidArea.x -= entity.speed;
+					break;
+				
+				case "right":
+					entity.solidArea.x += entity.speed;
+					break;
+				}
 				//Kiểm tra xem hai khối hình chữ nhật này có va chạm nhau hay không
 				if(entity.solidArea.intersects(target[i].solidArea)) {
-					if(target[i] != entity) {
-						entity.collisionOn = true;
+					System.out.println("Hai khối va chạm" + target[i].name);
+					if(target[i].name !="Đất" || target[i].name != "Đất đã đào") {
+						entity.collisionOn =  target[i].collision; 
 						index = i;
-					}					
+					
+					}			
 				}
+				
 				
 			}
 		}
