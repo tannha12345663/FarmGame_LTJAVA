@@ -1,6 +1,11 @@
 package tile_interactive;
 
+import java.util.Random;
+
+import entity.Entity;
 import main.GamePanel;
+import object.OBJ_HatGiong1;
+import object.OBJ_HatGiong2;
 
 public class HatGiong1_5 extends InteractiveTile{
 
@@ -43,5 +48,20 @@ public class HatGiong1_5 extends InteractiveTile{
 			return tile;
 		}
 		return null;
+	}
+	public void use(Entity entity) {
+		// TODO Auto-generated method stub
+		gp.gameState = gp.dialogueState;
+		gp.ui.currentDialouge = "Bạn đã ăn "+ name+"!";
+		
+		
+        // Kiểm tra xem số nguyên này là số chẵn hay số lẻ
+		gp.player.life += 2;
+		if(gp.player.life > gp.player.maxLife) {
+			gp.player.life = gp.player.maxLife;
+		}
+		
+		//Thêm hiệu ứng
+		gp.playSE(24);
 	}
 }

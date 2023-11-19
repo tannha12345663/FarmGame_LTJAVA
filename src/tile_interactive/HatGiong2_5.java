@@ -49,7 +49,12 @@ public class HatGiong2_5 extends InteractiveTile {
 	}
 	public void use(Entity entity) {
 		gp.gameState = gp.dialogueState;
-		gp.ui.currentDialouge = "Bạn đã dùng "+ name+"!";
+		gp.ui.currentDialouge = "Bạn đã ăn "+ name+"!";
+        // Kiểm tra xem số nguyên này là số chẵn hay số lẻ
+		gp.player.life += 2;
+		if(gp.player.life > gp.player.maxLife) {
+			gp.player.life = gp.player.maxLife;
+		}
 		//Thêm hiệu ứng gieo hạt
 		gp.playSE(24);
 	}
