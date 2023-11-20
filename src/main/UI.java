@@ -211,10 +211,15 @@ public class UI {
 			x += gp.titleSize + 4;
 		}
 		//Vẽ hiển thị bộ đếm thời gian
-		String time = " "+ gp.days+" ngày "+gp.hours + " giờ "+ gp.minutes +" Phút";
+		String day = "Ngày: " + gp.days;
 		g2.setColor(Color.BLUE);
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
-		g2.drawString(time, x + 350 ,y + 10);
+		g2.drawString(day, x + 100 ,y + 10);
+		
+		String time = gp.hours + " giờ "+ gp.minutes +" Phút";
+		g2.setColor(Color.BLUE);
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+		g2.drawString(time, x + 450 ,y + 10);
 	}
 	
 	//Vẽ nội dung màn hình mở đầu

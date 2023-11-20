@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int titleSize = originalTileSize  * scale ; // Kích thước chuẩn để nhìn được là 160px x 160px
 	public int maxScreenCol = 16; //Số cột tối đa 
 	public int maxScreenRow = 12; //Số dòng tối đa
-	public final int screenWidth = titleSize * maxScreenCol; // ~ 960 pixels
+	public final int screenWidth = titleSize * maxScreenCol; // ~ 768 pixels
 	public final int screenHeight = titleSize * maxScreenRow; // ~ 576 pixels
 	
 	//Thông số bản đồ thế giới
