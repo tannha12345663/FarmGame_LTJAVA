@@ -96,6 +96,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public boolean isTypingPassword = false; // Biến xác định người dùng đang nhập mật khẩu
 	public boolean checkAccountLogin = false;
 	public boolean checkAccountRegister = false;
+	public boolean checkFileNotContinue = false;
 	
 //	// Thiết lập vị trí mặc định của người chơi
 //	int playerX = 100;

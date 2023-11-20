@@ -83,10 +83,11 @@ public class KeyHandler implements KeyListener {
 					gp.ui.titleScreenState = 1;// Chuyển sang màn hình thứ 2
 					gp.playMusic(0);
 				}
-				if(gp.ui.commandNum == 1) {
+				else if(gp.ui.commandNum == 1) {
 					//Add late
-					//Load game
-					gp.gameState = gp.playState;
+					//Kiểm tra xem thông tin file có không
+					
+					
 					String file = "";
 					if(gp.checkAccountLogin == true) {
 						file = gp.usernameInput + "_" + gp.passwordInput + ".dat";
@@ -95,16 +96,28 @@ public class KeyHandler implements KeyListener {
 					else if(gp.checkAccountLogin == false) {
 						file = "save.dat";
 					}
+					gp.checkFileNotContinue = gp.saveLoad.isFileEmpty(file);
+					if(gp.checkFileNotContinue == true) {
+						System.out.println("File rỗng");
+						gp.ui.commandNum = 3;
+						
+					}else {
+						//Load game
+						gp.gameState = gp.playState;
+						gp.playMusic(2);
+						gp.saveLoad.load(file);
+						gp.player.getPlayerImage();
+						gp.ui.commandNum = 0;
+					}
 					
-					gp.saveLoad.load(file);
-					gp.player.getPlayerImage();
-					
-					gp.playMusic(2);
 				}
-				if(gp.ui.commandNum == 2) {
+				else if(gp.ui.commandNum == 2) {
 					System.exit(0);
 				}
-				if(gp.ui.commandNum == -1) {
+				else if(gp.ui.commandNum == 3) {
+					gp.ui.commandNum = 0;
+				}
+				else if(gp.ui.commandNum == -1) {
 					gp.ui.commandNum = 0;
 					gp.checkAccountLogin = false;
 					gp.ui.titleScreenState = -1;
@@ -228,24 +241,49 @@ public class KeyHandler implements KeyListener {
 					
 					gp.ui.commandNum = 4 ;
 				}
-				if(gp.ui.commandNum == 3) {
+				else if(gp.ui.commandNum == 3) {
 					
 					//Kiểm tra thông tin đăng ký
 					System.out.println("Username: "+ gp.usernameInput + ", Password: "+ gp.passwordInput + ", khi đăng ký");
-					if(gp.saveLoad.doesFileExist(gp.usernameInput,gp.passwordInput) == false) {
-						gp.checkAccountRegister = true;
-						gp.saveLoad.createFileForUser(gp.usernameInput,gp.passwordInput);
-					}
-					else {
+					System.out.println("So luong phan tu trong "+ gp.usernameInput.length() + ", so luong mat khau : "+ gp.passwordInput.length());
+					if(gp.usernameInput.length() == 0 || gp.passwordInput.length() == 0) {
 						gp.checkAccountRegister = false;
+						
 					}
-					
+					else if(gp.usernameInput.length() > 1 || gp.passwordInput.length() > 1){
+						if(gp.saveLoad.doesFileExist(gp.usernameInput,gp.passwordInput) == false) {
+							gp.checkAccountRegister = true;
+							gp.saveLoad.createFileForUser(gp.usernameInput,gp.passwordInput);
+						}
+						else {
+							gp.checkAccountRegister = false;
+						}
+						
+					}
 					gp.ui.commandNum = 5;
 				}
-				if(gp.ui.commandNum == 5) {
-					gp.checkAccountLogin = true;
-					gp.ui.titleScreenState = 0;
+				else if(gp.ui.commandNum == 4) {
+					//Trả kết quả đăng nhập
+					if( gp.checkAccountLogin == true) {
+						gp.ui.commandNum = 0;
+						gp.ui.titleScreenState = 0;
+					}
+					else {
+						gp.ui.commandNum = 2;
+					}
+					
 				}
+				else if(gp.ui.commandNum == 5) {
+					//Trả kết quả đăng ký
+					if(gp.checkAccountRegister == true) {
+						gp.checkAccountLogin = true;
+						gp.ui.commandNum = 0;
+						gp.ui.titleScreenState = 0;
+					}
+					else {
+						gp.ui.commandNum = 3;
+					}
+				}	
 			}
 			
 			if(code == KeyEvent.VK_BACK_SPACE && (gp.isTypingPassword || gp.isTypingUsername)) {
@@ -273,7 +311,9 @@ public class KeyHandler implements KeyListener {
 				gp.isTypingPassword = false;
 			}
 			if(code == KeyEvent.VK_Q) {
+				gp.ui.commandNum = 0;
 				gp.ui.titleScreenState = 0;
+				
 			}
 		}
 	}

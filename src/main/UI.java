@@ -224,8 +224,6 @@ public class UI {
 		//Kiểm tra màn hình trạng thái tiêu đề
 		//System.out.println("Man hinh hien tai " + titleScreenState);
 		if(titleScreenState == -1) {
-			
-			
 			int x = 150;
 			int y = gp.titleSize * 3;
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
@@ -451,6 +449,31 @@ public class UI {
 				g2.setColor(Color.black);
 				g2.drawString(">", x - gp.titleSize/2, y);
 			}
+			
+			if(gp.checkFileNotContinue == true && gp.ui.commandNum == 3) {
+				//Cửa sổ hiển thị
+				int width = gp.screenWidth - (gp.titleSize * 4);
+				int height = gp.titleSize * 2;
+				g2.setColor(Color.CYAN);
+				g2.fillRoundRect(90 ,gp.titleSize, width, height,30,30);
+				g2.setColor(Color.black);
+				g2.drawRoundRect(90, gp.titleSize, width , height , 30, 30);
+				
+				g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
+				g2.setColor(Color.black);
+				String text1 = "Thông báo!";
+				x = getXforCenteredText(text1);
+				y = gp.titleSize + 30;
+				g2.drawString(text1, x, y );
+				g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+				text = "Chưa có dữ liệu người chơi, vui lòng chơi mới.";
+				x = getXforCenteredText(text);
+				for(String line : text.split("\n")) {
+					g2.drawString(line, x, y + 40);
+					y += 40;
+				}
+			}
+			
 		}else if(titleScreenState == 1) {
 			g2.setColor(Color.black);
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,18));
@@ -1182,7 +1205,7 @@ public class UI {
 		//Draw text
 		x += gp.titleSize;
 		y += gp.titleSize;
-		g2.drawString("Buy", x, y);
+		g2.drawString("Mua", x, y);
 		if(commandNum == 0) {
 			g2.drawString(">", x - 24, y);
 			if(gp.keyH.enterPressed == true) {
@@ -1191,7 +1214,7 @@ public class UI {
 			
 		}
 		y+= gp.titleSize;
-		g2.drawString("Sell", x, y);
+		g2.drawString("Bán", x, y);
 		if(commandNum == 1) {
 			g2.drawString(">", x - 24, y);
 			if(gp.keyH.enterPressed == true) {
@@ -1199,7 +1222,7 @@ public class UI {
 			}
 		}
 		y+= gp.titleSize;
-		g2.drawString("Leave", x, y);
+		g2.drawString("Rời đi.", x, y);
 		if(commandNum == 2) {
 			g2.drawString(">", x - 24, y);
 			if(gp.keyH.enterPressed == true) {

@@ -298,4 +298,10 @@ public class SaveLoad  {
             e.printStackTrace();
         }
     }
+	//Kiểm tra file có dữ liệu không
+	public boolean isFileEmpty(String file1) {
+        File file = new File(file1);
+        System.out.println("So luong phan tu trong file "+ file.length());
+        return file.length() == 0;
+    }
 }

@@ -20,11 +20,9 @@ public class OBJ_HatGiong1 extends Entity{
 		
 		daysToGrow = 5; //số ngày tối thiểu để thu hoạch
 		daysGrown = 0; // Số ngày phát triển
-		description = "[" + name +"] \n Khi bắp đã hoàn "
-				+ "\n thành cả 5 giai đoạn "
-				+ "\n trên, hạt bắp sẽ "
-				+ "\n ở trong tình trạng "
-				+ "\n tốt nhất để thu hoạch. "
+		description = "[" + name +"] \n Bắp cần trả qua 5"
+				+ "\n giai đoạn để thu "
+				+ "\n hoạch"
 				+ "\n Số ngày cần: "+ daysToGrow;
 		//Set up phạm vi của công cụ
 		targetArea.width = 36;
