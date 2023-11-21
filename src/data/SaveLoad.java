@@ -43,6 +43,13 @@ public class SaveLoad  {
 	public Entity getObject(String itemName) {
 		
 		Entity obj = null;
+		
+		int wX = 1;
+		int wY = 1;
+		
+		wX = wX / gp.titleSize;
+		wY = wY / gp.titleSize;
+		
 		// Lưu ý khi có sự thay đổi về trang bị phải chú ý dòng này 
 		switch (itemName) {
 		case "Cây rìu": obj = new OBJ_Axe(gp);break;
@@ -52,6 +59,8 @@ public class SaveLoad  {
 		case "Cây cuốc": obj = new OBJ_Pickaxe(gp);break;
 		case "Watering": obj = new OBJ_Watering(gp);break;
 		case "Hook": obj = new OBJ_Hook(gp); break;
+		case "Bắp chín": obj = new HatGiong1_5(gp,wX,wY);break;
+		case "Cà Tím chín" : obj = new HatGiong2_5(gp, wX, wY); break;
 		}
 		
 		return obj;

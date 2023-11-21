@@ -33,11 +33,20 @@ public class NPC_Merchant extends Entity {
 	}
 	
 	public void getImage() {	
+		up1 = setup("/npc_Merchant/down01");
+		up2 = setup("/npc_Merchant/down02");
+		up3 = setup("/npc_Merchant/down01");
+		up4 = setup("/npc_Merchant/down02");
 		
 		left1 = setup("/npc_Merchant/down01");
 		left2 = setup("/npc_Merchant/down02");
 		left3 = setup("/npc_Merchant/down01");
 		left4 = setup("/npc_Merchant/down02");
+		
+		right1 = setup("/npc_Merchant/down01");
+		right2 = setup("/npc_Merchant/down02");
+		right3 = setup("/npc_Merchant/down01");
+		right4 = setup("/npc_Merchant/down02");
 		
 		down1 = setup("/npc_Merchant/down01");
 		down2 = setup("/npc_Merchant/down02");
