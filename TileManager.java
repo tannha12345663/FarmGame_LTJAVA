@@ -48,7 +48,7 @@ public class TileManager {
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow]; //Khai báo thông tin 
 		
 		getTileImage();
-		loadMap("/maps/map_04.txt");
+		//loadMap("/maps/map_04.txt");
 	}
 	
 	public void getTileImage() {
@@ -332,6 +332,9 @@ public class TileManager {
 					System.out.println("Thiếu file: "+ tileNum);
 				}
 			}
+			else if(gp.player.screenX > gp.player.worldX ||
+					gp.player.screenY > gp.player.worldY || 
+					)
 			worldCol++;
 			if(worldCol == gp.maxWorldCol) {
 				worldCol = 0;

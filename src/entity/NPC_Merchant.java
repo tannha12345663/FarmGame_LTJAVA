@@ -7,6 +7,7 @@ import object.OBJ_Axe;
 import object.OBJ_Chest;
 import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
+import object.OBJ_Hook;
 import object.OBJ_Pickaxe;
 import object.OBJ_Watering;
 
@@ -90,6 +91,7 @@ public class NPC_Merchant extends Entity {
 		inventory.add(new OBJ_Axe(gp));
 		inventory.add(new OBJ_Pickaxe(gp));
 		inventory.add(new OBJ_Watering(gp));
+		inventory.add(new OBJ_Hook(gp));
 		inventory.add(new OBJ_HatGiong1(gp));
 		inventory.add(new OBJ_HatGiong2(gp));
 		inventory.add(new OBJ_Chest(gp));

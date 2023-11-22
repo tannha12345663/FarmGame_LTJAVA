@@ -15,6 +15,7 @@ import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
 import object.OBJ_Hook;
 import object.OBJ_Pickaxe;
+import object.OBJ_Trap;
 import object.OBJ_Watering;
 import tile_interactive.HatGiong1_1;
 import tile_interactive.HatGiong1_2;
@@ -88,6 +89,7 @@ public class SaveLoad  {
 		case "Cây đổ" : obj = new IT_TrunkTree(gp, wX, wY); break;
 		case "Đất" : obj = new Land(gp, wX, wY); break;
 		case "Đất đã đào" : obj = new PlowedLand(gp, wX, wY); break;
+		case "Trap": obj = new OBJ_Trap(gp,wX,wY); break;
 		}
 		
 		return obj;

@@ -857,6 +857,22 @@ public class Player extends Entity {
 		default:
 			throw new IllegalArgumentException("Unexpected value: ");
 		}
+		
+		if(screenX > worldX) {
+			tempScreenX = worldX;
+		}
+		if(screenY > worldY) {
+			tempScreenY = worldY;
+		}
+		int rightOffset = gp.screenWidth - screenX;
+		if(rightOffset > gp.worldWidth - worldX) {
+			tempScreenX = gp.screenWidth - (gp.worldWidth - worldX);
+		}
+		int bottomOffset = gp.screenHeight - screenY;
+		if(bottomOffset > gp.worldHeight - worldY) {
+			tempScreenY = gp.screenHeight - (gp.worldHeight - worldY);
+		}
+		
 		if(invincible ==true) {
 			//Làm cho nhân vật chớp hình khi va chạm với monster
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
@@ -878,7 +894,7 @@ public class Player extends Entity {
 		switch(direction) {
 			case "up": tempScreenY = screenY - targetArea.height; break;
 			case "down": tempScreenY = screenY + gp.titleSize; break; 
-			case "left": tempScreenX = screenX - targetArea.width; break;
+			case "left": tempScreenX = screenX  - targetArea.width; break;
 			case "right": tempScreenX = screenX + gp.titleSize; break;
 		}				
 		g2.setColor(Color.red);g2.setStroke(new BasicStroke(1));

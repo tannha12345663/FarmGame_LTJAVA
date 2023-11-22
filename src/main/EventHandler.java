@@ -50,6 +50,12 @@ public class EventHandler {
 				//Xử lý sự kiện diễn ra tại vị trí này
 				damgePit(12,16,gp.dialogueState);
 			}
+			
+			if(hit(16,6,"right") == true || hit(16,6,"left") == true || hit(16,6,"up") == true || hit(16,6,"down") == true ) {
+				//Xử lý sự kiện diễn ra tại vị trí này
+				damgePit(16,6,gp.dialogueState);
+			}
+			
 			if(hit(14,13,"left") == true || hit(12,13,"right") == true ||  hit(13,14,"up") == true ||  hit(13,12,"down") == true) {
 				//Xử lý hổi máu cho người chơi
 				//healingPool(2,16,gp.dialogueState);
@@ -101,7 +107,7 @@ public class EventHandler {
 	public void damgePit(int col,int row,int gameState) {
 		
 		gp.gameState = gameState;
-		gp.ui.currentDialouge = "Bạn đã bị thương!";
+		gp.ui.currentDialouge = "Bạn đã bị dính bẫy và bị mất máu!";
 		gp.player.life -=1;
 	//	eventRect[col][row].evenDone = true; //Người chơi đã bị thương và mất hố bẫy vì vậy sẽ đánh dấu khu vực này không còn bị sát thuongw nữa
 		if(gp.player.life == 0) {

@@ -5,6 +5,7 @@ import entity.NPC_Person;
 import object.OBJ_Chest;
 import object.OBJ_HatGiong1;
 import object.OBJ_HatGiong2;
+import object.OBJ_Trap;
 import object.OBJ_Well;
 import tile_interactive.IT_DryTree;
 import tile_interactive.Land;
@@ -99,6 +100,11 @@ public class AssetSetter {
 				gp.objDig[i] = new Land(gp, k, j);i++;
 			}
 		}
+		gp.objDig[i] = new OBJ_Trap(gp,12,16);
+		i++;
+		
+		gp.objDig[i] = new OBJ_Trap(gp,16,6);
+		i++;
 		
 		//Hàng 2
 	}
@@ -113,6 +119,8 @@ public class AssetSetter {
 		
 		gp.iTile[i] = new IT_DryTree(gp,10,12);
 		i++;
+		
+		
 //		gp.iTile[i] = new Land(gp,13,13);
 //		i++;
 		gp.iTile[i] = new OBJ_Well(gp,13,13);
@@ -120,5 +128,6 @@ public class AssetSetter {
 		
 		gp.iTile[i] = new IT_DryTree(gp,28,8);
 		i++;
+		
 	}
 }

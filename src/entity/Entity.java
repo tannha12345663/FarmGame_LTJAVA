@@ -172,107 +172,136 @@ public class Entity {
 		
 		int screenX = worldX - gp.player.worldX + gp.player.screenX; 
 		int screenY = worldY - gp.player.worldY + gp.player.screenY;
+		
+		//Stop moving the camera at the edge
+		if(gp.player.worldX < gp.player.screenX) {
+			screenX = worldX;
+		}
+		if(gp.player.worldY < gp.player.screenY) {
+			screenY = worldY;
+		}
+		int rightOffset = gp.screenWidth - gp.player.screenX;
+		if(rightOffset > gp.worldWidth - gp.player.worldX) {
+			screenX = gp.screenWidth - (gp.worldWidth - worldX);
+		}
+		int bottomOffset = gp.screenHeight - gp.player.screenY;
+		if(bottomOffset > gp.worldHeight - gp.player.worldY) {
+			screenY = gp.screenHeight - (gp.worldHeight - worldY);
+		}
+		
+		switch (direction) {
+		case "up": {
+			
+			//Kiểm tra check 
+			if (check == false) {
+				//Hành động đang đứng thở
+				if(spriteNum == 1) {
+					image = up1;
+				}
+				else if (spriteNum == 2) {
+					image = up2;
+				}
+			}
+			else {
+				//Hành động bước đi
+				if(spriteNum == 1) {
+					image = up3;
+				}
+				else if (spriteNum == 2) {
+					image = up4;
+				}
+			}
+			break;
+		}
+		case "down": {
+			
+			if (check == false) {
+				//Hành động đang đứng thở
+				if(spriteNum == 1) {
+					image = down1;
+				}
+				else if(spriteNum == 2) {
+					image = down2;
+				}
+			}
+			else {
+				//Hành động bước đi
+				if(spriteNum == 1) {
+					image = down3;
+				}
+				else if(spriteNum == 2) {
+					image = down4;
+				}
+			}
+			break;
+		}
+		case "left": {
+			
+			if(check == false) {
+				//Hành động thở
+				if(spriteNum == 1) {
+					image = left1;
+				}
+				else if(spriteNum == 2) {
+					image = left2;
+				}
+			}
+			else {
+				//Hành động bước đi
+				if(spriteNum == 1) {
+					image = left3;
+				}
+				else if(spriteNum == 2) {
+					image = left4;
+				}
+			}			
+			break;
+		}
+		case "right": {
+			
+			if(check == false) {
+				//Hành động thở
+				if(spriteNum == 1) {
+					image = right1;
+				}
+				else if(spriteNum == 2) {
+					image = right2;
+				}
+			}
+			else {
+				//Hành động bước đi
+				if(spriteNum == 1) {
+					image = right3;
+				}
+				else if(spriteNum == 2) {
+					image = right4;
+				}
+			}
+			break;
+		}}
+		
+		
+		
 		if(worldX + gp.titleSize > gp.player.worldX - gp.player.screenX && 
 		   worldX - gp.titleSize < gp.player.worldX + gp.player.screenX &&
 		   worldY + gp.titleSize > gp.player.worldY - gp.player.screenY &&
 		   worldY - gp.titleSize < gp.player.worldY + gp.player.screenY) {				
 			//System.out.println("Bạn đang : "+ spriteNum);
-			switch (direction) {
-			case "up": {
-				
-				//Kiểm tra check 
-				if (check == false) {
-					//Hành động đang đứng thở
-					if(spriteNum == 1) {
-						image = up1;
-					}
-					else if (spriteNum == 2) {
-						image = up2;
-					}
-				}
-				else {
-					//Hành động bước đi
-					if(spriteNum == 1) {
-						image = up3;
-					}
-					else if (spriteNum == 2) {
-						image = up4;
-					}
-				}
-				break;
-			}
-			case "down": {
-				
-				if (check == false) {
-					//Hành động đang đứng thở
-					if(spriteNum == 1) {
-						image = down1;
-					}
-					else if(spriteNum == 2) {
-						image = down2;
-					}
-				}
-				else {
-					//Hành động bước đi
-					if(spriteNum == 1) {
-						image = down3;
-					}
-					else if(spriteNum == 2) {
-						image = down4;
-					}
-				}
-				break;
-			}
-			case "left": {
-				
-				if(check == false) {
-					//Hành động thở
-					if(spriteNum == 1) {
-						image = left1;
-					}
-					else if(spriteNum == 2) {
-						image = left2;
-					}
-				}
-				else {
-					//Hành động bước đi
-					if(spriteNum == 1) {
-						image = left3;
-					}
-					else if(spriteNum == 2) {
-						image = left4;
-					}
-				}			
-				break;
-			}
-			case "right": {
-				
-				if(check == false) {
-					//Hành động thở
-					if(spriteNum == 1) {
-						image = right1;
-					}
-					else if(spriteNum == 2) {
-						image = right2;
-					}
-				}
-				else {
-					//Hành động bước đi
-					if(spriteNum == 1) {
-						image = right3;
-					}
-					else if(spriteNum == 2) {
-						image = right4;
-					}
-				}
-				break;
-			}}
+
+			
+			
 			if(invincible == true) {
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
 			}
-			
+
 			g2.drawImage(image,screenX,screenY, gp.titleSize,gp.titleSize,null);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		}
+		else if (gp.player.worldX < gp.player.screenX ||
+				gp.player.worldY < gp.player.screenY ||
+				rightOffset > gp.worldWidth - gp.player.worldX ||
+				bottomOffset > gp.worldHeight - gp.player.worldY) {
+			g2.drawImage(image,screenX,screenY, gp.titleSize,gp.titleSize,null);
 		}
 		
 	}

@@ -353,6 +353,9 @@ public class KeyHandler implements KeyListener {
 				checkDrawTime = false;
 			}
 		}	
+		if(code == KeyEvent.VK_R) {
+			gp.tileM.loadMap("/maps/map_04.txt");
+		}
 	}
 	public void pauseState(int code) {
 		if(code == KeyEvent.VK_P) {
