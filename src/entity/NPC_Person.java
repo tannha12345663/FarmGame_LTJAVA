@@ -44,7 +44,7 @@ public class NPC_Person extends Entity{
 	public void setDialogue() {
 		
 		//Lưu trữ đoạn hội thoại cho NPC
-		dialogue[0]= "Xin chào Nhã Trương. \nBạn là người mới đến hòn đảo này à"; 
+		dialogue[0]= "Xin chào "+gp.usernameInput+". \n Bạn là người mới đến hòn đảo này à"; 
 		dialogue[1]= "Rất vui khi được gặp bạn.";
 		dialogue[2]= "Tôi xin giới thiệu tôi tên là John \n là người chuyên thu mua nông sản.";
 	}

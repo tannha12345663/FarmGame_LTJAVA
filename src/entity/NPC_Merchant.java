@@ -58,7 +58,7 @@ public class NPC_Merchant extends Entity {
 	}
 	public void setDialogue() {
 		//Lưu trữ đoạn hội thoại cho NPC
-		dialogue[0]= "Xin chào Nhã Trương. Tôi tên Daniel và \n tôi có một vài món hàng dành cho bạn. \n Bạn có muốn trao đổi không?"; 
+		dialogue[0]= "Xin chào "+gp.usernameInput+". \n Tôi tên Daniel và tôi có một vài món hàng \n dành cho bạn. Bạn có muốn trao đổi không?"; 
 	}
 	//Tạo hành vi nói cho NPC
 	public void speak() {

@@ -210,6 +210,12 @@ public class UI {
 			i++;
 			x += gp.titleSize + 4;
 		}
+		//Vẽ hiển thị tên người chơi
+		String ten = ""+gp.usernameInput;
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
+		g2.drawString(ten, x - 80 ,y + 10);
+		
 		//Vẽ hiển thị bộ đếm thời gian
 		String day = "Ngày: " + gp.days;
 		g2.setColor(Color.BLUE);

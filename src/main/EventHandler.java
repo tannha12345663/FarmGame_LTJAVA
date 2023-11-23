@@ -109,6 +109,7 @@ public class EventHandler {
 		gp.gameState = gameState;
 		gp.ui.currentDialouge = "Bạn đã bị dính bẫy và bị mất máu!";
 		gp.player.life -=1;
+		gp.playSE(26);
 	//	eventRect[col][row].evenDone = true; //Người chơi đã bị thương và mất hố bẫy vì vậy sẽ đánh dấu khu vực này không còn bị sát thuongw nữa
 		if(gp.player.life == 0) {
 			//gp.gameState = gp.titleState;

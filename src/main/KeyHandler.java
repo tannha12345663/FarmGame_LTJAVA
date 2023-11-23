@@ -118,6 +118,8 @@ public class KeyHandler implements KeyListener {
 					gp.ui.commandNum = 0;
 				}
 				else if(gp.ui.commandNum == -1) {
+					gp.usernameInput = "";
+					gp.passwordInput = "";
 					gp.ui.commandNum = 0;
 					gp.checkAccountLogin = false;
 					gp.ui.titleScreenState = -1;

@@ -46,6 +46,8 @@ public class Sound {
 		soundURL[24] = getClass().getResource("/soundAnimation/gieoHat.wav");
 		//Chặt cây
 		soundURL[25] = getClass().getResource("/soundAnimation/cuttree.wav");
+		//Bẫy 
+		soundURL[26] = getClass().getResource("/soundAnimation/animalTrap.wav");
 	}
 	
 	public void setFile(int i) {
