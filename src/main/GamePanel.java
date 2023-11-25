@@ -98,6 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public boolean checkAccountRegister = false;
 	public boolean checkFileNotContinue = false;
 	
+	
 //	// Thiết lập vị trí mặc định của người chơi
 //	int playerX = 100;
 //	int playerY = 100;
@@ -160,8 +161,19 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	
 	public void retry() {
+		
 		player.setDefaultPositions();
 		player.restoreStatus();
+		
+		String file = "";
+		if(checkAccountLogin == true) {
+			file = usernameInput + "_" + passwordInput + ".dat";
+			
+		}
+		else if(checkAccountLogin == false) {
+			file = "save.dat";
+		}
+		saveLoad.save(file);
 	}
 	
 	//Phương pháp 1: Delta
@@ -302,6 +314,7 @@ public class GamePanel extends JPanel implements Runnable {
 					objDig[i].update();
 				}
 			}
+			
 		}
 		
 		

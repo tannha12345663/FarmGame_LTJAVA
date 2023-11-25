@@ -667,7 +667,7 @@ public class Player extends Entity {
 	public void checkLevelUp() {
 		if(exps >= nextLevel) {
 			level++;
-			nextLevel = nextLevel+10;
+			nextLevel = nextLevel*2;
 			coins += 2;
 			
 			gp.playSE(21);

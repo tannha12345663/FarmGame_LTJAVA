@@ -547,6 +547,7 @@ public class KeyHandler implements KeyListener {
 		if(code == KeyEvent.VK_E) {
 			if(gp.ui.commandNum == 0) {
 				gp.gameState = gp.playState;
+				
 				//Nghỉ ngơi
 				gp.retry();
 			}

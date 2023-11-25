@@ -183,11 +183,11 @@ public class UI {
 		g2.drawImage(emoteJ, x ,y+ 10,null); // Cảm xúc của nhân vật
 		g2.drawImage(boxCoins, x - 15 ,y + 105, null); //Ô chứa coin
 		
-		g2.drawImage(coins, x - 5 ,y + 115, null); //Số tiền hiện tại
+		g2.drawImage(coins, x - 10 ,y + 115, null); //Số tiền hiện tại
 		String soCoin = String.valueOf(gp.player.coins);
 		g2.setColor(Color.RED);
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD,30F));
-		g2.drawString(soCoin, x + 30 ,y + 143);
+		g2.drawString(soCoin, x + 40 ,y + 143);
 		
 		//Máu ban đầu sẽ rỗng tối đa của nhân vật
 		while(i < gp.player.maxLife / 2) {
@@ -210,6 +210,7 @@ public class UI {
 			i++;
 			x += gp.titleSize + 4;
 		}
+		x = gp.titleSize*4 - 20;
 		//Vẽ hiển thị tên người chơi
 		String ten = ""+gp.usernameInput;
 		g2.setColor(Color.white);
@@ -668,15 +669,15 @@ public class UI {
 		g2.drawString("Thông tin nhân vật", textX, textY);
 		textY += lineHeight;
 		textY += lineHeight;
-		g2.drawString("Day", textX, textY);
+		g2.drawString("Ngày", textX, textY);
 		textY += lineHeight;
-		g2.drawString("Level", textX, textY);
+		g2.drawString("Cấp", textX, textY);
 		textY += lineHeight;
-		g2.drawString("Life", textX, textY);
+		g2.drawString("Mạng", textX, textY);
 		textY += lineHeight;
-		g2.drawString("Exp", textX, textY);
+		g2.drawString("Kinh nghiệm", textX, textY);
 		textY += lineHeight;
-		g2.drawString("Next Level", textX, textY);
+		g2.drawString("KN cần thêm", textX, textY);
 		textY += lineHeight;
 		g2.drawString("Coin", textX, textY);
 		textY += lineHeight;
