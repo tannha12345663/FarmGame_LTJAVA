@@ -1289,7 +1289,7 @@ public class UI {
 			g2.drawString(text, x - 5, y+32);
 			
 			//Buy an item
-			if(gp.keyH.enterPressed == true) {
+			if(gp.keyH.enterPressed == true) { 
 				if(npc.inventory.get(itemIndex).price > gp.player.coins) {
 					subState = 0;
 					gp.gameState = gp.dialogueState;

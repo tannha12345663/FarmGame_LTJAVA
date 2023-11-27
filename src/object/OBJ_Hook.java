@@ -11,6 +11,7 @@ public class OBJ_Hook extends Entity {
 		type = type_hook;
 		name = "Hook";
 		down1 = setupOption("/DungCu/Hook",- 5, - 5);
+		valueConsumable = 4;
 		description = "[" + name +"] \n Dụng cụ này dùng \n để  thu hoạch ! ";
 		//Set up phạm vi của công cụ
 		targetArea.width = 36;

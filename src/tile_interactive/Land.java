@@ -35,6 +35,7 @@ public class Land extends InteractiveTile{
 			
 		if(entity.currentCongCu.type == type_pickaxe) {
 			isCorrecItem = true;
+			
 		}
 		return isCorrecItem;
 	}

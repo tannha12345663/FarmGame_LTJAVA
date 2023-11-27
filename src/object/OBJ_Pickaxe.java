@@ -12,7 +12,8 @@ public class OBJ_Pickaxe extends Entity {
 		name = "Cây cuốc";
 		price = 100;
 		down1 = setupOption("/DungCu/Pickaxe",- 5, - 5);
-		description = "[" + name +"] \n Cuốc được dùng \n để đào đất.";
+		valueConsumable = 6;
+		description = "[" + name +"] \n Cuốc dùng để đào\n đất.Trong lúc dùng\ncó thể bị hư! ";
 		//Set up phạm vi của công cụ
 		targetArea.width = 36;
 		targetArea.height = 36;

@@ -86,8 +86,8 @@ public class NPC_Merchant extends Entity {
 		gp.gameState = gp.tradeState;
 		gp.ui.npc = this;
 	}
-	public void setItems() {
-		
+	public void setItems() 
+	{	
 		inventory.add(new OBJ_Axe(gp));
 		inventory.add(new OBJ_Pickaxe(gp));
 		inventory.add(new OBJ_Watering(gp));

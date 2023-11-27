@@ -454,11 +454,20 @@ public class Player extends Entity {
 			if(inventory.size() != maxInventorySize) {
 				inventory.add(gp.objDig[i]);
 				gp.playSE(9);
-				text = "Bạn đã nhặt "+ gp.objDig[i].name + "!";
+				text = "Bạn đã thu hoạch "+ gp.objDig[i].name + "!";
+				
+				int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
+				currentCongCu.valueConsumable--;
+				if(currentCongCu.valueConsumable == 0) {
+					inventory.remove(itemIndex);
+					currentCongCu.type = type_nothing;
+					gp.ui.addMessage("Cây liềm của bạn đã bị hư!");
+				}
+				
 			}
 			//Nếu túi đã đầy
 			else {
-				text = "Bạn không thể nhặt thêm!";
+				text = "Bạn không thể thu hoạch thêm!";
 			}
 			gp.ui.addMessage(text);
 			gp.objDig[i] = gp.objDig[i].pickPlantForm();
@@ -580,10 +589,18 @@ public class Player extends Entity {
 	public void digDaoDat(int i) {
 		if(i != 999 && gp.objDig[i].destructible == true 
 				&& gp.objDig[i].isCorrectItem(this) == true) {
+			int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
+			currentCongCu.valueConsumable--;
+			if(currentCongCu.valueConsumable == 0) {
+				inventory.remove(itemIndex);
+				currentCongCu.type = type_nothing;
+				gp.ui.addMessage("Cuốc đất của bạn đã bị hư!");
+			}
 			gp.objDig[i] = gp.objDig[i].getDestroyedForm();
 			gp.ui.addMessage("Bạn vừa đào đất!");
 			exps += 2;
 			checkLevelUp();
+			
 		}
 	}
 	public void trongCay(int i) {
@@ -656,7 +673,13 @@ public class Player extends Entity {
 			if(gp.iTile[i].life == 0) {
 				gp.iTile[i] = gp.iTile[i].getDestroyedForm();
 			}
-			
+			int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
+			currentCongCu.valueConsumable--;
+			if(currentCongCu.valueConsumable == 0) {
+				inventory.remove(itemIndex);
+				currentCongCu.type = type_nothing;
+				gp.ui.addMessage("Cây rìu của bạn đã bị hư!");
+			}
 			
 			gp.ui.addMessage("Bạn vừa chặt cây!");
 			exps += 2;

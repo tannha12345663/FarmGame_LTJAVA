@@ -11,7 +11,8 @@ public class OBJ_Axe extends Entity {
 		type = type_axe;
 		name = "Cây rìu";
 		down1 = setupOption("/DungCu/Axe",- 5, - 5);
-		description = "[" + name +"] \n Dùng để đào đất \n trước khi gieo trồng ! ";
+		valueConsumable = 6;
+		description = "[" + name +"]\n Rìu dùng để chặt\ncây.Trong lúc dùng\ncó thể bị hư!";
 		//Set up phạm vi của công cụ
 		targetArea.width = 36;
 		targetArea.height = 36;
