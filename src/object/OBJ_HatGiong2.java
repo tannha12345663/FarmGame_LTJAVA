@@ -15,13 +15,15 @@ public class OBJ_HatGiong2 extends Entity {
 		price = 12;
 		stackable = true; // cho phép lưu trữ nhiều
 		down1 = setup("/HatGiong/HatGiong2");
+		daysToGrow = 5; //số ngày tối thiểu để thu hoạch
+		daysGrown = 0; // Số ngày phát triểnư
 		description = "[" + name +"] \n Cà tím cần trả qua"
 				+ "\n 5 giai đoạn để thu "
 				+ "\n hoạch"
 				+ "\n Số ngày cần: "+ daysToGrow;
 		collision = true;
-		daysToGrow = 5; //số ngày tối thiểu để thu hoạch
-		daysGrown = 0; // Số ngày phát triểnư
+		
+		
 		
 		//Set up phạm vi của công cụ
 		targetArea.width = 36;
