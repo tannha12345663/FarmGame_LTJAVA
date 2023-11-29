@@ -14,6 +14,7 @@ import entity.Entity;
 import object.OBJ_BoxSmall;
 import object.OBJ_Emotej;
 import object.OBJ_Heart;
+import object.OBJ_Logo;
 import object.OBJ_BoxCoin;
 import object.OBJ_Coin;
 
@@ -22,7 +23,7 @@ public class UI {
 	GamePanel gp;
 	Graphics2D g2;
 	Font arial_40, arial_80B;
-	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ, boxCoins, coins;
+	BufferedImage heart_full, heart_half, heart_blank, boxSmall, emoteJ, boxCoins, coins, logos;
 //	BufferedImage keyImage;
 	//Khai báo nội dung tin nhắn
 	public boolean messageOn = false;
@@ -82,6 +83,9 @@ public class UI {
 		
 		Entity coin = new OBJ_Coin(gp);
 		coins = coin.image;
+		
+		Entity logo = new OBJ_Logo(gp);
+		logos = logo.image;
 	}
 	
 	//Hiển thị nội dung tin nhắn
@@ -227,6 +231,8 @@ public class UI {
 		g2.setColor(Color.BLUE);
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
 		g2.drawString(time, x + 450 ,y + 10);
+		
+		g2.drawImage(logos, x + 492 ,y*22 - 5, null);
 	}
 	
 	//Vẽ nội dung màn hình mở đầu
@@ -293,6 +299,7 @@ public class UI {
 	        	g2.setColor(Color.black);
 				g2.drawString("<", (int) (x * 3)+ 5, y+ 30 );
 	        }
+	        g2.drawImage(logos, 682 ,444, null);
 	        
 	        if(commandNum == 4) {
 	        	//Cửa sổ hiển thị
@@ -373,12 +380,18 @@ public class UI {
 		}
 		
 		if(titleScreenState == 0) {
+			
+			
+			
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
 			//g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 			
 			String text = "Nông trại vui vẻ NNT";
 			int x = getXforCenteredText(text);
 			int y = gp.titleSize * 3;
+			
+			
+			g2.drawImage(logos, x * 4 + 130 ,y *3 + 12, null);
 			
 			//Shadow đổ bóng
 			g2.setColor(Color.black);
@@ -510,6 +523,10 @@ public class UI {
 			
 			text = "Nhấn Q để quay lại";
 			g2.drawString(text, x - 10, y *2 + 35);
+			
+			g2.drawImage(logos, x * 14 + 38 ,y * 2 - 84, null);
+			//System.out.println("x: "+ (x * 14 + 38) + ", y: "+ (y * 2 - 84) );
+			
 		}else if (titleScreenState == 2) {
 			g2.setColor(Color.black);
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD,18));
@@ -537,6 +554,7 @@ public class UI {
 			
 			text = "Nhấn Q để quay lại";
 			g2.drawString(text, x - 10, y *2 + 115);
+			g2.drawImage(logos, 682 ,444, null);
 			
 		}
 		else if(titleScreenState == 3) {
@@ -566,6 +584,7 @@ public class UI {
 			
 			text = "Nhấn Q để quay lại";
 			g2.drawString(text, x - 10, y *2 + 35);
+			g2.drawImage(logos, 682 ,444, null);
 		}
 		else if(titleScreenState == 4) {
 			String text = "Chọn nhân vật";
@@ -617,6 +636,7 @@ public class UI {
 			
 			text = "Nhấn Q để quay lại";
 			g2.drawString(text, x - 10, y + 83);
+			g2.drawImage(logos, 682 ,444, null);
 		}
 	}
 	public void drawPauseScreen() {
@@ -626,6 +646,7 @@ public class UI {
 		int y = gp.screenHeight/2 - (gp.titleSize*2);
 		gp.stopMusic();
 		g2.drawString(text, x, y);
+		g2.drawImage(logos, 682 ,444, null);
 	}
 	//Hàm hiển thị lời thoại ở màn hình
 	public void drawDialogueScreen() {
@@ -646,7 +667,7 @@ public class UI {
 			g2.drawString(line, x, y);
 			y += 40;
 		}
-		
+		g2.drawImage(logos, 682 ,444, null);
 		
 	}
 	public void drawCharacterScreen() {
@@ -851,7 +872,7 @@ public class UI {
 				
 			}		
 		}
-		
+		g2.drawImage(logos, 682 ,480, null);
 		
 	}
 	public void drawGameOverScreen() {
@@ -1034,6 +1055,7 @@ public class UI {
 		g2.fillRect(textX, textY, volumWidth, 24);
 		
 		gp.config.saveConfig();
+		g2.drawImage(logos, 682 ,444, null);
 		
 	}
 	
@@ -1066,7 +1088,7 @@ public class UI {
 				subState = 0;
 			}
 		}
-		
+		g2.drawImage(logos, 682 ,444, null);
 	}
 	
 	public void options_fullScreenNotification(int frameX, int frameY) {
@@ -1098,6 +1120,7 @@ public class UI {
 				subState = 0;
 			}
 		}
+		g2.drawImage(logos, 682 ,444, null);
 	}
 	
 	public void options_control(int frameX, int frameY) {
@@ -1139,7 +1162,7 @@ public class UI {
 				commandNum = 3;
 			}
 		}
-		
+		g2.drawImage(logos, 682 ,444, null);
 	}
 	
 	public void options_endGameConfirmation(int frameX, int frameY) {
@@ -1190,7 +1213,7 @@ public class UI {
 			}
 			
 		}
-		
+		g2.drawImage(logos, 682 ,444, null);
 		
 	}
 	public void drawTradeScreen() {
@@ -1245,7 +1268,7 @@ public class UI {
 		}
 		y+= gp.titleSize;
 		
-		
+		g2.drawImage(logos, 682 ,444, null);
 		
 		
 	}

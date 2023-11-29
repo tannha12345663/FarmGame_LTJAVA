@@ -279,12 +279,13 @@ public class GamePanel extends JPanel implements Runnable {
 	public void plantTime() {
 		for(int i = 0; i < this.objDig.length;i++) {
 			if(this.objDig[i] != null) {
-				System.out.println(this.objDig[i].name);
+				
 				if(this.objDig[i].phatTrien == true) {
 					objDig[i] = objDig[i].getDestroyedForm();
 				}
 			}
 		}
+		System.out.println("Code này của nhóm 06(T4 - t789) - NNT");
 	}
 	
 	
@@ -316,8 +317,6 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 			
 		}
-		
-		
 		if(gameState == pauseState) {
 			//Không cần cập nhật
 		}

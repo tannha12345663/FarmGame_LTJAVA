@@ -443,6 +443,7 @@ public class Player extends Entity {
 			spriteCounter = 0;
 			playerAnimation = false;
 		}
+		System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 	}
 	
 	public void pickPlant(int i) {
@@ -476,6 +477,7 @@ public class Player extends Entity {
 			checkLevelUp();
 			
 		}
+		System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 	}
 	
 	//Hàm này có ý nghĩa sẽ nhặt các món item trên map
@@ -600,7 +602,7 @@ public class Player extends Entity {
 			gp.ui.addMessage("Bạn vừa đào đất!");
 			exps += 2;
 			checkLevelUp();
-			
+			System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 		}
 	}
 	public void trongCay(int i) {
@@ -639,6 +641,7 @@ public class Player extends Entity {
 			//gp.cChecker.checkEntity(this, gp.objDig);
 			exps += 2;
 			checkLevelUp();
+			System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 		}
 	}
 	
@@ -658,6 +661,7 @@ public class Player extends Entity {
 			}else if(currentCongCu.valueConsumable == 0 ) {
 				gp.ui.addMessage("Bạn cần thêm nước");
 			}
+			System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 		}
 	}
 	
@@ -684,6 +688,7 @@ public class Player extends Entity {
 			gp.ui.addMessage("Bạn vừa chặt cây!");
 			exps += 2;
 			checkLevelUp();
+			System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 		}
 	}
 	
@@ -723,6 +728,7 @@ public class Player extends Entity {
 				}
 				
 			}
+			System.out.println("Bạn đang dùng Code của nhóm 06(T4 - t789) - NNT");
 		}
 	}
 	//Kiểm tra item này có đang trong kho hay không
